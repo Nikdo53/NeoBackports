@@ -1,0 +1,13 @@
+{
+  "net/minecraft/world/item/ItemStack": [
+    "net/nikdo53/neobackports/extensions/ItemStackBackportExtension"
+  ],
+
+  "net/minecraft/world/item/Item$Properties": [
+    "net/nikdo53/neobackports/extensions/ItemPropertiesComponentExtension"
+  ],
+
+  "net/minecraftforge/common/capabilities/CapabilityProvider": [
+    "net/nikdo53/neobackports/extensions/CapabilityProviderExtensions"
+  ]
+}
