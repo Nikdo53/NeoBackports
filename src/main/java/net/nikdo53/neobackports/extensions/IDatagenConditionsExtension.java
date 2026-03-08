@@ -1,4 +1,4 @@
-package net.nikdo53.neobackports.datagen.condition;
+package net.nikdo53.neobackports.extensions;
 
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.common.crafting.conditions.ICondition;

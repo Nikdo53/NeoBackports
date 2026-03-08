@@ -9,5 +9,9 @@
 
   "net/minecraftforge/common/capabilities/CapabilityProvider": [
     "net/nikdo53/neobackports/extensions/CapabilityProviderExtensions"
+  ],
+
+  "net/minecraft/data/registries/RegistriesDatapackGenerator": [
+    "net/nikdo53/neobackports/extensions/IDatagenConditionsExtension"
   ]
 }

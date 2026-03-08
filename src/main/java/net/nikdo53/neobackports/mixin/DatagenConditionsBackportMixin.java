@@ -10,7 +10,7 @@ import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
-import net.nikdo53.neobackports.datagen.condition.IDatagenConditionsExtension;
+import net.nikdo53.neobackports.extensions.IDatagenConditionsExtension;
 import net.nikdo53.neobackports.datagen.condition.WithConditions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
 @SuppressWarnings("deprecation")
 @Mixin(RegistriesDatapackGenerator.class)
@@ -50,5 +51,13 @@ public class DatagenConditionsBackportMixin implements IDatagenConditionsExtensi
         }
     }
 
+    @Override
+    public void registerConditions(BiConsumer<ResourceKey<?>, ICondition> consumer) {
 
+    }
+
+    @Override
+    public Map<ResourceKey<?>, List<ICondition>> getConditionsMap() {
+        return IDatagenConditionsExtension.buildConditionsMap(this::registerConditions);
+    }
 }
