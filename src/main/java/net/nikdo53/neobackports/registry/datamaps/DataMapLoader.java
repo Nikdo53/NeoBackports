@@ -26,6 +26,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
@@ -36,6 +37,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
+
 
 /*
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -65,7 +67,7 @@ public class DataMapLoader implements PreparableReloadListener {
         results = null;
     }
 
-    private <T> void apply(IForgeRegistry<T> registry, LoadResult<T> result) {
+    private <T> void apply(ForgeRegistry<T> registry, LoadResult<T> result) {
         registry.dataMaps.clear();
         result.results().forEach((key, entries) -> registry.dataMaps.put(
                 key, this.buildDataMap(registry, key, (List) entries)));
@@ -184,4 +186,5 @@ public class DataMapLoader implements PreparableReloadListener {
     }
 
     private record LoadResult<T>(Map<DataMapType<T, ?>, List<DataMapFile<?, T>>> results) {}
-}*/
+}
+*/

@@ -7,9 +7,13 @@
   "mixins": [
     "CapabilityProviderMixin",
     "CraftingHelperAccessor",
-    "DatagenConditionsBackportMixin",
     "ItemMixin",
-    "ItemStackMixin"
+    "ItemStackMixin",
+    "DatagenConditionsBackportMixin",
+    "ForgeRegistryMixin",
+    "HolderMixin",
+    "RegistryLookupMixin",
+    "MappedRegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,0 +1,9 @@
+{
+  "required": false,
+  "minVersion": "0.8.5",
+  "package": "net.nikdo53.neobackports.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "DatagenConditionsBackportMixin"
+  ]
+}

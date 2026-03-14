@@ -13,5 +13,21 @@
 
   "net/minecraft/data/registries/RegistriesDatapackGenerator": [
     "net/nikdo53/neobackports/extensions/IDatagenConditionsExtension"
+  ],
+
+  "net/minecraft/core/Holder$Reference": [
+    "net/nikdo53/neobackports/extensions/IDataMapHolderExtension<T>"
+  ],
+  "net/minecraft/core/HolderLookup$RegistryLookup": [
+    "net/nikdo53/neobackports/extensions/IDataMapLookupExtension<T>"
+  ],
+
+  "net/minecraft/core/MappedRegistry": [
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<T>"
+  ],
+
+  "net/minecraftforge/registries/ForgeRegistry": [
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>"
   ]
+
 }
