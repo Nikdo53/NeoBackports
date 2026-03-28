@@ -7,5 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public interface IDataMapHolderExtension<T> {
-    <A> @Nullable A getData(DataMapType<T, A> type);
+    default  <A> @Nullable A getData(DataMapType<T, A> type){
+        throw new IllegalStateException("not implemented");
+    }
 }

@@ -12,8 +12,8 @@
     "DatagenConditionsBackportMixin",
     "ForgeRegistryMixin",
     "HolderMixin",
-    "RegistryLookupMixin",
-    "MappedRegistryMixin"
+    "MappedRegistryMixin",
+    "MappedRegistryAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

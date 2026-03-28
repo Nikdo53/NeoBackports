@@ -15,6 +15,10 @@
     "net/nikdo53/neobackports/extensions/IDatagenConditionsExtension"
   ],
 
+  "net/minecraft/core/Holder": [
+    "net/nikdo53/neobackports/extensions/IDataMapHolderExtension<T>"
+  ],
+
   "net/minecraft/core/Holder$Reference": [
     "net/nikdo53/neobackports/extensions/IDataMapHolderExtension<T>"
   ],
@@ -27,6 +31,10 @@
   ],
 
   "net/minecraftforge/registries/ForgeRegistry": [
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>"
+  ],
+
+  "net/minecraftforge/registries/IForgeRegistry": [
     "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>"
   ]
 

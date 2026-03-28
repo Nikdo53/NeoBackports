@@ -7,6 +7,7 @@ package net.nikdo53.neobackports.registry.datamaps;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.Codec;
@@ -39,7 +40,7 @@ import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 
-/*
+
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class DataMapLoader implements PreparableReloadListener {
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -67,14 +68,14 @@ public class DataMapLoader implements PreparableReloadListener {
         results = null;
     }
 
-    private <T> void apply(ForgeRegistry<T> registry, LoadResult<T> result) {
-        registry.dataMaps.clear();
-        result.results().forEach((key, entries) -> registry.dataMaps.put(
+    private <T> void apply(IForgeRegistry<T> registry, LoadResult<T> result) {
+        registry.getDataMaps().clear();
+        result.results().forEach((key, entries) -> registry.getDataMaps().put(
                 key, this.buildDataMap(registry, key, (List) entries)));
         MinecraftForge.EVENT_BUS.post(new DataMapsUpdatedEvent(registryAccess, registry, DataMapsUpdatedEvent.UpdateCause.SERVER_RELOAD));
     }
 
-    private <T, R> Map<ResourceKey<R>, T> buildDataMap(Registry<R> registry, DataMapType<R, T> attachment, List<DataMapFile<T, R>> entries) {
+    private <T, R> Map<ResourceKey<R>, T> buildDataMap(IForgeRegistry<R> registry, DataMapType<R, T> attachment, List<DataMapFile<T, R>> entries) {
         record WithSource<T, R>(T attachment, Either<TagKey<R>, ResourceKey<R>> source) {}
         final Map<ResourceKey<R>, WithSource<T, R>> result = new IdentityHashMap<>();
         final DataMapValueMerger<R, T> merger = attachment instanceof AdvancedDataMapType<R, T, ?> adv ? adv.merger() : DataMapValueMerger.defaultMerger();
@@ -124,17 +125,21 @@ public class DataMapLoader implements PreparableReloadListener {
         return newMap;
     }
 
-    private <R> void resolve(Registry<R> registry, Either<TagKey<R>, ResourceKey<R>> value, boolean required, Consumer<Holder<R>> consumer) {
+    private <R> void resolve(IForgeRegistry<R> registry, Either<TagKey<R>, ResourceKey<R>> value, boolean required, Consumer<Holder<R>> consumer) {
         if (value.left().isPresent()) {
-            registry.getTagOrEmpty(value.left().orElseThrow()).forEach(consumer);
+            getTagOrEmpty(registry, value.left().orElseThrow()).forEach(consumer);
         } else {
             var object = registry.getHolder(value.right().orElseThrow());
             if (object.isPresent()) {
                 consumer.accept(object.get());
             } else if (required) {
-                LOGGER.error("Object with ID {} specified in data map for registry {} doesn't exist", value.right().orElseThrow().location(), registry.key().location());
+                LOGGER.error("Object with ID {} specified in data map for registry {} doesn't exist", value.right().orElseThrow().location(), registry.getRegistryKey().location());
             }
         }
+    }
+
+    public static <T> Iterable<Holder<T>> getTagOrEmpty(IForgeRegistry<T> registry, TagKey<T> key) {
+        return registry.tags().getTag(key).stream().map(thing -> registry.getHolder(thing).get()).toList();
     }
 
     private CompletableFuture<Map<ResourceKey<? extends Registry<?>>, LoadResult<?>>> load(ResourceManager manager, Executor executor, ProfilerFiller profiler) {
@@ -152,7 +157,7 @@ public class DataMapLoader implements PreparableReloadListener {
             for (Map.Entry<ResourceLocation, List<Resource>> entry : fileToId.listMatchingResourceStacks(manager).entrySet()) {
                 ResourceLocation key = entry.getKey();
                 final ResourceLocation attachmentId = fileToId.fileToId(key);
-                final var attachment = RegistryManager.getDataMap((ResourceKey) registryKey, attachmentId);
+                final var attachment = DataMapsManager.getDataMap((ResourceKey) registryKey, attachmentId);
                 if (attachment == null) {
                     LOGGER.warn("Found data map file for non-existent data map type '{}' on registry '{}'.", attachmentId, registryKey.location());
                     continue;
@@ -187,4 +192,4 @@ public class DataMapLoader implements PreparableReloadListener {
 
     private record LoadResult<T>(Map<DataMapType<T, ?>, List<DataMapFile<?, T>>> results) {}
 }
-*/
+

@@ -13,6 +13,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Consumer;
@@ -26,11 +27,11 @@ import java.util.function.Consumer;
  */
 public class DataMapsUpdatedEvent extends Event {
     private final RegistryAccess registryAccess;
-    private final Registry<?> registry;
+    private final IForgeRegistry<?> registry;
     private final UpdateCause cause;
 
     @ApiStatus.Internal
-    public DataMapsUpdatedEvent(RegistryAccess registryAccess, Registry<?> registry, UpdateCause cause) {
+    public DataMapsUpdatedEvent(RegistryAccess registryAccess, IForgeRegistry<?> registry, UpdateCause cause) {
         this.registryAccess = registryAccess;
         this.registry = registry;
         this.cause = cause;
@@ -46,7 +47,7 @@ public class DataMapsUpdatedEvent extends Event {
     /**
      * {@return the registry that had its data maps updated}
      */
-    public Registry<?> getRegistry() {
+    public IForgeRegistry<?> getRegistry() {
         return registry;
     }
 
@@ -54,7 +55,7 @@ public class DataMapsUpdatedEvent extends Event {
      * {@return the key of the registry that had its data maps updated}
      */
     public ResourceKey<? extends Registry<?>> getRegistryKey() {
-        return registry.key();
+        return registry.getRegistryKey();
     }
 
     /**

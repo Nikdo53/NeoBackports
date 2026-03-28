@@ -7,6 +7,8 @@ import net.nikdo53.neobackports.registry.datamaps.DataMapType;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
+
+/*
 @Mixin(HolderLookup.RegistryLookup.class)
 public class RegistryLookupMixin<T> implements IDataMapHolderExtension<T> {
     @Override
@@ -14,3 +16,5 @@ public class RegistryLookupMixin<T> implements IDataMapHolderExtension<T> {
         return null;
     }
 }
+*/
+
