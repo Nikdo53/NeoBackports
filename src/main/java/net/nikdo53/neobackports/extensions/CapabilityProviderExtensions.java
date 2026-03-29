@@ -5,7 +5,9 @@ import net.nikdo53.neobackports.io.attachment.DataAttachmentType;
 public interface CapabilityProviderExtensions {
     default <T> void setData(DataAttachmentType<T> attachmentType, T data){}
 
-    <T> T getData(DataAttachmentType<T> attachmentType);
+    default  <T> T getData(DataAttachmentType<T> attachmentType){
+        throw new IllegalStateException("not implemented");
+    };
 
     default <T> void removeData(DataAttachmentType<T> attachmentType){}
 }

@@ -13,8 +13,6 @@ import java.util.function.Supplier;
 public interface NBItems {
     DeferredRegister<Item> ITEMS_REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, NeoBackports.MOD_ID);
 
-    DeferredItem<Item> TEST_ITEM = register("test_item", () -> new Item(new Item.Properties().component(DataComponentRegistry.STRING, "hello world!")));
-
     static <T extends Item> DeferredItem<T> register(String name, Supplier<? extends T> sup){
       return new DeferredItem<>(ITEMS_REGISTRY.register(name, sup));
     }

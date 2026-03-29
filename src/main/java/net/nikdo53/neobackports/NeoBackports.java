@@ -3,6 +3,7 @@ package net.nikdo53.neobackports;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,7 +17,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.nikdo53.neobackports.io.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.networking.NBNetworking;
 import net.nikdo53.neobackports.registry.datamaps.DataMapType;
-import net.nikdo53.neobackports.registry.datamaps.DataMapsManager;
 import net.nikdo53.neobackports.test.NBDataMaps;
 import net.nikdo53.neobackports.test.NBItems;
 import org.slf4j.Logger;
@@ -29,6 +29,7 @@ import java.util.Map;
 public class NeoBackports {
     public static final String MOD_ID = "neobackports";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static boolean DEBUG_ENABLED = false;
 
 
     public NeoBackports() {
@@ -36,13 +37,23 @@ public class NeoBackports {
         NBItems.ITEMS_REGISTRY.register(modEventBus);
         DataAttachmentRegistry.init();
         NBNetworking.init();
-        DataMapsManager.initDataMaps(modEventBus);
     }
 
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        if (!DEBUG_ENABLED) return;
+
         ItemStack stack = event.getItemStack();
         Player player = event.getEntity();
+        if (event.getHand() != InteractionHand.MAIN_HAND) {
+            return;
+        }
+
+        if (player.level().isClientSide()) {
+            System.out.println("client:");
+        }else {
+            System.out.println("server:");
+        }
 
 /*
         String data = player.getData(DataAttachmentRegistry.TEST_ATTACHMENT);

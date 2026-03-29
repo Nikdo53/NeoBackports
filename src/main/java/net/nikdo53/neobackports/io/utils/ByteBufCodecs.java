@@ -1,7 +1,6 @@
 package net.nikdo53.neobackports.io.utils;
 
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
@@ -10,23 +9,17 @@ import io.netty.handler.codec.EncoderException;
 import net.minecraft.core.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.io.StreamCodec;
-import org.checkerframework.checker.units.qual.C;
-import org.checkerframework.checker.units.qual.K;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.function.IntFunction;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
@@ -65,6 +58,21 @@ public interface ByteBufCodecs {
 
     StreamCodec<CraftingBookCategory> CRAFTING_BOOK_CATEGORY = enumCodec(CraftingBookCategory.class);
 
+    static <T> StreamCodec<ResourceKey<T>> resourceKeyWithRegistry(ResourceKey<? extends Registry<T>> registryKey) {
+        return RESOURCE_LOCATION.remap(loc -> ResourceKey.create(registryKey, loc), ResourceKey::location);
+    }
+
+    static StreamCodec<ResourceKey<? extends Registry<?>>> registryKey() {
+        return RESOURCE_LOCATION.remap(ResourceKey::createRegistryKey, ResourceKey::location);
+    }
+
+    static StreamCodec<ResourceKey<?>> resourceKey() {
+        return composite(
+                RESOURCE_LOCATION, ResourceKey::registry,
+                RESOURCE_LOCATION, ResourceKey::location,
+                (registry, location) -> ResourceKey.create(ResourceKey.createRegistryKey(registry), location)
+        );
+    }
 
     StreamCodec< Short> SHORT = new StreamCodec<Short>() {
         public Short decode(FriendlyByteBuf p_320513_) {

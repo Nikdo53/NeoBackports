@@ -7,9 +7,11 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.event.IModBusEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.minecraftforge.registries.NewRegistryEvent;
@@ -28,7 +30,8 @@ public class DataMapsManager {
 
     @Nullable
     public static <R> DataMapType<R, ?> getDataMap(ResourceKey<? extends Registry<R>> registry, ResourceLocation key) {
-        final var map = dataMaps.get(registry);
+        Map<ResourceKey<Registry<?>>, Map<ResourceLocation, DataMapType<?, ?>>> dataMaps1 = dataMaps;
+        final var map = dataMaps1.get(registry);
         return map == null ? null : (DataMapType<R, ?>) map.get(key);
     }
 
@@ -39,21 +42,15 @@ public class DataMapsManager {
         return dataMaps;
     }
 
-    public static void initDataMaps(IEventBus modEventBus) {
+    public static void initDataMaps() {
         final Map<ResourceKey<Registry<?>>, Map<ResourceLocation, DataMapType<?, ?>>> dataMapTypes = new HashMap<>();
-        modEventBus.post(new RegisterDataMapTypesEvent(dataMapTypes));
+        FMLJavaModLoadingContext.get().getModEventBus().post(new RegisterDataMapTypesEvent(dataMapTypes));
+
         dataMaps = new IdentityHashMap<>();
         dataMapTypes.forEach((key, values) -> dataMaps.put(key, Collections.unmodifiableMap(values)));
         dataMaps = Collections.unmodifiableMap(dataMapTypes);
     }
 
     public static final AttributeKey<Map<ResourceKey<? extends Registry<?>>, Collection<ResourceLocation>>> ATTRIBUTE_KNOWN_DATA_MAPS = AttributeKey.valueOf("neoforge:known_data_maps");
-
-    @ApiStatus.Internal
-    public static void handleKnownDataMapsReply(final KnownRegistryDataMapsReplyPayload payload, final NetworkEvent.Context context) {
-        context.attr(ATTRIBUTE_KNOWN_DATA_MAPS).set(payload.dataMaps());
-     //   context.finishCurrentTask(RegistryDataMapNegotiation.TYPE);
-    }
-
 
 }

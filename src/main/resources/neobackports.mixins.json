@@ -13,7 +13,8 @@
     "ForgeRegistryMixin",
     "HolderMixin",
     "MappedRegistryMixin",
-    "MappedRegistryAccessor"
+    "MappedRegistryAccessor",
+    "DataPackRegistriesHooksAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

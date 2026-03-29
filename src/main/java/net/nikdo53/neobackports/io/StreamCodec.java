@@ -14,6 +14,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ChunkPos;
 import org.joml.Vector3f;
 
+import java.io.FileReader;
 import java.util.*;
 import java.util.function.*;
 
@@ -209,6 +210,20 @@ public interface StreamCodec<A> {
             @Override
             public void encode(FriendlyByteBuf buf, A value) {
                 encoder.accept(buf, value);
+            }
+        };
+    }
+
+    static<A> StreamCodec<A> ofMember(BiConsumer<A, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, A> decoder) {
+        return new StreamCodec<>() {
+            @Override
+            public A decode(FriendlyByteBuf buf) {
+                return decoder.apply(buf);
+            }
+
+            @Override
+            public void encode(FriendlyByteBuf buf, A value) {
+                encoder.accept(value, buf);
             }
         };
     }
