@@ -82,14 +82,12 @@ public class DataMapsUpdatedEvent extends Event {
     public enum UpdateCause {
         /**
          * The data maps have been synced to the client.
-         * 
-         * @implNote An event with this cause is <i>not</i> fired for the host of a single-player world, or for any {@linkplain Connection#isMemoryConnection() in-memory} connections.
+         *  An event with this cause is <i>not</i> fired for the host of a single-player world, or for any {@linkplain Connection#isMemoryConnection() in-memory} connections.
          */
         CLIENT_SYNC,
         /**
          * The data maps have been reloaded on the server.
-         * 
-         * @implNote Events with this cause are fired during the apply phase}
+         *  Events with this cause are fired during the apply phase
          *           of a reload listener, and <strong>not</strong> after the reload is complete.
          */
         SERVER_RELOAD

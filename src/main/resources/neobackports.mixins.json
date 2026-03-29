@@ -11,10 +11,12 @@
     "ItemStackMixin",
     "DatagenConditionsBackportMixin",
     "ForgeRegistryMixin",
-    "HolderMixin",
+    "HolderReferenceMixin",
     "MappedRegistryMixin",
-    "MappedRegistryAccessor",
-    "DataPackRegistriesHooksAccessor"
+    "DataPackRegistriesHooksAccessor",
+    "IForgeRegistryMixin",
+    "HolderMixin",
+    "RegistryLookupMixin"
   ],
   "injectors": {
     "defaultRequire": 1

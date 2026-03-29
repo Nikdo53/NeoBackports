@@ -17,10 +17,12 @@ import java.util.Optional;
 /**
  * An interface used to remove values from registry data maps. This allows "decomposing" the data
  * and removing only a specific part of it (like a specific key in the case of {@linkplain java.util.Map map-based} data).
+ * <p>
+ * This is only useful for {@link AdvancedDataMapType}
  *
  * @param <T> the data type
  * @param <R> the type of the registry this remover is for
- * @apiNote This is only useful for {@link AdvancedDataMapType}.
+ *
  */
 @FunctionalInterface
 public interface DataMapValueRemover<R, T> {

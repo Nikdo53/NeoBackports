@@ -17,10 +17,12 @@ import java.util.*;
  * An interface used to merge two conflicting registry data map values attached to the same object. <br>
  * Using a merger you can, for example, merge list data maps that come from different sources, when
  * otherwise the newest entry would win and override the older one.
+ * <p>
+ *
+ * This is only useful for {@link AdvancedDataMapType}.
  *
  * @param <T> the data type
  * @param <R> the type of the registry this merger is for
- * @apiNote This is only useful for {@link AdvancedDataMapType}.
  */
 @FunctionalInterface
 public interface DataMapValueMerger<R, T> {

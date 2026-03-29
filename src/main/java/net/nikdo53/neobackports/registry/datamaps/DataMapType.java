@@ -39,11 +39,11 @@ import java.util.Objects;
  *         },
  *         // Optional object. Entries specified here will be removed after the data of the current json file is attached
  *         "remove": ["minecraft:carrot", "#minecraft:logs"]
- *     }
+ *     } *
+ * </code>
  * </pre>
  *
- * </code>
- * Data maps support conditions both JSON-level and attachment-level through the {@value ConditionalOps#CONDITIONAL_VALUE_KEY} object.
+ ** Data maps support conditions both JSON-level and attachment-level through the {@value ConditionalOps#CONDITIONAL_VALUE_KEY} object.
  * <p>
  * Data maps may be synced by specifying a {@link #networkCodec()}. If the map is {@link #mandatorySync() mandatory},
  * then vanilla clients (or any client that doesn't support this map) will not be able to connect.
