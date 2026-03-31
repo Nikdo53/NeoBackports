@@ -44,7 +44,7 @@ public class DataMapsManager {
 
     public static void initDataMaps() {
         final Map<ResourceKey<Registry<?>>, Map<ResourceLocation, DataMapType<?, ?>>> dataMapTypes = new HashMap<>();
-        FMLJavaModLoadingContext.get().getModEventBus().post(new RegisterDataMapTypesEvent(dataMapTypes));
+        ModLoader.get().postEvent(new RegisterDataMapTypesEvent(dataMapTypes));
 
         dataMaps = new IdentityHashMap<>();
         dataMapTypes.forEach((key, values) -> dataMaps.put(key, Collections.unmodifiableMap(values)));
