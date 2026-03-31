@@ -1,10 +1,9 @@
 package net.nikdo53.neobackports.event;
 
-import net.minecraft.core.NonNullList;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySynchronization;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,8 +13,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.common.loot.LootModifierManager;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -24,9 +23,6 @@ import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.DataPackRegistriesHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.NeoBackports;
@@ -37,10 +33,10 @@ import net.nikdo53.neobackports.io.attachment.DataAttachmentType;
 import net.nikdo53.neobackports.io.networking.NBNetworking;
 import net.nikdo53.neobackports.io.networking.RegistryDataMapSyncPayload;
 import net.nikdo53.neobackports.mixin.DataPackRegistriesHooksAccessor;
+import net.nikdo53.neobackports.screen.BlurShaderLoader;
 import net.nikdo53.neobackports.registry.datamaps.DataMapLoader;
 import net.nikdo53.neobackports.registry.datamaps.DataMapsManager;
-import net.nikdo53.neobackports.registry.datamaps.RegisterDataMapTypesEvent;
-import net.nikdo53.neobackports.test.NBDataMaps;
+import net.nikdo53.neobackports.screen.PartialTickHelper;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -65,11 +61,6 @@ public class ForgeEvents {
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
             DATA_MAPS.apply();
         }
-    }
-
-    @SubscribeEvent
-    public static void registerDataMaps(RegisterDataMapTypesEvent event) {
-        event.register(NBDataMaps.TEST_DATA_MAP);
     }
 
     @SubscribeEvent

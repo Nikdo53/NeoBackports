@@ -1,9 +1,12 @@
 package net.nikdo53.neobackports.event;
 
+import net.minecraft.server.packs.resources.ResourceProvider;
+import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.nikdo53.neobackports.NeoBackports;
+import net.nikdo53.neobackports.screen.BlurShaderLoader;
 import net.nikdo53.neobackports.registry.datamaps.DataMapsManager;
 import net.nikdo53.neobackports.registry.datamaps.RegisterDataMapTypesEvent;
 import net.nikdo53.neobackports.test.NBDataMaps;
@@ -19,5 +22,11 @@ public class ModEvents {
     @SubscribeEvent
     public static void commonSetup(FMLCommonSetupEvent event) {
         DataMapsManager.initDataMaps();
+    }
+
+    @SubscribeEvent
+    public static void onRegisterShaders(RegisterShadersEvent event) {
+        ResourceProvider resourceProvider = event.getResourceProvider();
+        BlurShaderLoader.INSTANCE.loadBlurEffect(resourceProvider);
     }
 }

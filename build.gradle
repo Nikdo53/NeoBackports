@@ -33,6 +33,8 @@ legacyForge {
 
     accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
 
+    validateAccessTransformers = true
+
     accessTransformers {
         publish file("src/main/resources/META-INF/accesstransformer.cfg")
     }

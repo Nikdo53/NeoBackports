@@ -22,6 +22,8 @@
     "defaultRequire": 1
   },
   "client": [
-    "ItemPropertiesMixin"
+    "ItemPropertiesMixin",
+    "ScreenMixin",
+    "GameRendererMixin"
   ]
 }
