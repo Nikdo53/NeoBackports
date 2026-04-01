@@ -3,8 +3,12 @@ package net.nikdo53.neobackports.screen;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.Options;
 import net.minecraft.client.renderer.PostChain;
 import net.minecraft.client.renderer.PostPass;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.nikdo53.neobackports.NeoBackports;
@@ -20,6 +24,12 @@ public class BlurShaderLoader {
     public PostChain blurEffect;
     Minecraft minecraft = Minecraft.getInstance();
 
+    public final OptionInstance<Integer> menuBackgroundBlurriness = new OptionInstance<>("options.accessibility.menu_background_blurriness",
+            OptionInstance.cachedConstantTooltip(Component.translatable("options.accessibility.menu_background_blurriness.tooltip")),
+            (component, value) -> value == 0 ? Options.genericValueLabel(component, CommonComponents.OPTION_OFF) : Options.genericValueLabel(component, value),
+            new OptionInstance.IntRange(0, 10), 0,
+            (p_268254_) -> {
+    });
 
     public void loadBlurEffect(ResourceProvider resourceProvider) {
         if (this.blurEffect != null) {
@@ -40,8 +50,8 @@ public class BlurShaderLoader {
 
         //TODO: add the setting
 
-        // float f = (float)minecraft.options.getMenuBackgroundBlurriness();
-        float f = 5;
+        float f = menuBackgroundBlurriness.get();
+        // float f = 5;
         if (this.blurEffect != null && f >= 1.0F) {
             setUniform(blurEffect ,"Radius", f);
             this.blurEffect.process(partialTick);
@@ -55,6 +65,13 @@ public class BlurShaderLoader {
         this.minecraft.getMainRenderTarget().bindWrite(false);
     }
 
+    public static boolean isEnabled() {
+        return INSTANCE.menuBackgroundBlurriness.get() >= 1;
+    }
+
+    public static int getMenuBackgroundBlurriness() {
+        return INSTANCE.menuBackgroundBlurriness.get();
+    }
 
     public void setUniform(PostChain postChain, String name, float backgroundBlurriness) {
         for (PostPass postpass : postChain.passes) {

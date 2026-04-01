@@ -7,23 +7,30 @@
   "mixins": [
     "CapabilityProviderMixin",
     "CraftingHelperAccessor",
+    "DataPackRegistriesHooksAccessor",
+    "ForgeRegistryMixin",
+    "HolderMixin",
+    "HolderReferenceMixin",
+    "IForgeRegistryMixin",
     "ItemMixin",
     "ItemStackMixin",
-    "DatagenConditionsBackportMixin",
-    "ForgeRegistryMixin",
-    "HolderReferenceMixin",
     "MappedRegistryMixin",
-    "DataPackRegistriesHooksAccessor",
-    "IForgeRegistryMixin",
-    "HolderMixin",
-    "RegistryLookupMixin"
+    "RegistryLookupMixin",
+    "datagen.DatagenConditionsBackportMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
+    "AbstractSelectionListMixin",
+    "GameRendererMixin",
     "ItemPropertiesMixin",
+    "OptionsMixin",
     "ScreenMixin",
-    "GameRendererMixin"
-  ]
+    "SelectWorldScreenMixin",
+    "TitleScreenMixin",
+    "VideoSettingsMixin"
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.0"}
 }

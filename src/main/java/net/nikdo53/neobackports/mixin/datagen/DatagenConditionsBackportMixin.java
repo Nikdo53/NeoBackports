@@ -1,4 +1,4 @@
-package net.nikdo53.neobackports.mixin;
+package net.nikdo53.neobackports.mixin.datagen;
 
 import com.google.gson.JsonElement;
 import com.mojang.serialization.DynamicOps;
