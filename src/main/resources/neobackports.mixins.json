@@ -23,12 +23,13 @@
   },
   "client": [
     "AbstractSelectionListMixin",
+    "AccessibilityOptionsScreenMixin",
     "GameRendererMixin",
     "ItemPropertiesMixin",
     "OptionsMixin",
+    "PanoramaRendererMixin",
     "ScreenMixin",
     "SelectWorldScreenMixin",
-    "TitleScreenMixin",
     "VideoSettingsMixin"
   ],
   "mixinextras": {
