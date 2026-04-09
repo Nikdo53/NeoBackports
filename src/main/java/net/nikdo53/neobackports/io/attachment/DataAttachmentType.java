@@ -3,6 +3,7 @@ package net.nikdo53.neobackports.io.attachment;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
+import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.io.StreamCodec;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +43,8 @@ public record DataAttachmentType<T>(
     ) {
 
         if (builder.validHolders.isEmpty()){
-            throw new IllegalStateException("Tried registering a DataAttachmentType without a any Holders!");
+            builder.validHolders.add(CapabilityType.ALL);
+            NeoBackports.LOGGER.debug("Registered data attachment: {} , without specifying what it can attach to, this might be worse for performance", name.toString());
         }
 
         DataAttachmentType<R> dataAttachment = new DataAttachmentType<>(name, () -> new DataAttachment<>() {
@@ -98,6 +100,12 @@ public record DataAttachmentType<T>(
         NAMES.add(name.getPath());
 
         builder.validHolders.forEach(type -> {
+            if (type == CapabilityType.ALL){
+                for (CapabilityType subType : type.subTypes) {
+                    List<DataAttachmentType<?>> list = DATA_ATTACHMENT_TYPES.computeIfAbsent(subType, type1 -> new ArrayList<>());
+                    list.add(dataAttachment);
+                }
+            }
             List<DataAttachmentType<?>> list = DATA_ATTACHMENT_TYPES.computeIfAbsent(type, type1 -> new ArrayList<>());
             list.add(dataAttachment);
         });

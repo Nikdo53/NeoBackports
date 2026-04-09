@@ -6,6 +6,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.client.model.CompositeModel;
+import net.minecraftforge.common.crafting.conditions.ModLoadedCondition;
 import net.nikdo53.neobackports.test.NBDataMaps;
 
 import java.util.concurrent.CompletableFuture;
@@ -22,7 +23,7 @@ public class NBDataMapsProvider extends DataMapProvider {
 
         var map = this.builder(NBDataMaps.TEST_DATA_MAP);
         map.add(ItemTags.AXES, 2, false);
-        map.add(Items.LAPIS_LAZULI.builtInRegistryHolder(), 10, false);
+        map.add(Items.LAPIS_LAZULI.builtInRegistryHolder(), 10, false, new ModLoadedCondition("minecraft"));
 
     }
 }

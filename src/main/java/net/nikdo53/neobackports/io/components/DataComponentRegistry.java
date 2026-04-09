@@ -25,8 +25,8 @@ public class DataComponentRegistry {
      * Registers a new DataComponent of the given type
      * @param name should be a ResourceLocation to avoid conflicts with other mods
      * @param codec the codec of the given type
-     * @param deepScan whether the component should check for its whole contents, instead of just the name when
-     *                 using the has method. It's worse for performance, but prevents conflicts with different data
+     * @param deepScan whether the component should check for its whole contents instead of just the name when
+     *                 using the has method. It's worse for performance but prevents conflicts with different data
      * @return the data component
      * @param <T> type of data the component holds
      */
@@ -50,14 +50,7 @@ public class DataComponentRegistry {
         T ret = component.getOn(stack);
 
         if (ret == null && getDefaults().containsKey(stack.getItem())){
-            List<DataDefault<?>> dataDefaults = getDefaults().get(stack.getItem());
-
-            for (DataDefault<?> def : dataDefaults) {
-                if (def.component().equals(component)){
-                    ret = (T) def.data();
-                    break;
-                }
-            }
+            ret = (T) getDefaults().get(stack.getItem()).get(component);
         }
 
         return ret;
@@ -66,7 +59,7 @@ public class DataComponentRegistry {
     public static <T> boolean has(ItemStack stack, DataComponent<T> component){
         if (getDefaults().containsKey(stack.getItem())){
 
-            if (getDefaults().get(stack.getItem()).stream().anyMatch(def -> def.component().equals(component))){
+            if (getDefaults().get(stack.getItem()).containsKey(component)){
                 return true;
             }
         }

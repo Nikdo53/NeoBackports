@@ -21,7 +21,10 @@ public enum CapabilityType {
     ENTITY(LIVING_ENTITY, PLAYER, NON_LIVING_ENTITY),
     BLOCK_ENTITY,
     LEVEL,
-    CHUNK;
+    CHUNK,
+    ALL(ENTITY, BLOCK_ENTITY, LEVEL, CHUNK),
+
+    ;
 
     /**
      * For example, all players are entities
