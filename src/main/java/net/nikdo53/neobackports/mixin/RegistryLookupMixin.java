@@ -2,9 +2,8 @@ package net.nikdo53.neobackports.mixin;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
-import net.nikdo53.neobackports.extensions.IDataMapHolderExtension;
 import net.nikdo53.neobackports.extensions.IDataMapLookupExtension;
-import net.nikdo53.neobackports.registry.datamaps.DataMapType;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 

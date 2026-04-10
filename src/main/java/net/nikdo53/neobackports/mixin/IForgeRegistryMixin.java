@@ -3,7 +3,7 @@ package net.nikdo53.neobackports.mixin;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
-import net.nikdo53.neobackports.registry.datamaps.DataMapType;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 

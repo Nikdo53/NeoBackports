@@ -25,11 +25,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
-public abstract class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     protected final LazyOptional<DataAttachment<C>> optional = LazyOptional.of(() -> this);
+    public AttachmentType<C> type = null;
+
     private C data = null;
+
+    public static <D> DataAttachment<D> of(AttachmentType<D> type){
+        DataAttachment<D> attachment = new DataAttachment<>();
+        attachment.type = type;
+        return attachment;
+    }
 
     public void setDefault(ICapabilityProvider holder){
         setAndSync(holder, getDefault().get());
@@ -58,20 +67,36 @@ public abstract class DataAttachment<C> implements ICapabilityProvider, INBTSeri
      * Returns an empty value for mimicking the remove method from neo.
      * @return this empty capability.
      */
-    @NotNull
-    public abstract Supplier<C> getDefault();
+    public @NotNull Supplier<C> getDefault() {
+        return type.builder.defaultValue;
+    }
 
-    public abstract @Nullable StreamCodec<C> getStreamCodec();
-    public abstract @Nullable Codec<C> getCodec();
+    public @Nullable StreamCodec<C> getStreamCodec() {
+        return type.builder.streamCodec;
+    }
 
-    public abstract boolean isCopyOnDeath();
-    public abstract ResourceLocation getId();
-    public abstract Capability<? extends DataAttachment<C>> getCapabilityKey();
+    public @Nullable Codec<C> getCodec() {
+        return type.builder.codec;
+    }
 
-    public abstract List<CapabilityType> getPotentialHolders();
+    public boolean isCopyOnDeath() {
+        return type.builder.copyOnDeath;
+    }
 
-    public String getSerializationId(){
-        return getId().toString();
+    public ResourceLocation getId() {
+        return type.id();
+    }
+
+    public Capability<? extends DataAttachment<C>> getCapabilityKey() {
+        return type.builder.capabilityKey;
+    }
+
+    public List<AdvancedCapabilityType> getPotentialHolders() {
+        return type.builder.validHolders;
+    }
+
+    public String getSerializationId() {
+        return Objects.requireNonNullElse(type.builder.serializationId, "data");
     }
 
     public C getData() {
@@ -89,13 +114,13 @@ public abstract class DataAttachment<C> implements ICapabilityProvider, INBTSeri
     public void sync(ICapabilityProvider holder){
         if (getStreamCodec() == null) return;
 
-        CapabilityType capabilityType = CapabilityType.fromHolderSimple(holder);
+        CapabilityType capabilityType = CapabilityType.fromHolder(holder);
         boolean isClient = true;
         long data = 0;
         PacketDistributor.PacketTarget packetDistributor = null;
 
          switch (capabilityType) {
-            case ENTITY,PLAYER -> {
+            case ENTITY -> {
                 Entity entity = (Entity) holder;
                 data = entity.getId();
                 isClient = entity.level().isClientSide();
@@ -139,8 +164,8 @@ public abstract class DataAttachment<C> implements ICapabilityProvider, INBTSeri
     public CompoundTag serializeNBT() {
         CompoundTag compoundTag = new CompoundTag();
 
-        if (getCodec() != null) {
-            getCodec().encodeStart(NbtOps.INSTANCE, getData()).resultOrPartial(NeoBackports.LOGGER::warn).ifPresent(tag -> compoundTag.put(getSerializationId(), tag));
+        if (getCodec() != null && data != null) {
+            getCodec().encodeStart(NbtOps.INSTANCE, data).resultOrPartial(NeoBackports.LOGGER::warn).ifPresent(tag -> compoundTag.put(getSerializationId(), tag));
         }
 
         return compoundTag;

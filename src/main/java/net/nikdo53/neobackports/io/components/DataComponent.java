@@ -28,7 +28,9 @@ public record DataComponent<T>(String name, Codec<T> codec, boolean deepScan){
     public boolean isOn(ItemStack stack){
         CompoundTag tag = stack.getTag();
         if (tag == null) return false;
+
         if (!tag.contains(name)) return false;
+        if (!deepScan) return true;
 
         //this might not be very good for performance but its fail proof
         return getOn(stack) != null;

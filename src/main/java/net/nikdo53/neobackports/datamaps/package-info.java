@@ -6,7 +6,7 @@
 @FieldsAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @ParametersAreNonnullByDefault
-package net.nikdo53.neobackports.registry.datamaps;
+package net.nikdo53.neobackports.datamaps;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

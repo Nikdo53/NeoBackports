@@ -16,7 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.nikdo53.neobackports.io.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.networking.NBNetworking;
-import net.nikdo53.neobackports.registry.datamaps.DataMapType;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import net.nikdo53.neobackports.test.NBDataMaps;
 import net.nikdo53.neobackports.test.NBItems;
 import org.slf4j.Logger;
@@ -34,9 +34,9 @@ public class NeoBackports {
 
     public NeoBackports() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        NBItems.ITEMS_REGISTRY.register(modEventBus);
-        DataAttachmentRegistry.init();
+        NBItems.REGISTER.register(modEventBus);
         NBNetworking.init();
+        DataAttachmentRegistry.ATTACHMENT_TYPES.register(modEventBus);
     }
 
     @SubscribeEvent

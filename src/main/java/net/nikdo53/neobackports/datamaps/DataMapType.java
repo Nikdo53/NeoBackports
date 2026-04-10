@@ -3,14 +3,16 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package net.nikdo53.neobackports.registry.datamaps;
+package net.nikdo53.neobackports.datamaps;
 
 import com.google.common.base.Preconditions;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
+import net.nikdo53.neobackports.extensions.IDataMapHolderExtension;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -72,6 +74,13 @@ public sealed class DataMapType<R, T> permits AdvancedDataMapType {
         this.codec = Objects.requireNonNull(codec, "codec must not be null");
         this.networkCodec = networkCodec;
         this.mandatorySync = mandatorySync;
+    }
+
+    /**
+     * In case Interface injections dont work
+     */
+    public @Nullable T getFrom(Holder<R> holder){
+        return ((IDataMapHolderExtension<R>) holder).getData(this);
     }
 
     /**

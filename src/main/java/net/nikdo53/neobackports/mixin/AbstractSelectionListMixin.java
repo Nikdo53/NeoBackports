@@ -58,7 +58,7 @@ public abstract class AbstractSelectionListMixin {
 
         Boolean call = original.call(instance);
 
-        if (call && BlurShaderLoader.isEnabled()) {
+        if (call && BlurShaderLoader.shouldCancelBackground()) {
 
             RenderSystem.enableBlend();
             guiGraphics.blit(INWORLD_HEADER_SEPARATOR, x0, y0 - 2, 0.0F, 0.0F, this.getWidth(), 2, 32, 2);
@@ -77,7 +77,7 @@ public abstract class AbstractSelectionListMixin {
     public boolean cancelBackground(AbstractSelectionList instance, Operation<Boolean> original, @Local(argsOnly = true) GuiGraphics guiGraphics) {
         Boolean call = original.call(instance);
 
-        if (call && BlurShaderLoader.isEnabled()) {
+        if (call && BlurShaderLoader.shouldCancelBackground()) {
             RenderSystem.enableBlend();
             ResourceLocation resourcelocation = this.minecraft.level == null ? MENU_LIST_BACKGROUND : INWORLD_MENU_LIST_BACKGROUND;
             guiGraphics.blit(

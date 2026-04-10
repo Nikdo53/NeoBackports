@@ -15,6 +15,7 @@ import net.nikdo53.neobackports.NeoBackports;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class BlurShaderLoader {
     public static final ResourceLocation BLUR_LOCATION = NeoBackports.loc("shaders/post/new_blur.json");
@@ -27,7 +28,7 @@ public class BlurShaderLoader {
     public final OptionInstance<Integer> menuBackgroundBlurriness = new OptionInstance<>("options.accessibility.menu_background_blurriness",
             OptionInstance.cachedConstantTooltip(Component.translatable("options.accessibility.menu_background_blurriness.tooltip")),
             (component, value) -> value == 0 ? Options.genericValueLabel(component, CommonComponents.OPTION_OFF) : Options.genericValueLabel(component, value),
-            new OptionInstance.IntRange(0, 10), 0,
+            new OptionInstance.IntRange(0, 10), 5,
             (p_268254_) -> {
     });
 
@@ -71,6 +72,12 @@ public class BlurShaderLoader {
 
     public static int getMenuBackgroundBlurriness() {
         return INSTANCE.menuBackgroundBlurriness.get();
+    }
+
+    public static boolean shouldCancelBackground() {
+        return isEnabled()
+                && (Minecraft.getInstance().level != null || OptionsScreenBackports.PANORAMA != null)
+        ;
     }
 
     public void setUniform(PostChain postChain, String name, float backgroundBlurriness) {

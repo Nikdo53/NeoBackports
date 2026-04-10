@@ -1,6 +1,5 @@
 package net.nikdo53.neobackports.event;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySynchronization;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -27,16 +25,15 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.io.DataAttachmentRegistry;
-import net.nikdo53.neobackports.io.attachment.CapabilityType;
+import net.nikdo53.neobackports.io.attachment.AdvancedCapabilityType;
 import net.nikdo53.neobackports.io.attachment.DataAttachment;
-import net.nikdo53.neobackports.io.attachment.DataAttachmentType;
+import net.nikdo53.neobackports.io.attachment.AttachmentType;
 import net.nikdo53.neobackports.io.networking.NBNetworking;
 import net.nikdo53.neobackports.io.networking.RegistryDataMapSyncPayload;
 import net.nikdo53.neobackports.mixin.DataPackRegistriesHooksAccessor;
-import net.nikdo53.neobackports.screen.BlurShaderLoader;
-import net.nikdo53.neobackports.registry.datamaps.DataMapLoader;
-import net.nikdo53.neobackports.registry.datamaps.DataMapsManager;
-import net.nikdo53.neobackports.screen.PartialTickHelper;
+import net.nikdo53.neobackports.datamaps.DataMapLoader;
+import net.nikdo53.neobackports.datamaps.DataMapsManager;
+import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -112,11 +109,12 @@ public class ForgeEvents {
 
         oldPlayer.reviveCaps();
 
-        DataAttachmentType.REGISTERED_DATA_ATTACHMENTS.forEach((key, type) -> {
-            if (!type.attachment().isCopyOnDeath()) return;
+        NeoForgeRegistries.ATTACHMENT_TYPES.getEntries().forEach((entry) -> {
+            AttachmentType<?> type = entry.getValue();
+            if (!type.getAttachment().isCopyOnDeath()) return;
 
-            LazyOptional<? extends DataAttachment<?>> capNew = newPlayer.getCapability(type.attachment().getCapabilityKey());
-            LazyOptional<? extends DataAttachment<?>> capOld = oldPlayer.getCapability(type.attachment().getCapabilityKey());
+            LazyOptional<? extends DataAttachment<?>> capNew = newPlayer.getCapability(type.getAttachment().getCapabilityKey());
+            LazyOptional<? extends DataAttachment<?>> capOld = oldPlayer.getCapability(type.getAttachment().getCapabilityKey());
             if (!capNew.isPresent() || !capOld.isPresent()) return;
 
             //avoids messing with the generics
@@ -133,44 +131,44 @@ public class ForgeEvents {
     @SubscribeEvent
     public static void attachCapabilitiesEntity(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
-            DataAttachmentType.DATA_ATTACHMENT_TYPES.getOrDefault(CapabilityType.PLAYER, List.of())
-                    .forEach(type -> event.addCapability(type.name(), type.attachment()));
+            AttachmentType.getTypesForHolder(AdvancedCapabilityType.PLAYER)
+                    .forEach(type -> event.addCapability(type.id(), type.getAttachment()));
 
         }
         if (event.getObject() instanceof LivingEntity) {
-            DataAttachmentType.DATA_ATTACHMENT_TYPES.getOrDefault(CapabilityType.LIVING_ENTITY, List.of())
-                    .forEach(type -> event.addCapability(type.name(), type.attachment()));
+            AttachmentType.getTypesForHolder(AdvancedCapabilityType.LIVING_ENTITY)
+                    .forEach(type -> event.addCapability(type.id(), type.getAttachment()));
         } else {
-            DataAttachmentType.DATA_ATTACHMENT_TYPES.getOrDefault(CapabilityType.NON_LIVING_ENTITY, List.of())
-                    .forEach(type -> event.addCapability(type.name(), type.attachment()));
+            AttachmentType.getTypesForHolder(AdvancedCapabilityType.NON_LIVING_ENTITY)
+                    .forEach(type -> event.addCapability(type.id(), type.getAttachment()));
         }
 
-        DataAttachmentType.DATA_ATTACHMENT_TYPES.getOrDefault(CapabilityType.ENTITY, List.of())
-                .forEach(type -> event.addCapability(type.name(), type.attachment()));
+        AttachmentType.getTypesForHolder(AdvancedCapabilityType.ENTITY)
+                .forEach(type -> event.addCapability(type.id(), type.getAttachment()));
     }
 
 
     @SubscribeEvent
     public static void attachCapabilitiesChunk(AttachCapabilitiesEvent<LevelChunk> event) {
-        DataAttachmentType.DATA_ATTACHMENT_TYPES.getOrDefault(CapabilityType.CHUNK, List.of())
-                .forEach(type -> event.addCapability(type.name(), type.attachment()));
+        AttachmentType.getTypesForHolder(AdvancedCapabilityType.CHUNK)
+                .forEach(type -> event.addCapability(type.id(), type.getAttachment()));
     }
 
     @SubscribeEvent
     public static void attachCapabilitiesBlockEntity(AttachCapabilitiesEvent<BlockEntity> event) {
-        DataAttachmentType.DATA_ATTACHMENT_TYPES.getOrDefault(CapabilityType.BLOCK_ENTITY, List.of())
-                .forEach(type -> event.addCapability(type.name(), type.attachment()));
+        AttachmentType.getTypesForHolder(AdvancedCapabilityType.BLOCK_ENTITY)
+                .forEach(type -> event.addCapability(type.id(), type.getAttachment()));
     }
 
     @SubscribeEvent
     public static void attachCapabilitiesLevel(AttachCapabilitiesEvent<Level> event) {
-        DataAttachmentType.DATA_ATTACHMENT_TYPES.getOrDefault(CapabilityType.LEVEL, List.of())
-                .forEach(type -> event.addCapability(type.name(), type.attachment()));
+        AttachmentType.getTypesForHolder(AdvancedCapabilityType.LEVEL)
+                .forEach(type -> event.addCapability(type.id(), type.getAttachment()));
     }
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        DataAttachmentType.REGISTERED_DATA_ATTACHMENTS.forEach((loc, attachments) -> event.register(attachments.attachment().getClass()));
+        NeoForgeRegistries.ATTACHMENT_TYPES.getEntries().forEach((entry) -> event.register(entry.getValue().getAttachment().getClass()));
     }
 
 }

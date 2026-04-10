@@ -13,19 +13,19 @@ import net.nikdo53.neobackports.io.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.StreamCodec;
 import net.nikdo53.neobackports.io.attachment.CapabilityType;
 import net.nikdo53.neobackports.io.attachment.DataAttachment;
-import net.nikdo53.neobackports.io.attachment.DataAttachmentType;
+import net.nikdo53.neobackports.io.attachment.AttachmentType;
 
 public record SyncAttachmentPayload(CapabilityType type, long holderId, DataAttachment<?> capability) implements ToClientPacket{
 
     @SuppressWarnings({"unchecked"})
     public static final StreamCodec<DataAttachment<?>> CAPABILITY_STREAM_CODEC =
             StreamCodec.of((buf, cap) -> {
-                DataAttachmentType.STREAM_CODEC_CODEC.encode(buf,  cap);
+                AttachmentType.STREAM_CODEC_CODEC.encode(buf,  cap);
 
                 ((DataAttachment<Object>)cap).getStreamCodec().encode(buf, cap.getData());
 
             }, buf -> {
-                DataAttachment<Object> attachment = (DataAttachment<Object>) DataAttachmentType.STREAM_CODEC_CODEC.decode(buf);
+                DataAttachment<Object> attachment = (DataAttachment<Object>) AttachmentType.STREAM_CODEC_CODEC.decode(buf);
                 Object data = attachment.getStreamCodec().decode(buf);
 
                 attachment.setData(data);
@@ -45,9 +45,8 @@ public record SyncAttachmentPayload(CapabilityType type, long holderId, DataAtta
     @Override
     @OnlyIn(Dist.CLIENT)
     public void handleClient(NetworkEvent.Context context, Level level, Player player) {
-        CapabilityType simpleType = type.getSimple();
 
-        switch (simpleType) {
+        switch (type) {
             case ENTITY -> {
                 int id = Math.toIntExact(holderId);
                 Entity entity = level.getEntity(id);

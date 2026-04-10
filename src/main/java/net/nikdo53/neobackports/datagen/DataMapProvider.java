@@ -18,7 +18,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
 import net.nikdo53.neobackports.datagen.condition.WithConditions;
-import net.nikdo53.neobackports.registry.datamaps.*;
+import net.nikdo53.neobackports.datamaps.*;
 
 import java.nio.file.Path;
 import java.util.*;

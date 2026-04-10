@@ -3,19 +3,16 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package net.nikdo53.neobackports.registry.datamaps;
+package net.nikdo53.neobackports.datamaps;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.FileToIdConverter;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
@@ -27,12 +24,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 
 import java.io.Reader;

@@ -10,7 +10,7 @@ import net.minecraftforge.registries.ForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
 import net.nikdo53.neobackports.registry.RegistryLookupWrapper;
-import net.nikdo53.neobackports.registry.datamaps.DataMapType;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.*;

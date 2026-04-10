@@ -4,11 +4,10 @@ import com.google.common.collect.Maps;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.HandshakeHandler;
 import net.minecraftforge.network.NetworkEvent;
 import net.nikdo53.neobackports.io.StreamCodec;
 import net.nikdo53.neobackports.io.utils.ByteBufCodecs;
-import net.nikdo53.neobackports.registry.datamaps.DataMapsManager;
+import net.nikdo53.neobackports.datamaps.DataMapsManager;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.ArrayList;

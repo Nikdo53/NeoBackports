@@ -13,7 +13,6 @@ import static net.nikdo53.neobackports.io.components.DataDefault.getDefaults;
 public class DataComponentRegistry {
     public static final List<String> NAMES = new ArrayList<>();
 
-    //smithing templates
     public static final DataComponent<Boolean> BOOLEAN = register("test_boolean", Codec.BOOL);
     public static final DataComponent<String> STRING = register("test_string", Codec.STRING);
 
@@ -30,7 +29,7 @@ public class DataComponentRegistry {
      * @return the data component
      * @param <T> type of data the component holds
      */
-    public static <T> DataComponent<T> register(String name, Codec<T> codec, boolean deepScan) {
+    public static synchronized <T> DataComponent<T> register(String name, Codec<T> codec, boolean deepScan) {
         if (NAMES.contains(name)){
             throw new IllegalArgumentException("Tried registering a DataComponent with a duplicate name " + name);
         }

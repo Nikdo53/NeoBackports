@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package net.nikdo53.neobackports.registry.datamaps;
+package net.nikdo53.neobackports.datamaps;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

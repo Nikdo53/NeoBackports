@@ -3,15 +3,12 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package net.nikdo53.neobackports.registry.datamaps;
+package net.nikdo53.neobackports.datamaps;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.Connection;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.registries.IForgeRegistry;
 import org.jetbrains.annotations.ApiStatus;

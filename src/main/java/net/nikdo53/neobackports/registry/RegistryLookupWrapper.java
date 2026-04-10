@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
-import net.nikdo53.neobackports.registry.datamaps.DataMapType;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
