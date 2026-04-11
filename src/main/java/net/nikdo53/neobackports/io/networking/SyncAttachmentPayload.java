@@ -22,7 +22,7 @@ public record SyncAttachmentPayload(CapabilityType type, long holderId, DataAtta
             StreamCodec.of((buf, cap) -> {
                 AttachmentType.STREAM_CODEC_CODEC.encode(buf,  cap);
 
-                ((DataAttachment<Object>)cap).getStreamCodec().encode(buf, cap.getData());
+                ((DataAttachment<Object>)cap).getStreamCodec().encode(buf, cap.getOrDefault());
 
             }, buf -> {
                 DataAttachment<Object> attachment = (DataAttachment<Object>) AttachmentType.STREAM_CODEC_CODEC.decode(buf);

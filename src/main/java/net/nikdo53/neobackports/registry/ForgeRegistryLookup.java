@@ -14,12 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class ForgeRegistryLookup<T> implements HolderLookup.RegistryLookup<T> {
-    public final ForgeRegistry<T> registry;
-
-    public ForgeRegistryLookup(ForgeRegistry<T> registry) {
-        this.registry = registry;
-    }
+public record ForgeRegistryLookup<T>(ForgeRegistry<T> registry) implements HolderLookup.RegistryLookup<T> {
 
     @Override
     public ResourceKey<? extends Registry<? extends T>> key() {

@@ -6,7 +6,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.NewRegistryEvent;
-import net.minecraftforge.registries.RegisterEvent;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.registry.ForgeRegistryHelper;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
@@ -36,7 +35,7 @@ public class ModEvents {
     @SubscribeEvent
     public static void addRegistry(NewRegistryEvent event) {
         ForgeRegistryHelper.getInstance(NeoForgeRegistries.Keys.ATTACHMENT_TYPES)
-                .create(event, reg -> NeoForgeRegistries.ATTACHMENT_TYPES = reg);
+                .create(event, reg -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL = reg);
     }
 
 }

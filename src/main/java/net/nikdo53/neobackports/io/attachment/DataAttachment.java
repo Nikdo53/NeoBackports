@@ -51,7 +51,7 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
      * Automatically calls the sync method
      */
     public void setAndSync(ICapabilityProvider holder , C dataNew){
-        setNoSync(dataNew);
+        set(dataNew);
         sync(holder);
     }
 
@@ -59,7 +59,7 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
      * method from copying the variables from another capability of the same type.
      * Used for mimicking the set method from neo.
      */
-    public void setNoSync(C dataNew){
+    public void set(C dataNew){
         data = dataNew;
     };
 
@@ -99,11 +99,20 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
         return Objects.requireNonNullElse(type.builder.serializationId, "data");
     }
 
-    public C getData() {
+    public C getOrDefault() {
         if (data == null)
             return getDefault().get();
 
         return data;
+    }
+
+    public @Nullable C getData() {
+        return data;
+    }
+
+
+    public boolean hasData() {
+        return data != null;
     }
 
     public void setData(C data) {
@@ -164,7 +173,7 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
     public CompoundTag serializeNBT() {
         CompoundTag compoundTag = new CompoundTag();
 
-        if (getCodec() != null && data != null) {
+        if (getCodec() != null && hasData()) {
             getCodec().encodeStart(NbtOps.INSTANCE, data).resultOrPartial(NeoBackports.LOGGER::warn).ifPresent(tag -> compoundTag.put(getSerializationId(), tag));
         }
 
@@ -180,7 +189,7 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
 
         decode.result()
                 .map(Pair::getFirst)
-                .ifPresent(this::setNoSync);
+                .ifPresent(this::set);
 
     }
 }

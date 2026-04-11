@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
@@ -17,11 +18,15 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class DeferredHolder<R, T> implements Holder<T> {
+public class DeferredHolder<R, T extends R> implements Holder<T> {
     protected final RegistryObject<T> registryObject;
 
     public DeferredHolder(RegistryObject<T> registryObject) {
         this.registryObject = registryObject;
+    }
+
+    public static <R1, T1 extends R1> DeferredHolder<R1, T1> of(RegistryObject<T1> registryObject){
+        return new DeferredHolder<>(registryObject);
     }
 
     public RegistryObject<T> getRegistryObject() {

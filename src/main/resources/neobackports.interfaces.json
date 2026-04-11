@@ -8,7 +8,7 @@
   ],
 
   "net/minecraftforge/common/capabilities/ICapabilityProvider": [
-    "net/nikdo53/neobackports/extensions/CapabilityProviderExtensions"
+    "net/nikdo53/neobackports/extensions/ICapabilityProviderExtension"
   ],
 
   "net/minecraft/data/registries/RegistriesDatapackGenerator": [
@@ -36,6 +36,9 @@
 
   "net/minecraftforge/registries/IForgeRegistry": [
     "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>"
-  ]
+  ],
 
+  "net/minecraftforge/registries/DeferredRegister": [
+    "net/nikdo53/neobackports/extensions/IDeferredRegisterExtension<T>"
+  ]
 }

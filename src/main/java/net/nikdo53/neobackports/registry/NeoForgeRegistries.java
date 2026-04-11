@@ -7,12 +7,11 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.io.attachment.AttachmentType;
 
-import java.util.function.Supplier;
-
 public class NeoForgeRegistries {
-   // public static final Registry<AttachmentType<?>> ATTACHMENT_TYPES = new RegistryBuilder<>(Keys.ATTACHMENT_TYPES).create();
+    public static IForgeRegistry<AttachmentType<?>> ATTACHMENT_TYPES_REAL;
 
-    public static IForgeRegistry<AttachmentType<?>> ATTACHMENT_TYPES;
+    // This tricks other mods to register their own attachments using the key, which does not crash
+    public static final ResourceKey<Registry<AttachmentType<?>>> ATTACHMENT_TYPES = Keys.ATTACHMENT_TYPES;
 
     public static final class Keys {
         public static final ResourceKey<Registry<AttachmentType<?>>> ATTACHMENT_TYPES = key("attachment_types");

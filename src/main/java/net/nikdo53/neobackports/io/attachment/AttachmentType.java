@@ -41,7 +41,7 @@ public class AttachmentType<T>{
 
         if (builder.validHolders.isEmpty()){
             builder.validHolders.add(AdvancedCapabilityType.ALL);
-            NeoBackports.LOGGER.debug("Registered data attachment: {} without specifying what it can attach to, defaulting to ALL. This might be bad for performance", builder.capabilityKey);
+            NeoBackports.LOGGER.warn("Registered data attachment: {} without specifying what it can attach to, defaulting to ALL. This might be bad for performance", builder.capabilityKey);
         }
 
         builder.validHolders.forEach(type -> {
@@ -65,7 +65,7 @@ public class AttachmentType<T>{
 
     public static StreamCodec<DataAttachment<?>> STREAM_CODEC_CODEC =
             StreamCodec.RESOURCE_LOCATION.remap(
-                    loc -> NeoForgeRegistries.ATTACHMENT_TYPES.getValue(loc).getAttachment(),
+                    loc -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getValue(loc).getAttachment(),
                     DataAttachment::getId);
 
 
@@ -87,7 +87,7 @@ public class AttachmentType<T>{
     @SuppressWarnings("unchecked, rawtypes")
     public Holder.Reference<AttachmentType<T>> builtInRegistryHolder(){
         if (this.builtInRegistryHolder == null) {
-            Holder.Reference object = (NeoForgeRegistries.ATTACHMENT_TYPES.getDelegateOrThrow(this));
+            Holder.Reference object = (NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getDelegateOrThrow(this));
             Holder.Reference<AttachmentType<T>> builtInRegistryHolder = (Holder.Reference<AttachmentType<T>>) object;
 
             this.builtInRegistryHolder = builtInRegistryHolder;

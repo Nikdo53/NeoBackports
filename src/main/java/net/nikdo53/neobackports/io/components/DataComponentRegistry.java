@@ -1,41 +1,39 @@
 package net.nikdo53.neobackports.io.components;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.UnaryOperator;
 
 import static net.nikdo53.neobackports.io.components.DataDefault.getDefaults;
 
 public class DataComponentRegistry {
     public static final List<String> NAMES = new ArrayList<>();
 
-    public static final DataComponent<Boolean> BOOLEAN = register("test_boolean", Codec.BOOL);
-    public static final DataComponent<String> STRING = register("test_string", Codec.STRING);
+    public static final DataComponent<Boolean> BOOLEAN = register("test_boolean", builder -> builder.persistent(Codec.BOOL));
+    public static final DataComponent<String> STRING = register("test_string", builder -> builder.persistent(Codec.STRING));
 
-    public static <T> DataComponent<T> register(String name, Codec<T> codec) {
-        return register(name, codec, false);
+    public static synchronized <T> DataComponent<T> register(ResourceLocation loc, UnaryOperator<DataComponent.Builder<T>> func) {
+        return register(loc.toString(), func);
     }
 
-    /**
-     * Registers a new DataComponent of the given type
-     * @param name should be a ResourceLocation to avoid conflicts with other mods
-     * @param codec the codec of the given type
-     * @param deepScan whether the component should check for its whole contents instead of just the name when
-     *                 using the has method. It's worse for performance but prevents conflicts with different data
-     * @return the data component
-     * @param <T> type of data the component holds
-     */
-    public static synchronized <T> DataComponent<T> register(String name, Codec<T> codec, boolean deepScan) {
+    public static synchronized <T> DataComponent<T> register(String name, UnaryOperator<DataComponent.Builder<T>> func) {
         if (NAMES.contains(name)){
             throw new IllegalArgumentException("Tried registering a DataComponent with a duplicate name " + name);
         }
 
         NAMES.add(name);
-        return new DataComponent<>(name, codec, deepScan);
+
+        DataComponent.Builder<T> builder = DataComponent.builder();
+        builder.setName(name);
+
+        return func.apply(builder).build();
     }
 
 
