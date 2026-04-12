@@ -12,19 +12,23 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class DeferredRegisterTyped {
+public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
+    public DeferredRegisterTyped(DeferredRegister<T> parent) {
+        super(parent);
+    }
     /**
      * Factory for a specialized {@link DeferredRegister} for {@link Item Items}.
      *
      * @param modid The namespace for all objects registered to this {@link DeferredRegister}
      * @see #createBlocks(String)
      */
-    static DeferredRegisterTyped.Items createItems(String modid) {
+    public static DeferredRegisterTyped.Items createItems(String modid) {
         return new Items(modid);
     }
 
@@ -34,9 +38,22 @@ public class DeferredRegisterTyped {
      * @param modid The namespace for all objects registered to this DeferredRegister
      * @see #createItems(String)
      */
-    static DeferredRegisterTyped.Blocks createBlocks(String modid) {
+    public static DeferredRegisterTyped.Blocks createBlocks(String modid) {
         return new Blocks(modid);
     }
+
+    public static <B> DeferredRegisterTyped<B> create(ResourceKey<? extends Registry<B>> key, String modid){
+        return new DeferredRegisterTyped<>(DeferredRegister.create(key, modid));
+    }
+
+    public static <B> DeferredRegisterTyped<B> create(IForgeRegistry<B> registry, String modid){
+        return new DeferredRegisterTyped<>(DeferredRegister.create(registry, modid));
+    }
+
+    public static <B> DeferredRegisterTyped<B> create(Registry<B> registry, String modid){
+        return new DeferredRegisterTyped<>(DeferredRegister.create(registry.key(), modid));
+    }
+
 
     public static class Items extends DeferredRegisterWrapper<Item> {
         public Items(String modid) {

@@ -123,8 +123,8 @@ public record DataComponent<T>(String name, Either<Codec<T>, TagCodec<T>> either
 
         /**
          * Reader and writer for the CompoundTag directly, useful for compatibility with existing data (like updating a mod from native 1.20.1).
+         * Unlike the codec method, it does not use the name for serialization, causing potential conflicts with other mods.
          * @see #persistent(Codec) the codec method which should be used instead
-         * @apiNote  Does not use the name for serialization, causing potential conflicts with other mods.
          */
         public Builder<T> persistent(TagEncoder<T> encoder, TagDecoder<T> decoder){
             this.codec = Either.right(new TagCodec<>(encoder, decoder));

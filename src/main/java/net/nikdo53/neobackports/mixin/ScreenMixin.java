@@ -57,10 +57,12 @@ public abstract class ScreenMixin  {
 
     @WrapOperation(method = "renderDirtBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIFFIIII)V"))
     private static void cancelAllDirtScreens(GuiGraphics guiGraphics, ResourceLocation atlasLocation, int x, int y, int blitOffset, float uOffset, float vOffset, int uWidth, int vHeight, int textureWidth, int textureHeight, Operation<Void> original){
-        float[] color = RenderSystem.getShaderColor();
-        guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        if (OptionsScreenBackports.renderBlurOrPanorama(guiGraphics, x, y, uWidth, vHeight)) {
+        if (BlurShaderLoader.shouldCancelBackground()) {
+            float[] color = RenderSystem.getShaderColor();
+            guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+            OptionsScreenBackports.renderBlurOrPanorama(guiGraphics, x, y, uWidth, vHeight);
 
             guiGraphics.setColor(color[0], color[1], color[2], color[3]);
             return;
