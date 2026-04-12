@@ -12,6 +12,7 @@
     "HolderMixin",
     "HolderReferenceMixin",
     "ICapabilityProviderMixin",
+    "IConditionButNotReallyMixin",
     "IForgeRegistryMixin",
     "ItemMixin",
     "ItemStackMixin",

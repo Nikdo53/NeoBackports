@@ -33,6 +33,8 @@ public class ConditionalOps<T> extends RegistryOps<T> {
      * Key used for the conditions inside an object.
      */
     public static final String DEFAULT_CONDITIONS_KEY = "forge:conditions";
+    public static final String NEO_CONDITIONS_KEY = "neoforge:conditions";
+
     /**
      * Key used to store the value associated with conditions,
      * when the value is not represented as a map.
@@ -45,7 +47,8 @@ public class ConditionalOps<T> extends RegistryOps<T> {
      * }
      * </pre>
      */
-    public static final String CONDITIONAL_VALUE_KEY = "forge:value";
+    public static final String CONDITIONAL_VALUE_KEY = "neoforge:value";
+    public static final List<String> OTHER_VALUE_KEYS = List.of("fabric:value", "forge:value");
 
     /**
      * @see #createConditionalCodec(Codec, String)
@@ -194,7 +197,11 @@ public class ConditionalOps<T> extends RegistryOps<T> {
             }
 
             return ops.getMap(input).map(inputMap -> {
-                final T conditionsDataCarrier = inputMap.get(conditionalsPropertyKey);
+                T conditionsDataCarrier = inputMap.get(conditionalsPropertyKey);
+                if (conditionsDataCarrier == null) {
+                    // Try another key for conditions for better compatibility with other mods
+                    conditionsDataCarrier = inputMap.get(NEO_CONDITIONS_KEY);
+                }
                 if (conditionsDataCarrier == null) {
                     // No conditions, forward to inner codec
                     return innerCodec.decode(ops, input).map(result -> result.mapFirst(carrier -> Optional.of(new WithConditions<>(carrier))));
@@ -214,6 +221,14 @@ public class ConditionalOps<T> extends RegistryOps<T> {
                         DataResult<Pair<A, T>> innerDecodeResult;
 
                         T valueDataCarrier = inputMap.get(CONDITIONAL_VALUE_KEY);
+                        if (valueDataCarrier == null){
+                            for (String key : OTHER_VALUE_KEYS) {
+                                valueDataCarrier = inputMap.get(key);
+                                if (valueDataCarrier != null) {
+                                    break;
+                                }
+                            }
+                        }
                         if (valueDataCarrier != null) {
                             // If there is a value field use its contents to deserialize.
                             innerDecodeResult = innerCodec.decode(ops, valueDataCarrier);
