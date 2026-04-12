@@ -14,7 +14,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.nikdo53.neobackports.io.DataAttachmentRegistry;
+import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.networking.NBNetworking;
 import net.nikdo53.neobackports.datamaps.DataMapType;
 import net.nikdo53.neobackports.test.NBDataMaps;

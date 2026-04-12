@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-package net.nikdo53.neobackports.datamaps;
+package net.nikdo53.neobackports.event;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.registries.DataPackRegistriesHooks;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.HashMap;

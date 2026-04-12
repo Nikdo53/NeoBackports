@@ -1,4 +1,4 @@
-package net.nikdo53.neobackports.io;
+package net.nikdo53.neobackports.io.attachment;
 
 
 import com.mojang.serialization.Codec;
@@ -10,7 +10,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.nikdo53.neobackports.NeoBackports;
-import net.nikdo53.neobackports.io.attachment.*;
+import net.nikdo53.neobackports.io.StreamCodec;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;

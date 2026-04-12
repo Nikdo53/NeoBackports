@@ -27,6 +27,7 @@ import net.minecraftforge.common.crafting.conditions.ICondition;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
+import net.nikdo53.neobackports.event.DataMapsUpdatedEvent;
 import org.slf4j.Logger;
 
 import java.io.Reader;

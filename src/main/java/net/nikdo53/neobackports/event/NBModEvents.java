@@ -11,11 +11,10 @@ import net.nikdo53.neobackports.registry.ForgeRegistryHelper;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import net.nikdo53.neobackports.screen.BlurShaderLoader;
 import net.nikdo53.neobackports.datamaps.DataMapsManager;
-import net.nikdo53.neobackports.datamaps.RegisterDataMapTypesEvent;
 import net.nikdo53.neobackports.test.NBDataMaps;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = NeoBackports.MOD_ID)
-public class ModEvents {
+public class NBModEvents {
 
     @SubscribeEvent
     public static void registerDataMaps(RegisterDataMapTypesEvent event) {

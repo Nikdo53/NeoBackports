@@ -12,6 +12,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
+import net.nikdo53.neobackports.event.RegisterDataMapTypesEvent;
 import net.nikdo53.neobackports.extensions.IDataMapHolderExtension;
 import org.jetbrains.annotations.Nullable;
 

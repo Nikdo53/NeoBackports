@@ -9,7 +9,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
-import net.nikdo53.neobackports.io.DataAttachmentRegistry;
+import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.StreamCodec;
 import net.nikdo53.neobackports.io.attachment.CapabilityType;
 import net.nikdo53.neobackports.io.attachment.DataAttachment;

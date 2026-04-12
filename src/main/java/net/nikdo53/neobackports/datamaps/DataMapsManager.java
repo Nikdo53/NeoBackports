@@ -5,6 +5,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModLoader;
+import net.nikdo53.neobackports.event.RegisterDataMapTypesEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;

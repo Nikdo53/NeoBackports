@@ -24,7 +24,7 @@ import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.io.StreamCodec;
 import net.nikdo53.neobackports.datamaps.DataMapType;
 import net.nikdo53.neobackports.datamaps.DataMapsManager;
-import net.nikdo53.neobackports.datamaps.DataMapsUpdatedEvent;
+import net.nikdo53.neobackports.event.DataMapsUpdatedEvent;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.ApiStatus;
 

@@ -24,7 +24,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.NeoBackports;
-import net.nikdo53.neobackports.io.DataAttachmentRegistry;
+import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.attachment.AdvancedCapabilityType;
 import net.nikdo53.neobackports.io.attachment.DataAttachment;
 import net.nikdo53.neobackports.io.attachment.AttachmentType;
@@ -44,7 +44,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = NeoBackports.MOD_ID)
-public class ForgeEvents {
+public class NBForgeEvents {
     private static DataMapLoader DATA_MAPS;
 
     @SubscribeEvent
