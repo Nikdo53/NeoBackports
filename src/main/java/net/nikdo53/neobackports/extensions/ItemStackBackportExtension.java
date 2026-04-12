@@ -5,6 +5,7 @@ import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataComponentRegistry;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
 public interface ItemStackBackportExtension {
     @Nullable
@@ -28,6 +29,26 @@ public interface ItemStackBackportExtension {
         DataComponentRegistry.remove(neoBackports$selfDontUseThis(), componentType);
     }
 
+    @Nullable
+    default <T> T get(Supplier<DataComponentType<? extends T>> component) {
+        return DataComponentRegistry.get(neoBackports$selfDontUseThis(), component.get());
+    }
+
+    default <T> T getOrDefault(Supplier<DataComponentType<T>> component, T defaultValue) {
+        return DataComponentRegistry.getOrDefault(neoBackports$selfDontUseThis(), component.get(), defaultValue);
+    }
+
+    default boolean has(Supplier<DataComponentType<?>> component) {
+        return DataComponentRegistry.has(neoBackports$selfDontUseThis(), component.get());
+    }
+
+    default <T> void set(Supplier<DataComponentType<T>> component, @Nullable T value){
+        DataComponentRegistry.set(neoBackports$selfDontUseThis(), component.get(), value);
+    }
+
+    default <T> void remove(Supplier<DataComponentType<? extends T>> component){
+        DataComponentRegistry.remove(neoBackports$selfDontUseThis(), component.get());
+    }
 
 
     private ItemStack neoBackports$selfDontUseThis(){

@@ -14,9 +14,11 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryObject;
+import net.nikdo53.neobackports.io.components.DataComponentType;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
     public DeferredRegisterTyped(DeferredRegister<T> parent) {
@@ -42,6 +44,23 @@ public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
         return new Blocks(modid);
     }
 
+    /**
+     * Factory for a specialized DeferredRegister for {@link DataComponentType DataComponentTypes}.
+     *
+     * @param registryKey The key for the data component type registry, like {@link NeoForgeRegistries#DATA_COMPONENT_TYPE} for item data components
+     * @param modid       The namespace for all objects registered to this DeferredRegister
+     * @see #create(Registry, String)
+     * @see #create(ResourceKey, String)
+     * @see #createItems(String)
+     */
+    public static DataComponents createDataComponents(ResourceKey<Registry<DataComponentType<?>>> registryKey, String modid) {
+        return new DataComponents(registryKey, modid);
+    }
+
+    public static DataComponents createDataComponents(String modid) {
+        return new DataComponents(modid);
+    }
+
     public static <B> DeferredRegisterTyped<B> create(ResourceKey<? extends Registry<B>> key, String modid){
         return new DeferredRegisterTyped<>(DeferredRegister.create(key, modid));
     }
@@ -52,6 +71,29 @@ public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
 
     public static <B> DeferredRegisterTyped<B> create(Registry<B> registry, String modid){
         return new DeferredRegisterTyped<>(DeferredRegister.create(registry.key(), modid));
+    }
+
+    public static class DataComponents extends DeferredRegisterWrapper<DataComponentType<?>>{
+        public DataComponents(String modid) {
+            super(DeferredRegister.create(NeoForgeRegistries.Keys.DATA_COMPONENT_TYPE, modid));
+        }
+
+        public DataComponents(ResourceKey<Registry<DataComponentType<?>>> registryKey ,String modid) {
+            super(DeferredRegister.create(registryKey, modid));
+        }
+
+        /**
+         * Convenience method that constructs a builder for use in the operator. Use this to avoid inference issues.
+         *
+         * @param name    The name for this data component type. It will automatically have the modid prefixed.
+         * @param builder The unary operator, which is passed a new builder for user operations, then builds it upon registration.
+         * @return A {@link DeferredHolder} which reflects the data that will be registered.
+         */
+        public <D> DeferredHolder<DataComponentType<?>, DataComponentType<D>> registerComponentType(String name, UnaryOperator<DataComponentType.Builder<D>> builder) {
+            DataComponentType.Builder<D> builder1 = DataComponentType.builder();
+            builder1.setName(new ResourceLocation(getModId(), name));
+            return this.register(name, () -> builder.apply(builder1).build());
+        }
     }
 
 

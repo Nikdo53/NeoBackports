@@ -10,10 +10,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.nikdo53.neobackports.NeoBackports;
+import net.nikdo53.neobackports.registry.DeferredRegisterTyped;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> eitherCodec, boolean deepScan){
 
@@ -130,10 +132,18 @@ public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> ei
             this.codec = Either.right(new TagCodec<>(encoder, decoder));
             return this;
         }
-
+        /**
+         * Builds the data component type.
+         * @throws IllegalStateException when registering a data component without a name, either set it yourself or
+         * use {@link DeferredRegisterTyped#createDataComponents(String)} and register using {@link DeferredRegisterTyped.DataComponents#registerComponentType(String, UnaryOperator)}
+         * Which sets the name automatically.
+         * @throws IllegalStateException when registering a data component without a codec, 1.20.1 doesn't support non-persistent data components
+         */
         public DataComponentType<T> build(){
-            if (name == null) throw new IllegalStateException("Tried registering a DataComponent without a name!");
-            if (codec == null) throw new IllegalStateException("Tried registering the DataComponent " + name + " without a codec!");
+            if (name == null)
+                throw new IllegalStateException("Tried registering a DataComponent without a name!");
+            if (codec == null)
+                throw new IllegalStateException("Tried registering the DataComponent " + name + " without a codec!");
 
             return new DataComponentType<>(name, codec, deepScan);
         }

@@ -48,5 +48,9 @@
 
   "net/minecraft/world/level/block/state/BlockBehaviour$BlockStateBase": [
     "net/nikdo53/neobackports/extensions/IBlockStateExtension"
+  ],
+
+  "net/minecraft/network/chat/MutableComponent": [
+    "net/nikdo53/neobackports/extensions/IMutableComponentExtension"
   ]
 }

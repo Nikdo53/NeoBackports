@@ -76,4 +76,8 @@ public class DeferredRegisterWrapper<T>{
         parent.register(bus);
     }
 
+    public String getModId(){
+        return parent.neobackports$getModId();
+    }
+
 }

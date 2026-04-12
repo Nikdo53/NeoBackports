@@ -4,9 +4,11 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
 import net.minecraft.core.*;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.*;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
@@ -15,6 +17,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryInternal;
+import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.io.StreamCodec;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -53,17 +59,17 @@ public interface ByteBufCodecs {
     StreamCodec<ResourceLocation> RESOURCE_LOCATION = of(FriendlyByteBuf::writeResourceLocation, FriendlyByteBuf::readResourceLocation);
 
     StreamCodec<Direction> DIRECTION = enumCodec(Direction.class);
-    StreamCodec<Ingredient> INGREDIENT = StreamCodec.of((friendlyByteBuf, ingredient) -> ingredient.toNetwork(friendlyByteBuf), Ingredient::fromNetwork);
+    StreamCodec<Ingredient> INGREDIENT = of((friendlyByteBuf, ingredient) -> ingredient.toNetwork(friendlyByteBuf), Ingredient::fromNetwork);
     StreamCodec<UUID> UUID = of(FriendlyByteBuf::writeUUID, FriendlyByteBuf::readUUID);
 
     StreamCodec<CraftingBookCategory> CRAFTING_BOOK_CATEGORY = enumCodec(CraftingBookCategory.class);
 
     static <T> StreamCodec<ResourceKey<T>> resourceKeyWithRegistry(ResourceKey<? extends Registry<T>> registryKey) {
-        return RESOURCE_LOCATION.remap(loc -> ResourceKey.create(registryKey, loc), ResourceKey::location);
+        return RESOURCE_LOCATION.map(loc -> ResourceKey.create(registryKey, loc), ResourceKey::location);
     }
 
     static StreamCodec<ResourceKey<? extends Registry<?>>> registryKey() {
-        return RESOURCE_LOCATION.remap(ResourceKey::createRegistryKey, ResourceKey::location);
+        return RESOURCE_LOCATION.map(ResourceKey::createRegistryKey, ResourceKey::location);
     }
 
     static StreamCodec<ResourceKey<?>> resourceKey() {
@@ -145,7 +151,7 @@ public interface ByteBufCodecs {
 
 
     static <T> StreamCodec< T> fromCodec(Codec<T> codec, Supplier<NbtAccounter> accounterSupplier) {
-        return StreamCodec.of((buf, value) -> {
+        return of((buf, value) -> {
             CompoundTag compoundTag = new CompoundTag();
             NBTCodecHelper.encode(codec, value, compoundTag, "a");
             compoundTagCodec(accounterSupplier).encode(compoundTag, buf);
@@ -221,15 +227,15 @@ public interface ByteBufCodecs {
         };
     }
 
-    static <V, C extends Collection<V>> StreamCodec.CodecOperation<V, C> collection(IntFunction<C> factory) {
+    static <V, C extends Collection<V>> CodecOperation<V, C> collection(IntFunction<C> factory) {
         return p_319785_ -> collection(factory, p_319785_);
     }
 
-    static <V> StreamCodec.CodecOperation<V, List<V>> list() {
+    static <V> CodecOperation<V, List<V>> list() {
         return p_320272_ -> collection(ArrayList::new, p_320272_);
     }
 
-    static <V> StreamCodec.CodecOperation<V, List<V>> list(int maxSize) {
+    static <V> CodecOperation<V, List<V>> list(int maxSize) {
         return p_329871_ -> collection(ArrayList::new, p_329871_, maxSize);
     }
 
@@ -285,7 +291,7 @@ public interface ByteBufCodecs {
     }
 
     static <T> StreamCodec< T> idMapper(final IntFunction<T> idLookup, final ToIntFunction<T> idGetter) {
-        return new StreamCodec< T>() {
+        return new StreamCodec<>() {
             public T decode(FriendlyByteBuf p_340809_) {
                 int i = VAR_INT.decode(p_340809_);
                 return idLookup.apply(i);
@@ -302,15 +308,104 @@ public interface ByteBufCodecs {
         return idMapper(idMap::byIdOrThrow, idMap::getId);
     }
 
-    static <T> StreamCodec<T> registry(final Registry<T> registry) {
+    static <OUTPUT> StreamCodec<Holder<OUTPUT>> holderRegistry(ResourceKey<? extends Registry<OUTPUT>> registry){
+        return holderRegistry(RegistryManager.ACTIVE.getRegistry(registry));
+    }
 
+    static <OUTPUT> StreamCodec<Holder<OUTPUT>> holderRegistry(IForgeRegistry<OUTPUT> registry){
         return new StreamCodec<>() {
-            public T decode(FriendlyByteBuf buf) {
-                return buf.readById(registry);
+            @Override
+            public Holder<OUTPUT> decode(FriendlyByteBuf buf) {
+                return registry.getDelegateOrThrow(((ForgeRegistry<OUTPUT>) registry).getValue(buf.readInt()));
             }
 
-            public void encode(FriendlyByteBuf buf, T data) {
-                buf.writeId(registry, data);
+            @Override
+            public void encode(FriendlyByteBuf buf, Holder<OUTPUT> value) {
+                buf.writeInt(((ForgeRegistry<OUTPUT>) registry).getID(value.get()));
+            }
+        };
+    }
+
+    static <OUTPUT> StreamCodec<Holder<OUTPUT>> holderRegistry(Registry<OUTPUT> registry){
+        return new StreamCodec<>() {
+            @Override
+            public Holder<OUTPUT> decode(FriendlyByteBuf buf) {
+                return registry.getHolder(buf.readInt()).get();
+            }
+
+            @Override
+            public void encode(FriendlyByteBuf buf, Holder<OUTPUT> value) {
+                buf.writeInt(registry.getId(value.get()));
+            }
+        };
+    }
+
+    static <OUTPUT> StreamCodec<OUTPUT> registry(ResourceKey<? extends Registry<OUTPUT>> registry){
+        return registry(RegistryManager.ACTIVE.getRegistry(registry));
+    }
+
+
+    static <OUTPUT> StreamCodec<OUTPUT> registry(IForgeRegistry<OUTPUT> registry){
+        return new StreamCodec<>() {
+            @Override
+            public OUTPUT decode(FriendlyByteBuf buf) {
+                return ((IForgeRegistryInternal<OUTPUT>) registry).getValue(buf.readInt());
+            }
+
+            @Override
+            public void encode(FriendlyByteBuf buf, OUTPUT value) {
+                buf.writeInt(((ForgeRegistry<OUTPUT>) registry).getID(value));
+            }
+        };
+    }
+
+
+    static <OUTPUT> StreamCodec<OUTPUT> registry(Registry<OUTPUT> registry){
+        return new StreamCodec<>() {
+            @Override
+            public OUTPUT decode(FriendlyByteBuf buf) {
+                return registry.getHolder(buf.readInt()).get().get();
+            }
+
+            @Override
+            public void encode(FriendlyByteBuf buf, OUTPUT value) {
+                buf.writeInt(registry.getId(value));
+            }
+        };
+    }
+
+
+
+
+    static <OUTPUT> StreamCodec<OUTPUT> byNameRegistry(ResourceKey<? extends Registry<OUTPUT>> registry){
+        return byNameRegistry(RegistryManager.ACTIVE.getRegistry(registry));
+    }
+
+    static <OUTPUT> StreamCodec<OUTPUT> byNameRegistry(IForgeRegistry<OUTPUT> registry){
+        return new StreamCodec<>() {
+            @Override
+            public OUTPUT decode(FriendlyByteBuf buf) {
+                return registry.getValue(buf.readResourceLocation());
+            }
+
+            @Override
+            public void encode(FriendlyByteBuf buf, OUTPUT value) {
+                buf.writeResourceLocation(Objects.requireNonNull(registry.getKey(value)));
+            }
+        };
+    }
+
+
+    static <OUTPUT> StreamCodec<OUTPUT> byNameRegistry(Registry<OUTPUT> registry){
+        return new StreamCodec<>() {
+            @Override
+            public OUTPUT decode(FriendlyByteBuf buf) {
+                return registry.get(buf.readResourceLocation());
+            }
+
+            @Override
+            public void encode(FriendlyByteBuf buf, OUTPUT value) {
+                buf.writeResourceLocation(Objects.requireNonNull(registry.getKey(value)));
             }
         };
     }

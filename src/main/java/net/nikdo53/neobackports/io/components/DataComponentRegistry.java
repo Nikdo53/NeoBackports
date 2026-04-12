@@ -3,6 +3,12 @@ package net.nikdo53.neobackports.io.components;
 import com.mojang.serialization.Codec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.DeferredRegister;
+import net.nikdo53.neobackports.NeoBackports;
+import net.nikdo53.neobackports.io.attachment.AttachmentType;
+import net.nikdo53.neobackports.registry.DeferredHolder;
+import net.nikdo53.neobackports.registry.DeferredRegisterTyped;
+import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -13,28 +19,14 @@ import java.util.function.UnaryOperator;
 import static net.nikdo53.neobackports.io.components.DataDefault.getDefaults;
 
 public class DataComponentRegistry {
-    public static final List<String> NAMES = new ArrayList<>();
+    public static final DeferredRegisterTyped.DataComponents DATA_COMPONENTS =
+            DeferredRegisterTyped.createDataComponents(NeoBackports.MOD_ID);
 
-    public static final DataComponentType<Boolean> BOOLEAN = register("test_boolean", builder -> builder.persistent(Codec.BOOL));
-    public static final DataComponentType<String> STRING = register("test_string", builder -> builder.persistent(Codec.STRING));
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> BOOLEAN =
+            DATA_COMPONENTS.registerComponentType("test_boolean", builder -> builder.persistent(Codec.BOOL));
 
-    public static synchronized <T> DataComponentType<T> register(ResourceLocation loc, UnaryOperator<DataComponentType.Builder<T>> func) {
-        return register(loc.toString(), func);
-    }
-
-    public static synchronized <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> func) {
-        if (NAMES.contains(name)){
-            throw new IllegalArgumentException("Tried registering a DataComponent with a duplicate name " + name);
-        }
-
-        NAMES.add(name);
-
-        DataComponentType.Builder<T> builder = DataComponentType.builder();
-        builder.setName(name);
-
-        return func.apply(builder).build();
-    }
-
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> STRING =
+            DATA_COMPONENTS.registerComponentType("test_string", builder -> builder.persistent(Codec.STRING));
 
     public static  <T> void set(ItemStack stack, DataComponentType<T> component, T data){
         component.setOn(stack, data);

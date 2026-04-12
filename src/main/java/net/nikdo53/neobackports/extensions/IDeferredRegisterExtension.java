@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 import net.nikdo53.neobackports.registry.DeferredRegisterTyped;
+import org.stringtemplate.v4.ST;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -35,5 +36,9 @@ public interface IDeferredRegisterExtension<T> {
      */
     static DeferredRegisterTyped.Blocks createBlocks(String modid) {
         return new DeferredRegisterTyped.Blocks(modid);
+    }
+
+    default String neobackports$getModId(){
+        throw new IllegalStateException("Not implemented");
     }
 }

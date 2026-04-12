@@ -19,6 +19,7 @@
     "ItemMixin",
     "ItemStackMixin",
     "MappedRegistryMixin",
+    "MutableComponentMixin",
     "RegistryLookupMixin"
   ],
   "injectors": {

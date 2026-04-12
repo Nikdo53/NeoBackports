@@ -14,7 +14,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ChunkPos;
 import org.joml.Vector3f;
 
-import java.io.FileReader;
 import java.util.*;
 import java.util.function.*;
 
@@ -34,8 +33,10 @@ public interface StreamCodec<A> {
 
     StreamCodec<Direction> DIRECTION = enumCodec(Direction.class);
     StreamCodec<String> STRING = of(FriendlyByteBuf::writeUtf, FriendlyByteBuf::readUtf);
+    StreamCodec<String> STRING_UTF8 = STRING;
+
     StreamCodec<Ingredient> INGREDIENT = StreamCodec.of((friendlyByteBuf, ingredient) -> ingredient.toNetwork(friendlyByteBuf), Ingredient::fromNetwork);
-    StreamCodec<UUID> UUID = STRING.remap(java.util.UUID::fromString, java.util.UUID::toString);
+    StreamCodec<UUID> UUID = STRING.map(java.util.UUID::fromString, java.util.UUID::toString);
     StreamCodec<CraftingBookCategory> CRAFTING_BOOK_CATEGORY = enumCodec(CraftingBookCategory.class);
 
      A decode(FriendlyByteBuf buf);
@@ -49,52 +50,9 @@ public interface StreamCodec<A> {
         return operation.apply(this);
     }
 
-    static <OUTPUT> StreamCodec<Holder<OUTPUT>> holderRegistry(Registry<OUTPUT> registry){
-        return new StreamCodec<>() {
-            @Override
-            public Holder<OUTPUT> decode(FriendlyByteBuf buf) {
-                return registry.getHolder(buf.readInt()).get();
-            }
-
-            @Override
-            public void encode(FriendlyByteBuf buf, Holder<OUTPUT> value) {
-                buf.writeInt(registry.getId(value.get()));
-            }
-        };
-    }
-
-    static <OUTPUT> StreamCodec<OUTPUT> registry(Registry<OUTPUT> registry){
-        return new StreamCodec<>() {
-            @Override
-            public OUTPUT decode(FriendlyByteBuf buf) {
-                return registry.getHolder(buf.readInt()).get().get();
-            }
-
-            @Override
-            public void encode(FriendlyByteBuf buf, OUTPUT value) {
-                buf.writeInt(registry.getId(value));
-            }
-        };
-    }
-
-    static <OUTPUT> StreamCodec<OUTPUT> byNameRegistry(Registry<OUTPUT> registry){
-        return new StreamCodec<>() {
-            @Override
-            public OUTPUT decode(FriendlyByteBuf buf) {
-                return registry.get(buf.readResourceLocation());
-            }
-
-            @Override
-            public void encode(FriendlyByteBuf buf, OUTPUT value) {
-                buf.writeResourceLocation(Objects.requireNonNull(registry.getKey(value)));
-            }
-        };
-    }
-
-
 
     default StreamCodec<Supplier<A>> toSupplier(){
-        return this.remap(StreamCodec::toSupplier, Supplier::get);
+        return this.map(StreamCodec::toSupplier, Supplier::get);
     }
 
     private static <T> Supplier<T> toSupplier(T data){
@@ -116,7 +74,7 @@ public interface StreamCodec<A> {
     }
 
 
-    default<REMAP> StreamCodec<REMAP> remap(Function<A, REMAP> fromData, Function<REMAP, A> toData){
+    default<REMAP> StreamCodec<REMAP> map(Function<A, REMAP> fromData, Function<REMAP, A> toData){
         StreamCodec<A> codec = this;
         return new StreamCodec<>() {
             @Override
@@ -170,9 +128,23 @@ public interface StreamCodec<A> {
         };
     }
 
+    static < V> StreamCodec< V> unit(final V expectedValue) {
+        return new StreamCodec< V>() {
+            @Override
+            public V decode(FriendlyByteBuf buf) {
+                return expectedValue;
+            }
 
+            @Override
+            public void encode(FriendlyByteBuf buf, V p_320328_) {
+                if (!p_320328_.equals(expectedValue)) {
+                    throw new IllegalStateException("Can't encode '" + p_320328_ + "', expected '" + expectedValue + "'");
+                }
+            }
+        };
+    }
 
-     static <MAP extends Map<KEY, VALUE>, KEY, VALUE> StreamCodec<MAP> map(IntFunction<MAP> factory, StreamCodec<KEY> keyCodec, StreamCodec<VALUE> valueCodec){
+     static <MAP extends Map<KEY, VALUE>, KEY, VALUE> StreamCodec<MAP> hashMap(IntFunction<MAP> factory, StreamCodec<KEY> keyCodec, StreamCodec<VALUE> valueCodec){
         return new StreamCodec<>() {
             @Override
             public MAP decode(FriendlyByteBuf buf) {

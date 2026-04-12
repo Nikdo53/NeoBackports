@@ -64,7 +64,7 @@ public class AttachmentType<T>{
     }
 
     public static StreamCodec<DataAttachment<?>> STREAM_CODEC_CODEC =
-            StreamCodec.RESOURCE_LOCATION.remap(
+            StreamCodec.RESOURCE_LOCATION.map(
                     loc -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getValue(loc).getAttachment(),
                     DataAttachment::getId);
 

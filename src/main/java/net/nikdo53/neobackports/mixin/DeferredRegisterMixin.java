@@ -27,4 +27,9 @@ public abstract class DeferredRegisterMixin<T> implements IDeferredRegisterExten
 
         return register(name, () -> func.apply(key));
     }
+
+    @Override
+    public String neobackports$getModId() {
+        return modid;
+    }
 }
