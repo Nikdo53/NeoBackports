@@ -20,7 +20,7 @@ import java.util.function.Consumer;
  * a registry have either been {@linkplain UpdateCause#CLIENT_SYNC synced to the client} or {@linkplain UpdateCause#SERVER_RELOAD reloaded on the server}.
  * <p>
  * This event can be used to build caches (like weighed lists) or for post-processing the data map values. <br>
- * Remember however that the data map values should <strong>not</strong> end up referencing their owner, as they're not copied when attached to tags.
+ * Remember, however, that the data map values should <strong>not</strong> end up referencing their owner, as they're not copied when attached to tags.
  */
 public class DataMapsUpdatedEvent extends Event {
     private final RegistryAccess registryAccess;
