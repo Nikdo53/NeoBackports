@@ -5,6 +5,8 @@
   "refmap": "neobackports.mixins.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlockBehaviourMixin",
+    "BlockStateBaseMixin",
     "CraftingHelperAccessor",
     "DataPackRegistriesHooksAccessor",
     "DeferredRegisterMixin",
@@ -17,8 +19,7 @@
     "ItemMixin",
     "ItemStackMixin",
     "MappedRegistryMixin",
-    "RegistryLookupMixin",
-    "datagen.DatagenConditionsBackportMixin"
+    "RegistryLookupMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -40,5 +40,13 @@
 
   "net/minecraftforge/registries/DeferredRegister": [
     "net/nikdo53/neobackports/extensions/IDeferredRegisterExtension<T>"
+  ],
+
+  "net/minecraft/world/level/block/state/BlockBehaviour": [
+    "net/nikdo53/neobackports/extensions/IBlockBehaviourExtension"
+  ],
+
+  "net/minecraft/world/level/block/state/BlockBehaviour$BlockStateBase": [
+    "net/nikdo53/neobackports/extensions/IBlockStateExtension"
   ]
 }
