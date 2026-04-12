@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-public record DataComponent<T>(String name, Either<Codec<T>, TagCodec<T>> eitherCodec, boolean deepScan){
+public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> eitherCodec, boolean deepScan){
 
     public void setOn(ItemStack stack, T data){
         CompoundTag compoundTag = stack.getOrCreateTag();
@@ -66,7 +66,7 @@ public record DataComponent<T>(String name, Either<Codec<T>, TagCodec<T>> either
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof DataComponent<?> dataComponent){
+        if (obj instanceof DataComponentType<?> dataComponent){
             return dataComponent.name.equals(name);
         }
         return false;
@@ -131,11 +131,11 @@ public record DataComponent<T>(String name, Either<Codec<T>, TagCodec<T>> either
             return this;
         }
 
-        public DataComponent<T> build(){
+        public DataComponentType<T> build(){
             if (name == null) throw new IllegalStateException("Tried registering a DataComponent without a name!");
             if (codec == null) throw new IllegalStateException("Tried registering the DataComponent " + name + " without a codec!");
 
-            return new DataComponent<>(name, codec, deepScan);
+            return new DataComponentType<>(name, codec, deepScan);
         }
     }
 }
