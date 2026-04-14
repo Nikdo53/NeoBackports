@@ -17,11 +17,6 @@ public interface IForgeRegistryMixin<T> extends IRegistryDataMapExtension<T> {
     }
 
     @Override
-    default void setDataMaps(Map<DataMapType<T, ?>, Map<ResourceKey<T>, ?>> maps) {
-        IRegistryDataMapExtension.super.setDataMaps(maps);
-    }
-
-    @Override
     default <A> Map<ResourceKey<T>, A> getDataMap(DataMapType<T, A> type) {
         return IRegistryDataMapExtension.super.getDataMap(type);
     }

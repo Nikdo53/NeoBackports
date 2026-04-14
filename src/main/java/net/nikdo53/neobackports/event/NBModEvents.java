@@ -13,6 +13,7 @@ import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.datagen.condition.neoforge.*;
+import net.nikdo53.neobackports.datamaps.NeoForgeDataMaps;
 import net.nikdo53.neobackports.registry.ForgeRegistryHelper;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import net.nikdo53.neobackports.screen.BlurShaderLoader;
@@ -25,6 +26,9 @@ public class NBModEvents {
     @SubscribeEvent
     public static void registerDataMaps(RegisterDataMapTypesEvent event) {
         event.register(NBDataMaps.TEST_DATA_MAP);
+        event.register(NeoForgeDataMaps.COMPOSTABLES);
+        event.register(NeoForgeDataMaps.FURNACE_FUELS);
+
     }
 
     @SubscribeEvent

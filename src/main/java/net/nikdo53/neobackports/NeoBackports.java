@@ -60,28 +60,6 @@ public class NeoBackports {
             System.out.println("server:");
         }
 
-/*
-        String data = player.getData(DataAttachmentRegistry.TEST_ATTACHMENT);
-        System.out.println("data = [" + data + "] is client = " + player.level().isClientSide());
-
-        player.setData(DataAttachmentRegistry.TEST_ATTACHMENT, data + "1");*/
-
-
-
-        if (stack.is(Items.STICK)){ // this acts as what would be the .json
-            HashMap<DataMapType<Item, ?>, Map<ResourceKey<Item>, ?>> mainMap = new HashMap<>();
-
-            HashMap<ResourceKey<Item>, Integer> valueMap = new HashMap<>();
-            valueMap.put(Items.DIAMOND.builtInRegistryHolder().key(), 1);
-            valueMap.put(Items.EMERALD.builtInRegistryHolder().key(), 2);
-            valueMap.put(Items.GOLD_BLOCK.builtInRegistryHolder().key(), 3);
-
-            mainMap.put(NBDataMaps.TEST_DATA_MAP, valueMap);
-
-            ForgeRegistries.ITEMS.setDataMaps(mainMap);
-
-        }
-
         System.out.println(stack.toString() + " " + stack.getItemHolder().getData(NBDataMaps.TEST_DATA_MAP));
     }
 

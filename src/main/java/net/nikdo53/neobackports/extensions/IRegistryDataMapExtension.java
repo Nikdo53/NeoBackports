@@ -11,10 +11,6 @@ public interface IRegistryDataMapExtension<T> extends IDataMapLookupExtension<T>
         throw new IllegalStateException("not implemented");
     }
 
-    @ApiStatus.Internal
-    default void setDataMaps(Map<DataMapType<T, ?>, Map<ResourceKey<T>, ?>> maps){
-        throw new IllegalStateException("not implemented");
-    }
 
     default <A> Map<ResourceKey<T>, A> getDataMap(DataMapType<T, A> type){
         throw new IllegalStateException("not implemented");

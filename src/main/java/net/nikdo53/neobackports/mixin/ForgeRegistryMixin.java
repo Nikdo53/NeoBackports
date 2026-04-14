@@ -45,11 +45,6 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
     }
 
     @Override
-    public void setDataMaps(Map<DataMapType<V, ?>, Map<ResourceKey<V>, ?>> maps) {
-        neoBackports$dataMaps = maps;
-    }
-
-    @Override
     public <A> Map<ResourceKey<V>, A> getDataMap(DataMapType<V, A> type) {
         return (Map<ResourceKey<V>, A>) neoBackports$dataMaps.getOrDefault(type, Map.of());
     }

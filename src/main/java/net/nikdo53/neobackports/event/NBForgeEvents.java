@@ -1,5 +1,10 @@
 package net.nikdo53.neobackports.event;
 
+import com.google.common.collect.ImmutableMap;
+import it.unimi.dsi.fastutil.Pair;
+import it.unimi.dsi.fastutil.objects.Object2FloatArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySynchronization;
 import net.minecraft.nbt.CompoundTag;
@@ -9,7 +14,9 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ComposterBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
@@ -21,9 +28,12 @@ import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.NeoBackports;
+import net.nikdo53.neobackports.datamaps.NeoForgeDataMaps;
+import net.nikdo53.neobackports.datamaps.builtin.Compostable;
 import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.attachment.AdvancedCapabilityType;
 import net.nikdo53.neobackports.io.attachment.DataAttachment;
@@ -57,6 +67,33 @@ public class NBForgeEvents {
     public static void tagsUpdated(TagsUpdatedEvent event) {
         if (event.getUpdateCause() == TagsUpdatedEvent.UpdateCause.SERVER_DATA_LOAD) {
             DATA_MAPS.apply();
+        }
+    }
+
+    @SubscribeEvent
+    public static void dataMapsUpdated(DataMapsUpdatedEvent event) {
+        IForgeRegistry<?> registry = event.getRegistry();
+        if (event.getCause() == DataMapsUpdatedEvent.UpdateCause.SERVER_RELOAD && registry.equals(ForgeRegistries.ITEMS)) {
+            if (NeoForgeDataMaps.ORIGINAL_COMPOSTABLES == null){
+                NeoForgeDataMaps.ORIGINAL_COMPOSTABLES = ImmutableMap.copyOf(ComposterBlock.COMPOSTABLES);
+            }
+
+            IForgeRegistry<Item> itemRegistry = (IForgeRegistry<Item>) registry;
+
+            List<Pair<Item, Compostable>> dataMap = itemRegistry.getDataMap(NeoForgeDataMaps.COMPOSTABLES)
+                    .entrySet()
+                    .stream()
+                    .map(entry -> Pair.of(ForgeRegistries.ITEMS.getValue(entry.getKey().location()), entry.getValue())).toList();
+
+            ComposterBlock.COMPOSTABLES.clear();
+            ComposterBlock.COMPOSTABLES.putAll(NeoForgeDataMaps.ORIGINAL_COMPOSTABLES);
+
+            dataMap.forEach(pair -> {
+                if (pair.left() != null) {
+                    ComposterBlock.COMPOSTABLES.put(pair.left(), pair.right().chance());
+                }
+            });
+
         }
     }
 

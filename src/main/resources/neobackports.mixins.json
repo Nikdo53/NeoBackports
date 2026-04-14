@@ -5,11 +5,13 @@
   "refmap": "neobackports.mixins.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AddPackFindersEventMixin",
     "BlockBehaviourMixin",
     "BlockStateBaseMixin",
     "CraftingHelperAccessor",
     "DataPackRegistriesHooksAccessor",
     "DeferredRegisterMixin",
+    "ForgeHooksMixin",
     "ForgeRegistryMixin",
     "HolderMixin",
     "HolderReferenceMixin",
@@ -20,7 +22,9 @@
     "ItemStackMixin",
     "MappedRegistryMixin",
     "MutableComponentMixin",
-    "RegistryLookupMixin"
+    "PlayerMixin",
+    "RegistryLookupMixin",
+    "RegistryMixin"
   ],
   "injectors": {
     "defaultRequire": 1

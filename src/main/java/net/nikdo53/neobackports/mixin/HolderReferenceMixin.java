@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Optional;
 
 @Mixin(Holder.Reference.class)
-public abstract class HolderReferenceMixin<T> implements IDataMapHolderExtension<T> {
+public abstract class HolderReferenceMixin<T> implements Holder<T> {
 
     @Shadow
     @Final
@@ -23,9 +23,6 @@ public abstract class HolderReferenceMixin<T> implements IDataMapHolderExtension
 
     @Shadow
     public abstract ResourceKey<T> key();
-
-    @Shadow
-    public abstract Optional<ResourceKey<T>> unwrapKey();
 
     @Override
     public @Nullable <A> A getData(DataMapType<T, A> type) {
