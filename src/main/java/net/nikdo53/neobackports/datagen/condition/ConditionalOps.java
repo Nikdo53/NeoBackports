@@ -241,7 +241,7 @@ public class ConditionalOps<T> extends RegistryOps<T> {
                             innerDecodeResult = innerCodec.decode(ops, mapForDecoding);
                         }
 
-                        // Variable is required because type inference can't handle this
+                        // Variable is required because capabilityType inference can't handle this
                         DataResult<Pair<Optional<WithConditions<A>>, T>> ret = innerDecodeResult.map(
                                 result -> result.mapFirst(
                                         carrier -> Optional.of(new WithConditions<>(conditions, carrier))));

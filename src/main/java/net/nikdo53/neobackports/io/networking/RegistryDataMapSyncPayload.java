@@ -27,6 +27,7 @@ import net.nikdo53.neobackports.datamaps.DataMapsManager;
 import net.nikdo53.neobackports.event.DataMapsUpdatedEvent;
 import org.apache.logging.log4j.util.TriConsumer;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Map;
@@ -100,7 +101,7 @@ public record RegistryDataMapSyncPayload<T>(ResourceKey<? extends Registry<T>> r
     }
 
     @Override
-    public void handleClient(NetworkEvent.Context context, Level level, Player player) {
+    public void handleClient(IPayloadContext context, Level level, Player player) {
         context.enqueueWork(() -> {
             try {
                 var regAccess = level.registryAccess();
@@ -112,9 +113,15 @@ public record RegistryDataMapSyncPayload<T>(ResourceKey<? extends Registry<T>> r
                 MinecraftForge.EVENT_BUS.post(new DataMapsUpdatedEvent(regAccess, registry, DataMapsUpdatedEvent.UpdateCause.CLIENT_SYNC));
             } catch (Throwable t) {
                 NeoBackports.LOGGER.error("Failed to handle registry data map sync: ", t);
-                context.getNetworkManager().disconnect(Component.translatable("neoforge.network.data_maps.failed", this.registryKey().location().toString(), t.toString()));
+                context.original().getNetworkManager().disconnect(Component.translatable("neoforge.network.data_maps.failed", this.registryKey().location().toString(), t.toString()));
             }
         });
     }
 
+    public static final Type<RegistryDataMapSyncPayload> TYPE = new Type<>(NeoBackports.loc("registry_data_map_sync"), RegistryDataMapSyncPayload.class);
+
+    @Override
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
 }

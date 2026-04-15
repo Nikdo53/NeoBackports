@@ -32,7 +32,7 @@ public class AttachmentType<T>{
     protected static <R> AttachmentType<R> create(Builder<R> builder) {
 
         if (REGISTERED_CAPABILITY_KEYS.contains(builder.capabilityKey)){
-            throw new IllegalStateException("Capability key: " + builder.capabilityKey.getName() + " is already used for another attachment type, please create a new capability key for this attachment type");
+            throw new IllegalStateException("Capability key: " + builder.capabilityKey.getName() + " is already used for another attachment capabilityType, please create a new capability key for this attachment capabilityType");
         }
         REGISTERED_CAPABILITY_KEYS.add(builder.capabilityKey);
 
@@ -76,7 +76,7 @@ public class AttachmentType<T>{
 
     public DataAttachment<T> getAttachment(){
         if (id() == null)
-            throw new IllegalStateException("Data attachment type not registered!");
+            throw new IllegalStateException("Data attachment capabilityType not registered!");
         return attachmentSupplier.get();
     }
 

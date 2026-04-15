@@ -8,14 +8,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.NetworkEvent;
+import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.StreamCodec;
 import net.nikdo53.neobackports.io.attachment.CapabilityType;
 import net.nikdo53.neobackports.io.attachment.DataAttachment;
 import net.nikdo53.neobackports.io.attachment.AttachmentType;
+import org.jetbrains.annotations.NotNull;
 
-public record SyncAttachmentPayload(CapabilityType type, long holderId, DataAttachment<?> capability) implements ToClientPacket{
+public record SyncAttachmentPayload(CapabilityType capabilityType, long holderId, DataAttachment<?> capability) implements ToClientPacket{
 
     @SuppressWarnings({"unchecked"})
     public static final StreamCodec<DataAttachment<?>> CAPABILITY_STREAM_CODEC =
@@ -35,7 +36,7 @@ public record SyncAttachmentPayload(CapabilityType type, long holderId, DataAtta
 
 
     public static final StreamCodec<SyncAttachmentPayload> STREAM_CODEC = StreamCodec.composite(
-            CapabilityType.STREAM_CODEC, SyncAttachmentPayload::type,
+            CapabilityType.STREAM_CODEC, SyncAttachmentPayload::capabilityType,
             StreamCodec.LONG, SyncAttachmentPayload::holderId,
             CAPABILITY_STREAM_CODEC, SyncAttachmentPayload::capability,
             SyncAttachmentPayload::new
@@ -44,9 +45,9 @@ public record SyncAttachmentPayload(CapabilityType type, long holderId, DataAtta
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void handleClient(NetworkEvent.Context context, Level level, Player player) {
+    public void handleClient(IPayloadContext context, Level level, Player player) {
 
-        switch (type) {
+        switch (capabilityType) {
             case ENTITY -> {
                 int id = Math.toIntExact(holderId);
                 Entity entity = level.getEntity(id);
@@ -74,5 +75,12 @@ public record SyncAttachmentPayload(CapabilityType type, long holderId, DataAtta
             }
 
         }
+    }
+
+    public static final Type<SyncAttachmentPayload> TYPE = new Type<>(NeoBackports.loc("sync_attachments"), SyncAttachmentPayload.class);
+
+    @Override
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 }

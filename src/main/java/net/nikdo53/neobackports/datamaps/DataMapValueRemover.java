@@ -19,8 +19,8 @@ import java.util.Optional;
  * <p>
  * This is only useful for {@link AdvancedDataMapType}
  *
- * @param <T> the data type
- * @param <R> the type of the registry this remover is for
+ * @param <T> the data capabilityType
+ * @param <R> the capabilityType of the registry this remover is for
  *
  */
 @FunctionalInterface
@@ -41,8 +41,8 @@ public interface DataMapValueRemover<R, T> {
     /**
      * A remover that completely removes the value.
      *
-     * @param <T> the type of the data
-     * @param <R> the registry type
+     * @param <T> the capabilityType of the data
+     * @param <R> the registry capabilityType
      */
     class Default<T, R> implements DataMapValueRemover<R, T> {
         public static final Default<?, ?> INSTANCE = new Default<>();

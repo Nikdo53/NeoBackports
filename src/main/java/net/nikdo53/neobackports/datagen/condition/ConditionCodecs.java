@@ -21,7 +21,7 @@ public class ConditionCodecs {
             return ops.getMap(input).flatMap(map -> {
                 T typeElement = map.get(ops.createString("type"));
                 if (typeElement == null) {
-                    return DataResult.error(() -> "Missing 'type' field for Forge ICondition");
+                    return DataResult.error(() -> "Missing 'capabilityType' field for Forge ICondition");
                 }
 
                 return ops.getStringValue(typeElement).flatMap(typeStr -> {
@@ -29,7 +29,7 @@ public class ConditionCodecs {
                     IConditionSerializer<?> serializer = CraftingHelperAccessor.getConditions().get(id);
 
                     if (serializer == null) {
-                        return DataResult.error(() -> "Unknown Forge condition type: " + id);
+                        return DataResult.error(() -> "Unknown Forge condition capabilityType: " + id);
                     }
 
                     try {

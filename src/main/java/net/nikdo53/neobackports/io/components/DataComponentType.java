@@ -133,7 +133,7 @@ public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> ei
             return this;
         }
         /**
-         * Builds the data component type.
+         * Builds the data component capabilityType.
          * @throws IllegalStateException when registering a data component without a name, either set it yourself or
          * use {@link DeferredRegisterTyped#createDataComponents(String)} and register using {@link DeferredRegisterTyped.DataComponents#registerComponentType(String, UnaryOperator)}
          * Which sets the name automatically.

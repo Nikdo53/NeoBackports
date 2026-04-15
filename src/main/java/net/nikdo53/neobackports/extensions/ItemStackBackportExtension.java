@@ -1,5 +1,7 @@
 package net.nikdo53.neobackports.extensions;
 
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataComponentRegistry;
@@ -8,6 +10,19 @@ import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public interface ItemStackBackportExtension {
+
+    default ItemStack consumeAndReturn(int amount, @Nullable LivingEntity entity) {
+        ItemStack itemstack = neoBackports$selfDontUseThis().copyWithCount(amount);
+        consume(amount, entity);
+        return itemstack;
+    }
+
+    default void consume(int amount, @Nullable LivingEntity entity) {
+        if (entity == null || !(entity instanceof Player player && player.getAbilities().instabuild)) {
+            neoBackports$selfDontUseThis().shrink(amount);
+        }
+    }
+
     @Nullable
     default <T> T get(DataComponentType<? extends T> component) {
         return DataComponentRegistry.get(neoBackports$selfDontUseThis(), component);

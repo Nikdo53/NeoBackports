@@ -156,7 +156,7 @@ public class DataMapLoader implements PreparableReloadListener {
                 final ResourceLocation attachmentId = fileToId.fileToId(key);
                 final var attachment = DataMapsManager.getDataMap((ResourceKey) registryKey, attachmentId);
                 if (attachment == null) {
-                    LOGGER.warn("Found data map file for non-existent data map type '{}' on registry '{}'.", attachmentId, registryKey.location());
+                    LOGGER.warn("Found data map file for non-existent data map capabilityType '{}' on registry '{}'.", attachmentId, registryKey.location());
                     continue;
                 }
                 profiler.popPush("registry_data_maps/" + registryKey.location() + "/" + attachmentId + "/loading");
@@ -181,7 +181,7 @@ public class DataMapLoader implements PreparableReloadListener {
                 JsonElement jsonelement = JsonParser.parseReader(reader);
                 entries.add(codec.decode(ops, jsonelement).getOrThrow(false, LOGGER::error).getFirst());
             } catch (Exception exception) {
-                LOGGER.error("Could not read data map of type {} for registry {}", attachmentType.id(), registryKey, exception);
+                LOGGER.error("Could not read data map of capabilityType {} for registry {}", attachmentType.id(), registryKey, exception);
             }
         }
         return entries;

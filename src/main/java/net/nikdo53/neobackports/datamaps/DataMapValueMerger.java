@@ -20,8 +20,8 @@ import java.util.*;
  *
  * This is only useful for {@link AdvancedDataMapType}.
  *
- * @param <T> the data type
- * @param <R> the type of the registry this merger is for
+ * @param <T> the data capabilityType
+ * @param <R> the capabilityType of the registry this merger is for
  */
 @FunctionalInterface
 public interface DataMapValueMerger<R, T> {

@@ -42,6 +42,7 @@ public interface ByteBufCodecs {
     StreamCodec<Float> FLOAT = of(FriendlyByteBuf::writeFloat, FriendlyByteBuf::readFloat);
     StreamCodec<Double> DOUBLE = of(FriendlyByteBuf::writeDouble, FriendlyByteBuf::readDouble);
     StreamCodec<String> STRING = of(FriendlyByteBuf::writeUtf, FriendlyByteBuf::readUtf);
+    StreamCodec<String> STRING_UTF8 = STRING;
 
     StreamCodec<Vector3f> VEC3F = of(FriendlyByteBuf::writeVector3f, FriendlyByteBuf::readVector3f);
     StreamCodec<Quaternionf> QUATERNIONF = of(FriendlyByteBuf::writeQuaternion, FriendlyByteBuf::readQuaternion);

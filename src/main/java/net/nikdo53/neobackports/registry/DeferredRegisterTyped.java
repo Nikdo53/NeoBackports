@@ -47,7 +47,7 @@ public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
     /**
      * Factory for a specialized DeferredRegister for {@link DataComponentType DataComponentTypes}.
      *
-     * @param registryKey The key for the data component type registry, like {@link NeoForgeRegistries#DATA_COMPONENT_TYPE} for item data components
+     * @param registryKey The key for the data component capabilityType registry, like {@link NeoForgeRegistries#DATA_COMPONENT_TYPE} for item data components
      * @param modid       The namespace for all objects registered to this DeferredRegister
      * @see #create(Registry, String)
      * @see #create(ResourceKey, String)
@@ -85,7 +85,7 @@ public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
         /**
          * Convenience method that constructs a builder for use in the operator. Use this to avoid inference issues.
          *
-         * @param name    The name for this data component type. It will automatically have the modid prefixed.
+         * @param name    The name for this data component capabilityType. It will automatically have the modid prefixed.
          * @param builder The unary operator, which is passed a new builder for user operations, then builds it upon registration.
          * @return A {@link DeferredHolder} which reflects the data that will be registered.
          */
@@ -252,8 +252,8 @@ public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
         }
 
         /**
-         * Create a {@link DeferredHolder} or an inheriting type to be stored.
-         * @return The new instance of {@link DeferredHolder} or an inheriting type.
+         * Create a {@link DeferredHolder} or an inheriting capabilityType to be stored.
+         * @return The new instance of {@link DeferredHolder} or an inheriting capabilityType.
          */
         @Override
         protected <I extends Item> DeferredItem<I> createHolder(RegistryObject<I> registryObject) {
@@ -349,8 +349,8 @@ public class DeferredRegisterTyped<T> extends DeferredRegisterWrapper<T> {
         }
 
         /**
-         * Create a {@link DeferredHolder} or an inheriting type to be stored.
-         * @return The new instance of {@link DeferredHolder} or an inheriting type.
+         * Create a {@link DeferredHolder} or an inheriting capabilityType to be stored.
+         * @return The new instance of {@link DeferredHolder} or an inheriting capabilityType.
          */
         @Override
         protected <I extends Block> DeferredBlock<I> createHolder(RegistryObject<I> registryObject) {

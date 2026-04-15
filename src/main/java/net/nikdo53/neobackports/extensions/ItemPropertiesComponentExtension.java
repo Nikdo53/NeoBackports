@@ -5,9 +5,14 @@ import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataDefault;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public interface ItemPropertiesComponentExtension {
     default <T> Item.Properties component(DataComponentType<T> component, T value) {
+        return null;
+    }
+
+    default <T> Item.Properties component(Supplier<DataComponentType<T>> component, T value) {
         return null;
     }
 

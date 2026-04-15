@@ -34,7 +34,7 @@ public enum CapabilityType {
             return CHUNK;
         }
 
-        throw new RuntimeException("Invalid capability provider type");
+        throw new RuntimeException("Invalid capability provider capabilityType");
     }
 
     public AdvancedCapabilityType toAdvanced(){

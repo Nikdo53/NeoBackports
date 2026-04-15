@@ -65,8 +65,8 @@ public class DeferredRegisterWrapper<T>{
     }
 
     /**
-     * Create a {@link DeferredHolder} or an inheriting type to be stored.
-     * @return The new instance of {@link DeferredHolder} or an inheriting type.
+     * Create a {@link DeferredHolder} or an inheriting capabilityType to be stored.
+     * @return The new instance of {@link DeferredHolder} or an inheriting capabilityType.
      */
     protected <I extends T> DeferredHolder<T, I> createHolder(RegistryObject<I> registryObject) {
         return DeferredHolder.of(registryObject);

@@ -22,9 +22,9 @@ public class DataAttachmentRegistry {
 
     /**
      * For some ungodly reason, forge doesn't actually register capabilities under the resourceLocation you give them.
-     * Instead, it registers them as their "real name" - meaning the name of the data type they hold.
+     * Instead, it registers them as their "real name" - meaning the name of the data capabilityType they hold.
      * <p>
-     * For example, my DataAttachment type would always be named as nikdo53/neobackports/DataAttachment, and they would conflict (generics get ignored too)
+     * For example, my DataAttachment capabilityType would always be named as nikdo53/neobackports/DataAttachment, and they would conflict (generics get ignored too)
      */
     public static class TestDataAttachment extends DataAttachment<String>{}
 

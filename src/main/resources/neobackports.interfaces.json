@@ -60,5 +60,9 @@
 
   "net/minecraftforge/event/AddPackFindersEvent": [
     "net/nikdo53/neobackports/extensions/IAddPackFindersEventExtension"
+  ],
+
+  "net/minecraft/world/item/Item": [
+    "net/nikdo53/neobackports/extensions/ItemBackportExtension"
   ]
 }

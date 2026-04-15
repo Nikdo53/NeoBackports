@@ -45,7 +45,7 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
     };
 
     /**
-     * method from copying the variables from another capability of the same type,
+     * method from copying the variables from another capability of the same capabilityType,
      * Used for mimicking the set method from neo,
      * <p>
      * Automatically calls the sync method
@@ -56,7 +56,7 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
     }
 
     /**
-     * method from copying the variables from another capability of the same type.
+     * method from copying the variables from another capability of the same capabilityType.
      * Used for mimicking the set method from neo.
      */
     public void set(C dataNew){

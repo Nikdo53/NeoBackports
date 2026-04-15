@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
+import net.nikdo53.neobackports.io.networking.PacketDistributorNeo;
 
 public class TestItem extends Item {
     public TestItem(Item.Properties properties) {
@@ -20,6 +21,7 @@ public class TestItem extends Item {
 
             player.setData(DataAttachmentRegistry.TEST_ATTACHMENT.get(), data + "works");
         }
+        PacketDistributorNeo.sendToAllPlayers(new TestPacket("Hello from the server!"));
         return super.useOn(context);
     }
 }

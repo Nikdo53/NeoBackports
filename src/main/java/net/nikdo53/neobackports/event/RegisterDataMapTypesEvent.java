@@ -31,10 +31,10 @@ public class RegisterDataMapTypesEvent extends Event implements IModBusEvent {
     /**
      * Register a registry data map.
      *
-     * @param type the data map type to register
-     * @param <T>  the type of the data map
-     * @param <R>  the type of the registry
-     * @throws IllegalArgumentException      if a type with the same ID has already been registered for that registry
+     * @param type the data map capabilityType to register
+     * @param <T>  the capabilityType of the data map
+     * @param <R>  the capabilityType of the registry
+     * @throws IllegalArgumentException      if a capabilityType with the same ID has already been registered for that registry
      * @throws UnsupportedOperationException if the registry is a non-synced datapack registry and the data map is synced
      */
     public <T, R> void register(DataMapType<R, T> type) {
@@ -47,7 +47,7 @@ public class RegisterDataMapTypesEvent extends Event implements IModBusEvent {
 
         final var map = attachments.computeIfAbsent((ResourceKey) registry, k -> new HashMap<>());
         if (map.containsKey(type.id())) {
-            throw new IllegalArgumentException("Tried to register data map type with ID " + type.id() + " to registry " + registry.location() + " twice");
+            throw new IllegalArgumentException("Tried to register data map capabilityType with ID " + type.id() + " to registry " + registry.location() + " twice");
         }
         map.put(type.id(), type);
     }

@@ -85,12 +85,12 @@ public sealed class DataMapType<R, T> permits AdvancedDataMapType {
     }
 
     /**
-     * {@return a data map type builder}
+     * {@return a data map capabilityType builder}
      *
      * @param id       the ID of the data map
      * @param registry the key of the registry the data map is for
      * @param codec    the codec used to deserialize the values from JSON
-     * @param <T>      the type of the data map
+     * @param <T>      the capabilityType of the data map
      * @param <R>      the registry the data is for
      */
     public static <T, R> Builder<T, R> builder(ResourceLocation id, ResourceKey<Registry<R>> registry, Codec<T> codec) {
@@ -135,7 +135,7 @@ public sealed class DataMapType<R, T> permits AdvancedDataMapType {
     /**
      * A builder for {@link DataMapType data map types}.
      *
-     * @param <T> the type of the data
+     * @param <T> the capabilityType of the data
      * @param <R> the registry the data is for
      */
     public static sealed class Builder<T, R> permits AdvancedDataMapType.Builder {
@@ -167,7 +167,7 @@ public sealed class DataMapType<R, T> permits AdvancedDataMapType {
         }
 
         /**
-         * {@return a built data map type}
+         * {@return a built data map capabilityType}
          */
         public DataMapType<R, T> build() {
             return new DataMapType<>(registryKey, id, codec, networkCodec, mandatorySync);

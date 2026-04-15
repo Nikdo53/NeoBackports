@@ -1,16 +1,25 @@
 package net.nikdo53.neobackports.mixin;
 
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.nikdo53.neobackports.extensions.ItemStackBackportExtension;
 import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataComponentRegistry;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.function.Supplier;
 
 @Mixin(ItemStack.class)
-public class ItemStackMixin implements ItemStackBackportExtension {
+public abstract class ItemStackMixin implements ItemStackBackportExtension {
+    @Shadow
+    public abstract void shrink(int decrement);
+
+    @Shadow
+    public abstract ItemStack copyWithCount(int count);
+
     @Override
     public @Nullable <T> T get(DataComponentType<? extends T> component) {
         return DataComponentRegistry.get((ItemStack) ((Object) this), component);
@@ -59,5 +68,19 @@ public class ItemStackMixin implements ItemStackBackportExtension {
     @Override
     public <T> void remove(Supplier<DataComponentType<? extends T>> component) {
         remove(component.get());
+    }
+
+    @Override
+    public ItemStack consumeAndReturn(int amount, @Nullable LivingEntity entity) {
+        ItemStack itemstack = copyWithCount(amount);
+        consume(amount, entity);
+        return itemstack;
+    }
+
+    @Override
+    public void consume(int amount, @Nullable LivingEntity entity) {
+        if (entity == null || !(entity instanceof Player player && player.getAbilities().instabuild)) {
+            shrink(amount);
+        }
     }
 }

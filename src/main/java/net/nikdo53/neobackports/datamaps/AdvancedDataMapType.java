@@ -50,9 +50,9 @@ import java.util.Objects;
  * in the same collection. <br>
  * The {@link DataMapValueMerger#defaultMerger() default merge} will however have the overriding behaviour of "last come wins", similar to recipes.
  *
- * @param <T>  the registry type
- * @param <R>  the type of the attached data
- * @param <VR> the type of the remover
+ * @param <T>  the registry capabilityType
+ * @param <R>  the capabilityType of the attached data
+ * @param <VR> the capabilityType of the remover
  */
 public final class AdvancedDataMapType<R, T, VR extends DataMapValueRemover<R, T>> extends DataMapType<R, T> {
     private final Codec<VR> remover;
@@ -79,12 +79,12 @@ public final class AdvancedDataMapType<R, T, VR extends DataMapValueRemover<R, T
     }
 
     /**
-     * {@return an advanced data map type builder}
+     * {@return an advanced data map capabilityType builder}
      *
      * @param id       the ID of the data map
      * @param registry the key of the registry the data map is for
      * @param codec    the codec used to deserialize the values from JSON
-     * @param <T>      the type of the data map
+     * @param <T>      the capabilityType of the data map
      * @param <R>      the registry the data is for
      */
     public static <T, R> Builder<T, R, DataMapValueRemover.Default<T, R>> builder(ResourceLocation id, ResourceKey<Registry<R>> registry, Codec<T> codec) {
@@ -94,9 +94,9 @@ public final class AdvancedDataMapType<R, T, VR extends DataMapValueRemover<R, T
     /**
      * A builder for {@link AdvancedDataMapType advanced data map types}.
      *
-     * @param <T>  the type of the data
+     * @param <T>  the capabilityType of the data
      * @param <R>  the registry the data is for
-     * @param <VR> the type of the remover
+     * @param <VR> the capabilityType of the remover
      */
     public static final class Builder<T, R, VR extends DataMapValueRemover<R, T>> extends DataMapType.Builder<T, R> {
         // The remover will be set in the default builder factory, as otherwise it's not generically safe
@@ -111,7 +111,7 @@ public final class AdvancedDataMapType<R, T, VR extends DataMapValueRemover<R, T
          * Configures a remover for the data map.
          *
          * @param remover a codec used to decode the remover
-         * @param <VR1>   the type of the new remover
+         * @param <VR1>   the capabilityType of the new remover
          * @return the builder instance
          * @see DataMapValueRemover
          */
@@ -146,7 +146,7 @@ public final class AdvancedDataMapType<R, T, VR extends DataMapValueRemover<R, T
         }
 
         /**
-         * {@return a built advanced data map type}
+         * {@return a built advanced data map capabilityType}
          */
         @Override
         public AdvancedDataMapType<R, T, VR> build() {

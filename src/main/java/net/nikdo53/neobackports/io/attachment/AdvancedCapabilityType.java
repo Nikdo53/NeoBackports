@@ -55,7 +55,7 @@ public enum AdvancedCapabilityType {
                 .getPotentialHolders().stream()
                 .noneMatch(type -> type.getWithSubtypes().contains(holderType))) {
 
-            NeoBackports.LOGGER.error("Tried getting attachment: {} on holder of type: {} which it isn't attached to", attachmentType.id(),  holderType.name());
+            NeoBackports.LOGGER.error("Tried getting attachment: {} on holder of capabilityType: {} which it isn't attached to", attachmentType.id(),  holderType.name());
 
             return true;
         }
@@ -74,7 +74,7 @@ public enum AdvancedCapabilityType {
     public void validateRepeats(List<AdvancedCapabilityType> list){
         list.forEach(type -> {
            if (type.subTypes.contains(this)) {
-               throw new IllegalArgumentException("CapabilityType: " + type + " already contains type " + this + " as its subtype, dummy");
+               throw new IllegalArgumentException("CapabilityType: " + type + " already contains capabilityType " + this + " as its subtype, dummy");
            }
         });
     }

@@ -56,11 +56,11 @@ public class DataMapsUpdatedEvent extends Event {
     }
 
     /**
-     * Runs the given {@code consumer} if the registry is of the given {@code type}.
+     * Runs the given {@code consumer} if the registry is of the given {@code capabilityType}.
      * 
      * @param type     the registry key
      * @param consumer the consumer
-     * @param <T>      the registry type
+     * @param <T>      the registry capabilityType
      */
     @SuppressWarnings("unchecked")
     public <T> void ifRegistry(ResourceKey<Registry<T>> type, Consumer<Registry<T>> consumer) {

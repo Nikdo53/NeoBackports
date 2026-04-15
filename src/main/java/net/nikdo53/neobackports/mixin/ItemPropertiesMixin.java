@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Mixin(Item.Properties.class)
 public class ItemPropertiesMixin implements ItemPropertiesComponentExtension {
@@ -19,6 +20,11 @@ public class ItemPropertiesMixin implements ItemPropertiesComponentExtension {
     public <T> Item.Properties component(DataComponentType<T> component, T value) {
         DEFAULT_COMPONENTS.add(new DataDefault<>(component, value));
         return ((Item.Properties) (Object) this);
+    }
+
+    @Override
+    public <T> Item.Properties component(Supplier<DataComponentType<T>> component, T value) {
+        return component(component.get(), value);
     }
 
     @Override

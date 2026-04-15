@@ -4,16 +4,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.function.Supplier;
-
-public interface ToServerPacket extends  CustomPacketPayload {
+public interface ToServerPacket extends CustomPacketPayload {
     @Override
-    default void handle(Supplier<NetworkEvent.Context> ctx){
-        NetworkEvent.Context context = ctx.get();
-        context.enqueueWork(() -> handleServer(context, context.getSender(), context.getSender().serverLevel()));
+    default void handle(IPayloadContext context){
+        context.enqueueWork(() -> handleServer(context, context.original().getSender(), context.original().getSender().serverLevel()));
 
-        context.setPacketHandled(true);
+        context.original().setPacketHandled(true);
     };
 
-    void handleServer(NetworkEvent.Context context, ServerPlayer player, ServerLevel level);
+    void handleServer(IPayloadContext context, ServerPlayer player, ServerLevel level);
 }
