@@ -24,7 +24,8 @@
     "MutableComponentMixin",
     "PlayerMixin",
     "RegistryLookupMixin",
-    "RegistryMixin"
+    "RegistryMixin",
+    "TooltipFlagMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,5 +1,7 @@
 package net.nikdo53.neobackports.extensions;
 
+import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.Nullable;
 
@@ -9,6 +11,11 @@ public interface IDataMapHolderExtension<T> {
     }
 
     default String getRegisteredName() {
+        throw new IllegalStateException("not implemented");
+    }
+
+    @Nullable
+    default ResourceKey<T> getKey() {
         throw new IllegalStateException("not implemented");
     }
 }

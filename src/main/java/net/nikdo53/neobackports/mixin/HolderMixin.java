@@ -29,4 +29,10 @@ public interface HolderMixin<T> extends IDataMapHolderExtension<T> {
     default String getRegisteredName() {
         return unwrapKey().map(p_316542_ -> p_316542_.location().toString()).orElse("[unregistered]");
     }
+
+    @Override
+    @Nullable
+    default ResourceKey<T> getKey() {
+        return ((Holder<T>) this).unwrapKey().orElse(null);
+    }
 }

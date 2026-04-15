@@ -64,5 +64,9 @@
 
   "net/minecraft/world/item/Item": [
     "net/nikdo53/neobackports/extensions/ItemBackportExtension"
+  ],
+
+  "net/minecraft/world/item/TooltipFlag": [
+    "net/nikdo53/neobackports/extensions/ITooltipFlagExtension"
   ]
 }

@@ -9,10 +9,7 @@ import net.minecraftforge.registries.*;
 import net.nikdo53.neobackports.extensions.IDeferredRegisterExtension;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -62,6 +59,13 @@ public class DeferredRegisterWrapper<T>{
 
     public void addOptionalTagDefaults(@NotNull TagKey<T> name, @NotNull Set<? extends Supplier<T>> defaults) {
         parent.addOptionalTagDefaults(name, defaults);
+    }
+
+    /**
+     * @return The unmodifiable view of registered entries. Useful for bulk operations on all values.
+     */
+    public Collection<DeferredHolder<T, T>> getEntries() {
+        return parent.getEntries().stream().map(DeferredHolder::new).toList();
     }
 
     /**
