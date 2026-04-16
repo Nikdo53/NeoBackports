@@ -1,0 +1,19 @@
+package net.nikdo53.neobackports.utils.recipe.input;
+
+import net.minecraft.world.item.ItemStack;
+
+public interface RecipeInput {
+    ItemStack getItem(int index);
+
+    int size();
+
+    default boolean isEmpty() {
+        for (int i = 0; i < this.size(); i++) {
+            if (!this.getItem(i).isEmpty()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}

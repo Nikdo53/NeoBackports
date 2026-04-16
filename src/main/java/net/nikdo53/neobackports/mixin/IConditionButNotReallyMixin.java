@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(RegistryDataLoader.class)
 public class IConditionButNotReallyMixin {
 
-    @WrapOperation(method = "loadRegistryContents", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/crafting/conditions/ICondition;shouldRegisterEntry(Lcom/google/gson/JsonElement;)Z"))
+    @WrapOperation(method = "loadRegistryContents", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/common/crafting/conditions/ICondition;shouldRegisterEntry(Lcom/google/gson/JsonElement;)Z"), remap = false)
     private static boolean shouldRegisterEntry(JsonElement json, Operation<Boolean> original) {
         boolean resultOriginal = original.call(json);
         if (!(json instanceof JsonObject obj) || !obj.has("neoforge:conditions")){

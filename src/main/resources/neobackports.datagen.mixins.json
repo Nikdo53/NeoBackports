@@ -4,6 +4,7 @@
   "package": "net.nikdo53.neobackports.mixin.datagen",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "DatagenConditionsBackportMixin"
+    "DatagenConditionsBackportMixin",
+    "ItemModelProviderMixin"
   ]
 }

@@ -12,7 +12,7 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-@Mixin(DeferredRegister.class)
+@Mixin(value = DeferredRegister.class, remap = false)
 public abstract class DeferredRegisterMixin<T> implements IDeferredRegisterExtension<T> {
     @Shadow
     @Final

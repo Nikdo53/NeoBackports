@@ -1,8 +1,10 @@
 package net.nikdo53.neobackports.mixin;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.nikdo53.neobackports.extensions.ItemStackBackportExtension;
 import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataComponentRegistry;
@@ -19,6 +21,16 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
 
     @Shadow
     public abstract ItemStack copyWithCount(int count);
+
+    @Shadow
+    public abstract int getCount();
+
+    @Shadow
+    public abstract boolean hasTag();
+
+    @Shadow
+    @javax.annotation.Nullable
+    public abstract CompoundTag getTag();
 
     @Override
     public @Nullable <T> T get(DataComponentType<? extends T> component) {
@@ -82,5 +94,19 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
         if (entity == null || !(entity instanceof Player player && player.getAbilities().instabuild)) {
             shrink(amount);
         }
+    }
+
+    @Override
+    public ItemStack transmuteCopy(ItemLike item) {
+        return transmuteCopy(item, getCount());
+    }
+
+    @Override
+    public ItemStack transmuteCopy(ItemLike item, int count) {
+        ItemStack stack = new ItemStack(item, count);
+        if (hasTag()) {
+            stack.setTag(getTag().copy());
+        }
+        return stack;
     }
 }

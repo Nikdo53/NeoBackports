@@ -23,6 +23,9 @@ public class OptionsScreenBackports {
     @Nullable
     public static PanoramaRenderer PANORAMA = null;
 
+    public static boolean renderBlurOrPanorama(GuiGraphics instance, int width, int height) {
+        return renderBlurOrPanorama(instance, 0, 0, width, height);
+    }
 
     public static boolean renderBlurOrPanorama(GuiGraphics instance, int x1, int y1, int width, int height) {
         if (BlurShaderLoader.shouldCancelBackground()){

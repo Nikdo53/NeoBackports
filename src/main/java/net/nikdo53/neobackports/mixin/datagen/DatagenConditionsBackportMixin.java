@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 
 @SuppressWarnings("deprecation")
-@Mixin(RegistriesDatapackGenerator.class)
+@Mixin(value = RegistriesDatapackGenerator.class, remap = false)
 public class DatagenConditionsBackportMixin implements IDatagenConditionsExtension {
     @Unique
     public Map<ResourceKey<?>, List<ICondition>> neoBackports$conditions;

@@ -7,6 +7,7 @@
   "mixins": [
     "AddPackFindersEventMixin",
     "BlockBehaviourMixin",
+    "BlockEntityMixin",
     "BlockStateBaseMixin",
     "CraftingHelperAccessor",
     "DataPackRegistriesHooksAccessor",
@@ -18,6 +19,7 @@
     "ICapabilityProviderMixin",
     "IConditionButNotReallyMixin",
     "IForgeRegistryMixin",
+    "IngredientMixin",
     "ItemMixin",
     "ItemStackMixin",
     "MappedRegistryMixin",
@@ -33,12 +35,14 @@
   "client": [
     "AbstractSelectionListMixin",
     "AccessibilityOptionsScreenMixin",
+    "EditBoxMixin",
     "GameRendererMixin",
     "ItemPropertiesMixin",
     "OptionsMixin",
     "PanoramaRendererMixin",
     "ScreenMixin",
     "SelectWorldScreenMixin",
+    "VertexConsumeMixin",
     "VideoSettingsMixin"
   ],
   "mixinextras": {

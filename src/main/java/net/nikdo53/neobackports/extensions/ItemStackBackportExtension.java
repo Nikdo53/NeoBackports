@@ -3,11 +3,16 @@ package net.nikdo53.neobackports.extensions;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
+import net.nikdo53.neobackports.io.StreamCodec;
 import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataComponentRegistry;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Supplier;
+
+import static net.minecraft.world.item.ItemStack.matches;
 
 public interface ItemStackBackportExtension {
 
@@ -21,6 +26,14 @@ public interface ItemStackBackportExtension {
         if (entity == null || !(entity instanceof Player player && player.getAbilities().instabuild)) {
             neoBackports$selfDontUseThis().shrink(amount);
         }
+    }
+
+    default ItemStack transmuteCopy(ItemLike item) {
+        throw new IllegalStateException("Not implemented");
+    }
+
+    default ItemStack transmuteCopy(ItemLike item, int count) {
+        throw new IllegalStateException("Not implemented");
     }
 
     @Nullable
@@ -69,4 +82,43 @@ public interface ItemStackBackportExtension {
     private ItemStack neoBackports$selfDontUseThis(){
         return (ItemStack) ((Object) this);
     }
+
+
+
+    static int hashItemAndComponents(@Nullable ItemStack stack) {
+        if (stack != null) {
+            int i = 31 + stack.getItem().hashCode();
+            return 31 * i + (stack.hasTag() ? stack.getTag().hashCode() : 0);
+        } else {
+            return 0;
+        }
+    }
+
+    static int hashStackList(List<ItemStack> list) {
+        int i = 0;
+
+        for (ItemStack itemstack : list) {
+            i = i * 31 + hashItemAndComponents(itemstack);
+        }
+
+        return i;
+    }
+
+    static boolean listMatches(List<ItemStack> list, List<ItemStack> other) {
+        if (list.size() != other.size()) {
+            return false;
+        } else {
+            for (int i = 0; i < list.size(); i++) {
+                if (!matches(list.get(i), other.get(i))) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+    StreamCodec<ItemStack> OPTIONAL_STREAM_CODEC = StreamCodec.ITEM_STACK;
+    StreamCodec<ItemStack> STREAM_CODEC = StreamCodec.ITEM_STACK;
+
 }
