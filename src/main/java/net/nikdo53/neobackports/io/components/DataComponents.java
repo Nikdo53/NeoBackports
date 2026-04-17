@@ -11,6 +11,7 @@ import net.minecraft.world.LockCode;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Instrument;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.armortrim.ArmorTrim;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
@@ -34,18 +35,17 @@ public class DataComponents {
     public static final DeferredHolder<DataComponentType<?>,DataComponentType<Integer>> DAMAGE = VANILLA_COMPONENTS.registerComponentType(
             "damage", p_331382_ -> p_331382_.persistent(ExtraCodecs.NON_NEGATIVE_INT)
     );
+
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Component>> CUSTOM_NAME = VANILLA_COMPONENTS.registerComponentType(
+            "custom_name",
+            p_341853_ -> p_341853_.persistent(ItemStack::setHoverName, ItemStack::getHoverName)
+    );
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Component>> ITEM_NAME = CUSTOM_NAME;
     /*
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Unbreakable>> UNBREAKABLE = VANILLA_COMPONENTS.registerComponentType(
             "unbreakable", p_330880_ -> p_330880_.persistent(Unbreakable.CODEC).networkSynchronized(Unbreakable.STREAM_CODEC)
     );
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Component>> CUSTOM_NAME = VANILLA_COMPONENTS.registerComponentType(
-            "custom_name",
-            p_341853_ -> p_341853_.persistent(ComponentSerialization.FLAT_CODEC).networkSynchronized(ComponentSerialization.STREAM_CODEC).cacheEncoding()
-    );
-    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Component>> ITEM_NAME = VANILLA_COMPONENTS.registerComponentType(
-            "item_name",
-            p_341844_ -> p_341844_.persistent(ComponentSerialization.FLAT_CODEC).networkSynchronized(ComponentSerialization.STREAM_CODEC).cacheEncoding()
-    );
+
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<ItemLore>> LORE = VANILLA_COMPONENTS.registerComponentType(
             "lore", p_341842_ -> p_341842_.persistent(ItemLore.CODEC).networkSynchronized(ItemLore.STREAM_CODEC).cacheEncoding()
     );

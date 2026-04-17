@@ -24,7 +24,7 @@ public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> ei
         if (eitherCodec.left().isPresent()) {
             eitherCodec.left().get().encodeStart(NbtOps.INSTANCE, data).resultOrPartial(NeoBackports.LOGGER::warn).ifPresent(tag -> compoundTag.put(name, tag));
         } else {
-            eitherCodec.right().get().encoder().accept(compoundTag, data);
+            eitherCodec.right().get().encoder().accept(stack, data);
         }
     }
 
@@ -61,7 +61,7 @@ public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> ei
                     .map(Pair::getFirst)
                     .orElse(null);
         } else {
-            return eitherCodec.right().get().decoder().apply(compoundTag);
+            return eitherCodec.right().get().decoder().apply(stack);
         }
 
     }
@@ -79,10 +79,10 @@ public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> ei
     }
 
     @FunctionalInterface
-    public interface TagEncoder<T> extends BiConsumer<CompoundTag, T> {}
+    public interface TagEncoder<T> extends BiConsumer<ItemStack, T> {}
 
     @FunctionalInterface
-    public interface TagDecoder<T> extends Function<CompoundTag, T> {}
+    public interface TagDecoder<T> extends Function<ItemStack, T> {}
 
     public record TagCodec<T>(TagEncoder<T> encoder, TagDecoder<T> decoder) {}
 

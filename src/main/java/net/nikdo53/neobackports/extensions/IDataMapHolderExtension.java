@@ -18,4 +18,7 @@ public interface IDataMapHolderExtension<T> {
     default ResourceKey<T> getKey() {
         throw new IllegalStateException("not implemented");
     }
+   default boolean is(Holder<T> holder){
+        throw new IllegalStateException("not implemented");
+   }
 }

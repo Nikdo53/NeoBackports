@@ -88,5 +88,25 @@
 
   "net/minecraft/world/item/crafting/Ingredient": [
     "net/nikdo53/neobackports/extensions/IngredientExtension"
+  ],
+
+  "net/minecraft/client/renderer/blockentity/BlockEntityRenderer": [
+    "net/nikdo53/neobackports/extensions/IBlockEntityRendererExtension<T>"
+  ],
+
+  "net/minecraft/client/model/Model": [
+    "net/nikdo53/neobackports/extensions/IModelExtension"
+  ],
+
+  "net/minecraft/client/gui/components/AbstractWidget": [
+    "net/nikdo53/neobackports/extensions/IAbstractWidgetExtension"
+  ],
+
+  "net/minecraft/client/model/geom/ModelPart": [
+    "net/nikdo53/neobackports/extensions/IModelPartExtension"
+  ],
+
+  "net/minecraft/world/level/Level": [
+    "net/nikdo53/neobackports/extensions/ILevelExtension"
   ]
 }

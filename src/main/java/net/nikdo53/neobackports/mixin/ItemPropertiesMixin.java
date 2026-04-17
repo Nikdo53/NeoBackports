@@ -4,6 +4,7 @@ import net.minecraft.world.item.Item;
 import net.nikdo53.neobackports.extensions.ItemPropertiesComponentExtension;
 import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataDefault;
+import net.nikdo53.neobackports.registry.DeferredHolder;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -23,7 +24,7 @@ public class ItemPropertiesMixin implements ItemPropertiesComponentExtension {
     }
 
     @Override
-    public <T> Item.Properties component(Supplier<DataComponentType<T>> component, T value) {
+    public <T> Item.Properties component(DeferredHolder<DataComponentType<?>, DataComponentType<T>> component, T value) {
         return component(component.get(), value);
     }
 

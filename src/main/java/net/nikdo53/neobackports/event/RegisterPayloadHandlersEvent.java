@@ -31,8 +31,7 @@ public class RegisterPayloadHandlersEvent extends Event implements IModBusEvent 
      *
      * @param version The network version. May not be empty
      */
-    public PayloadRegistrar registrar(String version) {
-        String namespace = ModLoadingContext.get().getActiveNamespace();
+    public PayloadRegistrar registrar(String version, String namespace) {
         SimpleChannel channel = NetworkRegistry.newSimpleChannel(
                 new ResourceLocation(namespace, "channel"),
                 () -> version,
