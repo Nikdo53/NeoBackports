@@ -94,4 +94,9 @@ public class RegistryLookupWrapper<T> implements HolderLookup.RegistryLookup<T> 
     public @Nullable <A> A getData(DataMapType<T, A> type, ResourceKey<T> key) {
         return dataMapGetter.getData(type, key);
     }
+
+    @Override
+    public String toString() {
+        return "Wrapped[" + parent.toString() + "]";
+    }
 }

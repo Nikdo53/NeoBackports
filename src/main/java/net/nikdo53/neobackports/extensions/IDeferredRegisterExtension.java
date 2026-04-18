@@ -14,7 +14,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public interface IDeferredRegisterExtension<T> {
-   default   <I extends T> RegistryObject<I> register(final String name, final Function<ResourceLocation, ? extends I> func){
+   default  <I extends T> RegistryObject<I> register(final String name, final Function<ResourceLocation, ? extends I> func){
      throw new IllegalStateException("Not implemented");
    }
 

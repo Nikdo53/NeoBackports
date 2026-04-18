@@ -11,7 +11,14 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.nikdo53.neobackports.utils.recipe.input.CraftingInput;
 
+import java.util.Objects;
+
 public interface CraftingRecipeNeo extends CraftingRecipe {
+
+    @Override
+    default ResourceLocation getId(){
+        return Objects.requireNonNull(RecipeIdHolder.getReversed().get(this));
+    }
 
     @Override
     default boolean matches(CraftingContainer container, Level level) {

@@ -2,6 +2,7 @@ package net.nikdo53.neobackports.utils.recipe;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +11,14 @@ import net.minecraft.world.level.Level;
 import net.nikdo53.neobackports.utils.recipe.input.CraftingInput;
 import net.nikdo53.neobackports.utils.recipe.input.SmithingRecipeInput;
 
+import java.util.Objects;
+
 public interface SmithingRecipeNeo extends SmithingRecipe {
+    @Override
+    default ResourceLocation getId(){
+        return Objects.requireNonNull(RecipeIdHolder.getReversed().get(this));
+    }
+
     @Override
     default boolean matches(Container container, Level level) {
         return matches(SmithingRecipeInput.fromContainer(container), level);

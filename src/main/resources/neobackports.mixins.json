@@ -9,6 +9,7 @@
     "BlockBehaviourMixin",
     "BlockEntityMixin",
     "BlockStateBaseMixin",
+    "ClientboundUpdateRecipesPacketMixin",
     "CraftingHelperAccessor",
     "DataPackRegistriesHooksAccessor",
     "DeferredRegisterMixin",
@@ -26,6 +27,7 @@
     "MappedRegistryMixin",
     "MutableComponentMixin",
     "PlayerMixin",
+    "RecipeMangerMixin",
     "RegistryLookupMixin",
     "RegistryMixin",
     "TooltipFlagMixin"

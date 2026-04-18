@@ -122,7 +122,7 @@ dependencies {
 
 jar {
     manifest.attributes([
-            "MixinConfigs": "${mod_id}.mixins.json"
+            "MixinConfigs":  "${mod_id}.mixins.json,${mod_id}.datagen.mixins.json"
     ])
 
     finalizedBy('reobfJar')

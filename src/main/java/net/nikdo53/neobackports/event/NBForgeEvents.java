@@ -28,6 +28,7 @@ import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
@@ -38,12 +39,14 @@ import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.attachment.AdvancedCapabilityType;
 import net.nikdo53.neobackports.io.attachment.DataAttachment;
 import net.nikdo53.neobackports.io.attachment.AttachmentType;
+import net.nikdo53.neobackports.io.networking.ClearClientRecipeIdsPayload;
 import net.nikdo53.neobackports.io.networking.NBNetworking;
 import net.nikdo53.neobackports.io.networking.RegistryDataMapSyncPayload;
 import net.nikdo53.neobackports.mixin.DataPackRegistriesHooksAccessor;
 import net.nikdo53.neobackports.datamaps.DataMapLoader;
 import net.nikdo53.neobackports.datamaps.DataMapsManager;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
+import net.nikdo53.neobackports.utils.recipe.RecipeIdHolder;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -99,11 +102,16 @@ public class NBForgeEvents {
 
     @SubscribeEvent
     public static void onDpSync(final OnDatapackSyncEvent event) {
+        ServerPlayer serverPlayer = event.getPlayer();
+        if (serverPlayer != null) {
+            NBNetworking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ClearClientRecipeIdsPayload());
+        }
+
         DataMapsManager.getDataMaps().forEach((registry, values) -> {
             final var regOpt = RegistryManager.ACTIVE.getRegistry((ResourceKey) registry);
             if (regOpt.isEmpty()) return;
 
-            Stream<ServerPlayer> relevantPlayers = event.getPlayer() == null ? event.getPlayerList().getPlayers().stream() : Stream.of(event.getPlayer());
+            Stream<ServerPlayer> relevantPlayers = serverPlayer == null ? event.getPlayerList().getPlayers().stream() : Stream.of(serverPlayer);
             relevantPlayers.forEach(player -> {
 
                 // Note: don't send data maps over in-memory connections for normal registries, else the client-side handling will wipe non-synced data maps.

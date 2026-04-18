@@ -23,11 +23,11 @@ public class DeferredRegisterWrapper<T>{
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public <I extends T> DeferredHolder<T, I> register(final String name, final Supplier<? extends I> sup) {
-        return new DeferredHolder<>(parent.register(name, sup));
+        return createHolder(parent.register(name, sup));
     }
 
     public <I extends T> DeferredHolder<T, I> register(String name, Function<ResourceLocation, ? extends I> func) {
-        return createHolder(parent.register(name, func));
+        return createHolder(parent.register(name, () -> func.apply(new ResourceLocation(getModId(), name))));
     }
 
     public Supplier<IForgeRegistry<T>> makeRegistry(final Supplier<RegistryBuilder<T>> sup) {
@@ -65,7 +65,7 @@ public class DeferredRegisterWrapper<T>{
      * @return The unmodifiable view of registered entries. Useful for bulk operations on all values.
      */
     public Collection<DeferredHolder<T, T>> getEntries() {
-        return parent.getEntries().stream().map(DeferredHolder::new).toList();
+        return parent.getEntries().stream().map(this::createHolder).toList();
     }
 
     /**
@@ -84,4 +84,8 @@ public class DeferredRegisterWrapper<T>{
         return parent.neobackports$getModId();
     }
 
+    @Override
+    public String toString() {
+        return "Wrapped[" + parent.toString() + "]";
+    }
 }
