@@ -26,7 +26,7 @@ public abstract class SingleItemRecipeNeo extends SingleItemRecipe {
 
     @Override
     public ResourceLocation getId(){
-        return Objects.requireNonNull(RecipeIdHolder.getReversed().get(this));
+        return RecipeIdHolder.getId(this);
     }
 
 }

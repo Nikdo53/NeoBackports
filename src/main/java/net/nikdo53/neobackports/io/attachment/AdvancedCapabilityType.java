@@ -51,9 +51,12 @@ public enum AdvancedCapabilityType {
     public static boolean checkWithHolder(ICapabilityProvider holder, AttachmentType<?> attachmentType){
         AdvancedCapabilityType holderType = AdvancedCapabilityType.fromHolder(holder);
 
-        if (attachmentType.castAttachment()
-                .getPotentialHolders().stream()
-                .noneMatch(type -> type.getWithSubtypes().contains(holderType))) {
+        List<AdvancedCapabilityType> potentialHolders = attachmentType.castAttachment().getPotentialHolders();
+
+        if(potentialHolders.contains(AdvancedCapabilityType.ALL))
+            return false;
+
+        if (potentialHolders.stream().noneMatch(type -> type.getWithSubtypes().contains(holderType))) {
 
             NeoBackports.LOGGER.error("Tried getting attachment: {} on holder of capabilityType: {} which it isn't attached to", attachmentType.id(),  holderType.name());
 

@@ -24,13 +24,13 @@ public class RecipeMangerMixin {
     @WrapMethod(method = "fromJson(Lnet/minecraft/resources/ResourceLocation;Lcom/google/gson/JsonObject;Lnet/minecraftforge/common/crafting/conditions/ICondition$IContext;)Lnet/minecraft/world/item/crafting/Recipe;", remap = false)
     private static Recipe<?> fromJsonPutIds(ResourceLocation recipeId, JsonObject json, ICondition.IContext context, Operation<Recipe<?>> original) {
         Recipe<?> call = original.call(recipeId, json, context);
-        RecipeIdHolder.RECIPE_IDS.put(recipeId, call);
+        RecipeIdHolder.register(recipeId, call, false);
         return call;
     }
 
     @Inject(method = "apply(Ljava/util/Map;Lnet/minecraft/server/packs/resources/ResourceManager;Lnet/minecraft/util/profiling/ProfilerFiller;)V", at = @At("HEAD"))
     protected void clearOnApply(Map<ResourceLocation, JsonElement> object, ResourceManager resourceManager, ProfilerFiller profiler, CallbackInfo ci) {
-        RecipeIdHolder.RECIPE_IDS.clear();
+        RecipeIdHolder.clear(false);
     }
 
 }

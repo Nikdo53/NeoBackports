@@ -1,5 +1,6 @@
 package net.nikdo53.neobackports.utils.recipe;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import com.mojang.serialization.MapCodec;
@@ -19,7 +20,26 @@ public interface RecipeSerializerNeo<T extends Recipe<?>> extends RecipeSerializ
 
     @Override
     default T fromJson(ResourceLocation recipeId, JsonObject serializedRecipe){
-        return codec().codec().parse(JsonOps.INSTANCE, serializedRecipe).getOrThrow(false, NeoBackports.LOGGER::error);
+        if (enableWarning()){
+            JsonElement result = serializedRecipe.get("result");
+            if (result != null && result.isJsonObject() ){
+
+                JsonElement id = result.getAsJsonObject().get("id");
+                if (id != null){
+                    NeoBackports.LOGGER.warn("Recipe {} has a result with an 'id' field, probably caused by using Itemstack.CODEC. Please use BackportCodecs.ITEM_STACK_RECIPE codec or change the field to 'item' so it matches 1.20 standards ", recipeId);
+                }
+            }
+        }
+
+        T result;
+
+        try {
+            result = codec().codec().parse(JsonOps.INSTANCE, serializedRecipe).getOrThrow(false, NeoBackports.LOGGER::error);
+        } catch (Exception e){
+            NeoBackports.LOGGER.error("Failed to parse recipe {}: {}", recipeId, e.getMessage());
+            throw e;
+        }
+        return result;
     }
 
     @Override
@@ -30,5 +50,9 @@ public interface RecipeSerializerNeo<T extends Recipe<?>> extends RecipeSerializ
     @Override
     default void toNetwork(FriendlyByteBuf buffer, T recipe){
         streamCodec().encode(buffer, recipe);
+    }
+
+    default boolean enableWarning(){
+        return true;
     }
 }

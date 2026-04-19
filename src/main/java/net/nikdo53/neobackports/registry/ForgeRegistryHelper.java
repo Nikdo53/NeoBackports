@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegistryBuilder;
+import net.nikdo53.neobackports.mixin.RegistryBuilderAccessor;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -33,5 +34,14 @@ public class ForgeRegistryHelper<T> {
     public void create(NewRegistryEvent event, Consumer<IForgeRegistry<T>> fieldSetter){
         create(event, fieldSetter, Function.identity());
     }
+
+    public void createWithWrapper(NewRegistryEvent event, Consumer<IForgeRegistry<T>> fieldSetter, Function<RegistryBuilder<T>, RegistryBuilder<T>> builder){
+        create(event, fieldSetter, builder.andThen(b ->((RegistryBuilderAccessor<T>) b).setWrapper()));
+    }
+
+    public void createWithWrapper(NewRegistryEvent event, Consumer<IForgeRegistry<T>> fieldSetter){
+        create(event, fieldSetter, b ->((RegistryBuilderAccessor<T>) b).setWrapper());
+    }
+
 
 }

@@ -103,9 +103,6 @@ public class NBForgeEvents {
     @SubscribeEvent
     public static void onDpSync(final OnDatapackSyncEvent event) {
         ServerPlayer serverPlayer = event.getPlayer();
-        if (serverPlayer != null) {
-            NBNetworking.CHANNEL.send(PacketDistributor.PLAYER.with(() -> serverPlayer), new ClearClientRecipeIdsPayload());
-        }
 
         DataMapsManager.getDataMaps().forEach((registry, values) -> {
             final var regOpt = RegistryManager.ACTIVE.getRegistry((ResourceKey) registry);

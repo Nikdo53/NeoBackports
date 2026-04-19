@@ -17,7 +17,7 @@ public interface CraftingRecipeNeo extends CraftingRecipe {
 
     @Override
     default ResourceLocation getId(){
-        return Objects.requireNonNull(RecipeIdHolder.getReversed().get(this));
+        return RecipeIdHolder.getId(this);
     }
 
     @Override

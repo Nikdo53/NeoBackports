@@ -9,6 +9,7 @@ import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.BaseMapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.TagParser;
@@ -28,19 +29,6 @@ import java.util.Optional;
 
 public interface BackportCodecs {
     interface IngredientCodecs {
-        Codec<Ingredient> CODEC = ingredientCodec(true);
-        Codec<Ingredient> CODEC_NONEMPTY = ingredientCodec(false);
-
-        private static Codec<Ingredient> ingredientCodec(boolean allowEmpty) {
-            Codec<Ingredient.Value[]> codec = Codec.list(INGREDIENT_VALUE).comapFlatMap((p_300810_) -> !allowEmpty && p_300810_.isEmpty() ? DataResult.error(() -> "Item array cannot be empty, at least one item must be defined") : DataResult.success(p_300810_.toArray(new Ingredient.Value[0])), List::of);
-            return Codec.either(codec, INGREDIENT_VALUE).flatComapMap((p_300805_) -> p_300805_.map(values -> new Ingredient(Arrays.stream(values)), (p_300806_) -> new Ingredient(Arrays.stream(new Ingredient.Value[]{p_300806_}))), (p_300808_) -> {
-                if (p_300808_.values.length == 1) {
-                    return DataResult.success(Either.right(p_300808_.values[0]));
-                } else {
-                    return p_300808_.values.length == 0 && !allowEmpty ? DataResult.error(() -> "Item array cannot be empty, at least one item must be defined") : DataResult.success(Either.left(p_300808_.values));
-                }
-            });
-        }
         Codec<Ingredient.TagValue> TAG_VALUE_CODEC = RecordCodecBuilder.create((p_301118_) -> p_301118_.group(TagKey.codec(Registries.ITEM).fieldOf("tag").forGetter((p_301154_) -> p_301154_.tag)).apply(p_301118_, Ingredient.TagValue::new));
 
         Codec<ItemStack> SIMPLE_ITEM_CODEC = ForgeRegistries.ITEMS.getCodec().xmap(Item::getDefaultInstance, ItemStack::getItem);
@@ -57,6 +45,20 @@ public interface BackportCodecs {
                 throw new UnsupportedOperationException("This is neither an item value nor a tag value.");
             }
         });
+
+        Codec<Ingredient> CODEC = ingredientCodec(true);
+        Codec<Ingredient> CODEC_NONEMPTY = ingredientCodec(false);
+
+        private static Codec<Ingredient> ingredientCodec(boolean allowEmpty) {
+            Codec<Ingredient.Value[]> codec = Codec.list(INGREDIENT_VALUE).comapFlatMap((p_300810_) -> !allowEmpty && p_300810_.isEmpty() ? DataResult.error(() -> "Item array cannot be empty, at least one item must be defined") : DataResult.success(p_300810_.toArray(new Ingredient.Value[0])), List::of);
+            return Codec.either(codec, INGREDIENT_VALUE).flatComapMap((p_300805_) -> p_300805_.map(values -> new Ingredient(Arrays.stream(values)), (p_300806_) -> new Ingredient(Arrays.stream(new Ingredient.Value[]{p_300806_}))), (p_300808_) -> {
+                if (p_300808_.values.length == 1) {
+                    return DataResult.success(Either.right(p_300808_.values[0]));
+                } else {
+                    return p_300808_.values.length == 0 && !allowEmpty ? DataResult.error(() -> "Item array cannot be empty, at least one item must be defined") : DataResult.success(Either.left(p_300808_.values));
+                }
+            });
+        }
     }
 
 
@@ -109,5 +111,10 @@ public interface BackportCodecs {
         }
     }
 
+    Codec<ItemStack> ITEM_STACK_RECIPE = RecordCodecBuilder.create((p_258963_) -> {
+        return p_258963_.group(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(ItemStack::getItem), Codec.INT.optionalFieldOf("count", 1).forGetter(ItemStack::getCount), CompoundTag.CODEC.optionalFieldOf("tag").forGetter((p_281115_) -> {
+            return Optional.ofNullable(p_281115_.getTag());
+        })).apply(p_258963_, (item, count, tag) -> new ItemStack(item, count, tag.orElse(null)));
+    });
 
 }

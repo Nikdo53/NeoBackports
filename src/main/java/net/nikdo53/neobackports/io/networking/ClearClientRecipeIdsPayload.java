@@ -8,9 +8,10 @@ import org.jetbrains.annotations.Nullable;
 
 public record ClearClientRecipeIdsPayload() implements ToClientPacket{
     public static final StreamCodec<ClearClientRecipeIdsPayload> STREAM_CODEC = StreamCodec.of((buf, clearClientRecipeIdsPayload) -> {} , buf -> new ClearClientRecipeIdsPayload());
+
     @Override
     public void handleClient(IPayloadContext context, Level level, Player player) {
-        RecipeIdHolder.RECIPE_IDS.clear();
+        RecipeIdHolder.clear(true);
     }
 
     @Override

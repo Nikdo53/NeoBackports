@@ -17,7 +17,7 @@ public class ClientboundUpdateRecipesPacketMixin {
     @WrapOperation(method = "fromNetwork", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/crafting/RecipeSerializer;fromNetwork(Lnet/minecraft/resources/ResourceLocation;Lnet/minecraft/network/FriendlyByteBuf;)Lnet/minecraft/world/item/crafting/Recipe;"))
     private static Recipe<?> fromNetwork(RecipeSerializer<Recipe<?>> instance, ResourceLocation location, FriendlyByteBuf buf, Operation<Recipe<?>> original) {
         Recipe<?> call = original.call(instance, location, buf);
-        RecipeIdHolder.RECIPE_IDS.put(location, call);
+        RecipeIdHolder.register(location, call, true);
         return call;
     }
 

@@ -16,7 +16,7 @@ import java.util.Objects;
 public interface SmithingRecipeNeo extends SmithingRecipe {
     @Override
     default ResourceLocation getId(){
-        return Objects.requireNonNull(RecipeIdHolder.getReversed().get(this));
+        return RecipeIdHolder.getId(this);
     }
 
     @Override

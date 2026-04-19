@@ -28,6 +28,7 @@
     "MutableComponentMixin",
     "PlayerMixin",
     "RecipeMangerMixin",
+    "RegistryBuilderAccessor",
     "RegistryLookupMixin",
     "RegistryMixin",
     "TooltipFlagMixin"

@@ -56,10 +56,10 @@ public class NBModEvents {
     @SubscribeEvent
     public static void addRegistry(NewRegistryEvent event) {
         ForgeRegistryHelper.getInstance(NeoForgeRegistries.Keys.ATTACHMENT_TYPES)
-                .create(event, reg -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL = reg);
+                .createWithWrapper(event, reg -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL = reg);
 
         ForgeRegistryHelper.getInstance(NeoForgeRegistries.Keys.DATA_COMPONENT_TYPE)
-                .create(event, reg -> NeoForgeRegistries.DATA_COMPONENT_TYPE = reg);
+                .createWithWrapper(event, reg -> NeoForgeRegistries.DATA_COMPONENT_TYPE = reg);
 
     }
 

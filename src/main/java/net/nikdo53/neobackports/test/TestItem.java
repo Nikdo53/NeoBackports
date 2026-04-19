@@ -1,5 +1,6 @@
 package net.nikdo53.neobackports.test;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -22,6 +23,7 @@ public class TestItem extends Item {
             player.setData(DataAttachmentRegistry.TEST_ATTACHMENT.get(), data + "works");
         }
         PacketDistributorNeo.sendToAllPlayers(new TestPacket("Hello from the server!"));
+
         return super.useOn(context);
     }
 }
