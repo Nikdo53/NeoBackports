@@ -1,10 +1,15 @@
 package net.nikdo53.neobackports.mixin;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.Lifecycle;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.datamaps.DataMapType;
+import net.nikdo53.neobackports.extensions.ILifecycleRegistryExtension;
 import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,7 +17,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Map;
 
 @Mixin(Registry.class)
-public interface RegistryMixin<T> extends IRegistryDataMapExtension<T> {
+public interface RegistryMixin<T> extends IRegistryDataMapExtension<T>, ILifecycleRegistryExtension<T> {
     @Shadow
     ResourceKey<? extends Registry<T>> key();
 
@@ -29,5 +34,15 @@ public interface RegistryMixin<T> extends IRegistryDataMapExtension<T> {
     @Override
     default @Nullable <A> A getData(DataMapType<T, A> type, ResourceKey<T> key) {
         return RegistryManager.ACTIVE.getRegistry(key()).getData(type, key);
+    }
+
+    @Override
+    default Map<ResourceKey<T>, Lifecycle> getLifecycleKeyMap() {
+        return ILifecycleRegistryExtension.super.getLifecycleKeyMap();
+    }
+
+    @Override
+    default @NotNull Codec<Holder<T>> holderByNameCodecNeo() {
+        return ILifecycleRegistryExtension.super.holderByNameCodecNeo();
     }
 }

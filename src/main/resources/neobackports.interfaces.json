@@ -27,7 +27,8 @@
   ],
 
   "net/minecraft/core/Registry": [
-    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<T>"
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<T>",
+    "net/nikdo53/neobackports/extensions/ILifecycleRegistryExtension<T>"
   ],
 
   "net/minecraftforge/registries/ForgeRegistry": [

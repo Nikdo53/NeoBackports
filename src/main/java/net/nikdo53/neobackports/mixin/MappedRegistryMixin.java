@@ -55,7 +55,7 @@ public abstract class MappedRegistryMixin<T> implements ILifecycleRegistryExtens
     }
 
     @Override
-    public @NotNull Codec<Holder<T>> holderByNameCodec() {
+    public @NotNull Codec<Holder<T>> holderByNameCodecNeo() {
         Codec<Holder<T>> codec = ResourceLocation.CODEC.flatXmap((p_258174_) -> {
             return this.getHolder(ResourceKey.create(this.key(), p_258174_)).map(DataResult::success).orElseGet(() -> {
                 return DataResult.error(() -> {
@@ -74,5 +74,35 @@ public abstract class MappedRegistryMixin<T> implements ILifecycleRegistryExtens
         }, (p_258171_) -> {
             return getLifecycleKeyMap().get(p_258171_.getKey());
         });
+    }
+
+    @Override
+    public Codec<Holder<T>> holderByNameCodec() {
+        Codec<Holder<T>> codec = ResourceLocation.CODEC.flatXmap((p_258174_) -> {
+            return this.getHolder(ResourceKey.create(this.key(), p_258174_)).map(DataResult::success).orElseGet(() -> {
+                return DataResult.error(() -> {
+                    return "Unknown registry key in " + this.key() + ": " + p_258174_;
+                });
+            });
+        }, (p_206061_) -> {
+            return p_206061_.unwrapKey().map(ResourceKey::location).map(DataResult::success).orElseGet(() -> {
+                return DataResult.error(() -> {
+                    return "Unknown registry element in " + this.key() + ":" + p_206061_;
+                });
+            });
+        });
+        return ExtraCodecs.overrideLifecycle(codec, this::neoBackports$getLifecycleFromHolder, this::neoBackports$getLifecycleFromHolder);    
+    }
+    
+    @Unique
+    public Lifecycle neoBackports$getLifecycleFromHolder(Holder<T> holder){
+        ResourceKey<T> key = holder.getKey();
+        if (key != null) {
+            Lifecycle lifecycle = getLifecycleKeyMap().get(key);
+            if (lifecycle != null)
+                return lifecycle;
+        }
+        return this.lifecycle(holder.value());
+
     }
 }
