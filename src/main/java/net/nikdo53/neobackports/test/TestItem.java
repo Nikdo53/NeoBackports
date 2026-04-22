@@ -17,12 +17,19 @@ public class TestItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Player player = context.getPlayer();
         if (player != null) {
+            if (player.level().isClientSide()) {
+                System.out.println("client:");
+            }else {
+                System.out.println("server:");
+            }
+
             String data = player.getData(DataAttachmentRegistry.TEST_ATTACHMENT.get());
             System.out.println(data);
 
+
             player.setData(DataAttachmentRegistry.TEST_ATTACHMENT.get(), data + "works");
         }
-        PacketDistributorNeo.sendToAllPlayers(new TestPacket("Hello from the server!"));
+    //    PacketDistributorNeo.sendToAllPlayers(new TestPacket("Hello from the server!"));
 
         return super.useOn(context);
     }

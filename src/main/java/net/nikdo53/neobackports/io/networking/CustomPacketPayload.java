@@ -15,9 +15,7 @@ public interface CustomPacketPayload {
 
     void handle(IPayloadContext context);
 
-    record Type<T extends CustomPacketPayload>(ResourceLocation id, Class<T> type) {
-
-    }
+    record Type<T extends CustomPacketPayload>(ResourceLocation id, Class<T> type) { }
 
     /**
      * Unlike in neoforge, this is only used to get the correct channel to be used in {@link PacketDistributorNeo},

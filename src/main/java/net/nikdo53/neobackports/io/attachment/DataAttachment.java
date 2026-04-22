@@ -8,7 +8,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -16,6 +18,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.event.level.NoteBlockEvent;
 import net.minecraftforge.network.PacketDistributor;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.io.StreamCodec;
@@ -119,8 +122,20 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
         this.data = data;
     }
 
-
+    /**
+     * Syncs the attachment to all players.
+     * @param holder the object that holds the attachment
+     */
     public void sync(ICapabilityProvider holder){
+        sync(holder, null);
+    }
+
+    /**
+     * Syncs the attachment to a specific player.
+     * @param holder the object that holds the attachment
+     * @param player the player to sync to, if null, it will sync to all players tracking the given holder
+     */
+    public void sync(ICapabilityProvider holder, @Nullable Player player){
         if (getStreamCodec() == null) return;
 
         CapabilityType capabilityType = CapabilityType.fromHolder(holder);
@@ -157,6 +172,13 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
                 packetDistributor = PacketDistributor.DIMENSION.with(level::dimension);
             }
 
+        }
+
+        if (player != null){
+            if (!(player instanceof ServerPlayer serverPlayer))
+                throw new IllegalArgumentException("Tried syncing a data attachment from client side");
+
+            packetDistributor = PacketDistributor.PLAYER.with(() -> serverPlayer);
         }
 
         if (isClient || packetDistributor == null) return;

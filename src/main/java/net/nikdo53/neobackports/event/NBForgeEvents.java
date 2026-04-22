@@ -10,6 +10,8 @@ import net.minecraft.core.RegistrySynchronization;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +28,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.PacketDistributor;
@@ -48,12 +51,10 @@ import net.nikdo53.neobackports.datamaps.DataMapsManager;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import net.nikdo53.neobackports.utils.recipe.RecipeIdHolder;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = NeoBackports.MOD_ID)
@@ -167,6 +168,86 @@ public class NBForgeEvents {
         });
 
         oldPlayer.invalidateCaps();
+    }
+
+
+    @SubscribeEvent
+    public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+
+        getAllPlayerAttachments().forEach(type ->
+                player.getCapability(type.getAttachment().getCapabilityKey()).ifPresent(cap -> {
+                    if (cap.hasData())
+                        cap.sync(serverPlayer);
+            })
+        );
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTrackEntity(PlayerEvent.StartTracking event) {
+        Player player = event.getEntity();
+
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+
+        Entity target = event.getTarget();
+        NeoForgeRegistries.ATTACHMENT_TYPES_REAL.forEach(type ->
+                target.getCapability(type.getAttachment().getCapabilityKey()).ifPresent(cap -> {
+                    if (cap.hasData())
+                        cap.sync(target, serverPlayer);
+                })
+        );
+    }
+
+    @SubscribeEvent
+    public static void onDimensionChange(PlayerEvent.PlayerChangedDimensionEvent event) {
+        Player player = event.getEntity();
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
+
+        getAllPlayerAttachments().forEach(type ->
+                player.getCapability(type.getAttachment().getCapabilityKey()).ifPresent(cap -> {
+                    if (cap.hasData())
+                        cap.sync(serverPlayer);
+                })
+        );
+
+        AttachmentType.getTypesForHolder(AdvancedCapabilityType.LEVEL).forEach(type -> {
+            ServerLevel level = serverPlayer.server.getLevel(event.getTo());
+            if (level != null){
+                level.getCapability(type.getAttachment().getCapabilityKey()).ifPresent(cap -> {
+                    if (cap.hasData())
+                        cap.sync(level, serverPlayer);
+                });
+            }
+        });
+    }
+
+    public static @NotNull ArrayList<AttachmentType<?>> getAllPlayerAttachments() {
+        List<AttachmentType<?>> playerAttachments = AttachmentType.getTypesForHolder(AdvancedCapabilityType.PLAYER);
+        List<AttachmentType<?>> entityAttachments = AttachmentType.getTypesForHolder(AdvancedCapabilityType.ENTITY);
+        List<AttachmentType<?>> livingAttachments = AttachmentType.getTypesForHolder(AdvancedCapabilityType.LIVING_ENTITY);
+
+        ArrayList<AttachmentType<?>> all = new ArrayList<>();
+        all.addAll(playerAttachments);
+        all.addAll(entityAttachments);
+        all.addAll(livingAttachments);
+        return all;
+    }
+
+    @SubscribeEvent
+    public static void onChunkWatch(ChunkWatchEvent.Watch event) {
+        if (!event.getLevel().isClientSide){
+            LevelChunk chunk = event.getChunk();
+
+            AttachmentType.getTypesForHolder(AdvancedCapabilityType.CHUNK)
+                    .forEach(type -> chunk.getCapability(type.getAttachment().getCapabilityKey())
+                            .ifPresent(cap -> {
+                        if (cap.hasData())
+                            cap.sync(chunk, event.getPlayer());
+                    }));
+        }
+
     }
 
 

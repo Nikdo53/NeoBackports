@@ -41,12 +41,12 @@ public class NBModEvents {
         ModLoader.get().postEvent(new RegisterPayloadHandlersEvent());
     }
 
-    @SubscribeEvent
+/*    @SubscribeEvent
     public static void registerPackets(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar(NBNetworking.CHANNEL, NeoBackports.MOD_ID);
 
         registrar.playToClient(TestPacket.TYPE, TestPacket.STREAM_CODEC, TestPacket::handle);
-    }
+    }*/
 
     @SubscribeEvent
     public static void onRegisterShaders(RegisterShadersEvent event) {

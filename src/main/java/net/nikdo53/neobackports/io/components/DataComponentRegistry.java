@@ -29,12 +29,14 @@ public class DataComponentRegistry {
             DATA_COMPONENTS.registerComponentType("test_string", builder -> builder.persistent(Codec.STRING));
 
     public static  <T> void set(ItemStack stack, DataComponentType<T> component, T data){
+        if (stack.isEmpty()) return;
         component.setOn(stack, data);
     }
 
     @Nullable
     @SuppressWarnings("unchecked")
     public static <T> T get(ItemStack stack, DataComponentType<T> component){
+        if (stack.isEmpty()) return null;
         T ret = component.getOn(stack);
 
         if (ret == null && getDefaults().containsKey(stack.getItem())){
@@ -45,6 +47,8 @@ public class DataComponentRegistry {
     }
 
     public static <T> boolean has(ItemStack stack, DataComponentType<T> component){
+        if (stack.isEmpty()) return false;
+
         if (getDefaults().containsKey(stack.getItem())){
 
             if (getDefaults().get(stack.getItem()).containsKey(component)){
