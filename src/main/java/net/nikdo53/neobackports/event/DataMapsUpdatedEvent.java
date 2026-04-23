@@ -5,6 +5,7 @@
 
 package net.nikdo53.neobackports.event;
 
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.Connection;
@@ -24,11 +25,11 @@ import java.util.function.Consumer;
  */
 public class DataMapsUpdatedEvent extends Event {
     private final RegistryAccess registryAccess;
-    private final IForgeRegistry<?> registry;
+    private final Registry<?> registry;
     private final UpdateCause cause;
 
     @ApiStatus.Internal
-    public DataMapsUpdatedEvent(RegistryAccess registryAccess, IForgeRegistry<?> registry, UpdateCause cause) {
+    public DataMapsUpdatedEvent(RegistryAccess registryAccess, Registry<?> registry, UpdateCause cause) {
         this.registryAccess = registryAccess;
         this.registry = registry;
         this.cause = cause;
@@ -44,7 +45,7 @@ public class DataMapsUpdatedEvent extends Event {
     /**
      * {@return the registry that had its data maps updated}
      */
-    public IForgeRegistry<?> getRegistry() {
+    public Registry<?> getRegistry() {
         return registry;
     }
 
@@ -52,7 +53,7 @@ public class DataMapsUpdatedEvent extends Event {
      * {@return the key of the registry that had its data maps updated}
      */
     public ResourceKey<? extends Registry<?>> getRegistryKey() {
-        return registry.getRegistryKey();
+        return registry.key();
     }
 
     /**

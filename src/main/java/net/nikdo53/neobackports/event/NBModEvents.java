@@ -1,10 +1,8 @@
 package net.nikdo53.neobackports.event;
 
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceProvider;
 import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.common.crafting.*;
-import net.minecraftforge.common.crafting.conditions.*;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.common.Mod;
@@ -15,14 +13,11 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.datagen.condition.neoforge.*;
 import net.nikdo53.neobackports.datamaps.NeoForgeDataMaps;
-import net.nikdo53.neobackports.io.networking.NBNetworking;
-import net.nikdo53.neobackports.io.networking.PayloadRegistrar;
 import net.nikdo53.neobackports.registry.ForgeRegistryHelper;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import net.nikdo53.neobackports.screen.BlurShaderLoader;
 import net.nikdo53.neobackports.datamaps.DataMapsManager;
 import net.nikdo53.neobackports.test.NBDataMaps;
-import net.nikdo53.neobackports.test.TestPacket;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, modid = NeoBackports.MOD_ID)
 public class NBModEvents {
@@ -56,10 +51,10 @@ public class NBModEvents {
     @SubscribeEvent
     public static void addRegistry(NewRegistryEvent event) {
         ForgeRegistryHelper.getInstance(NeoForgeRegistries.Keys.ATTACHMENT_TYPES)
-                .createWithWrapper(event, reg -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL = reg);
+                .create(event, reg -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL = reg);
 
         ForgeRegistryHelper.getInstance(NeoForgeRegistries.Keys.DATA_COMPONENT_TYPE)
-                .createWithWrapper(event, reg -> NeoForgeRegistries.DATA_COMPONENT_TYPE = reg);
+                .create(event, reg -> NeoForgeRegistries.DATA_COMPONENT_TYPE = reg);
 
     }
 

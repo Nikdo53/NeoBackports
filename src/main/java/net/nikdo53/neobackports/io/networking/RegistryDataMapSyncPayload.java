@@ -8,6 +8,7 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.EncoderException;
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -105,7 +106,8 @@ public record RegistryDataMapSyncPayload<T>(ResourceKey<? extends Registry<T>> r
         context.enqueueWork(() -> {
             try {
                 var regAccess = level.registryAccess();
-                IForgeRegistry registry = RegistryManager.ACTIVE.getRegistry(registryKey());
+                final MappedRegistry<T> registry = (MappedRegistry<T>) regAccess
+                        .registryOrThrow(registryKey);
 
                 registry.getDataMaps().clear();
 

@@ -6,6 +6,7 @@
 package net.nikdo53.neobackports.datamaps;
 
 import com.mojang.datafixers.util.Either;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -35,7 +36,7 @@ public interface DataMapValueMerger<R, T> {
      * @param secondValue the second (newer) value
      * @return the merged value
      */
-    T merge(IForgeRegistry<R> registry, Either<TagKey<R>, ResourceKey<R>> first, T firstValue, Either<TagKey<R>, ResourceKey<R>> second, T secondValue);
+    T merge(Registry<R> registry, Either<TagKey<R>, ResourceKey<R>> first, T firstValue, Either<TagKey<R>, ResourceKey<R>> second, T secondValue);
 
     /**
      * {@return a default merger that overrides the old value with the new one}

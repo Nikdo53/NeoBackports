@@ -7,6 +7,7 @@ package net.nikdo53.neobackports.datamaps;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -36,7 +37,7 @@ public interface DataMapValueRemover<R, T> {
      * @return the remainder. If an {@link Optional#empty() empty optional}, the value will be removed
      *         completely. Otherwise, this method returns the new value of the attached data.
      */
-    Optional<T> remove(T value, IForgeRegistry<R> registry, Either<TagKey<R>, ResourceKey<R>> source, R object);
+    Optional<T> remove(T value, Registry<R> registry, Either<TagKey<R>, ResourceKey<R>> source, R object);
 
     /**
      * A remover that completely removes the value.
@@ -58,7 +59,7 @@ public interface DataMapValueRemover<R, T> {
         private Default() {}
 
         @Override
-        public Optional<T> remove(T value, IForgeRegistry<R> registry, Either<TagKey<R>, ResourceKey<R>> source, R object) {
+        public Optional<T> remove(T value, Registry<R> registry, Either<TagKey<R>, ResourceKey<R>> source, R object) {
             return Optional.empty();
         }
     }

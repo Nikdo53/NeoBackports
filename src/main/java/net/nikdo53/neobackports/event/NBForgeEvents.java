@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2FloatOpenHashMap;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySynchronization;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -76,13 +77,13 @@ public class NBForgeEvents {
 
     @SubscribeEvent
     public static void dataMapsUpdated(DataMapsUpdatedEvent event) {
-        IForgeRegistry<?> registry = event.getRegistry();
-        if (event.getCause() == DataMapsUpdatedEvent.UpdateCause.SERVER_RELOAD && registry.equals(ForgeRegistries.ITEMS)) {
+        Registry<?> registry = event.getRegistry();
+        if (event.getCause() == DataMapsUpdatedEvent.UpdateCause.SERVER_RELOAD && registry.equals(BuiltInRegistries.ITEM)) {
             if (NeoForgeDataMaps.ORIGINAL_COMPOSTABLES == null){
                 NeoForgeDataMaps.ORIGINAL_COMPOSTABLES = ImmutableMap.copyOf(ComposterBlock.COMPOSTABLES);
             }
 
-            IForgeRegistry<Item> itemRegistry = (IForgeRegistry<Item>) registry;
+            Registry<Item> itemRegistry = (Registry<Item>) registry;
 
             List<Pair<Item, Compostable>> dataMap = itemRegistry.getDataMap(NeoForgeDataMaps.COMPOSTABLES)
                     .entrySet()
@@ -106,7 +107,8 @@ public class NBForgeEvents {
         ServerPlayer serverPlayer = event.getPlayer();
 
         DataMapsManager.getDataMaps().forEach((registry, values) -> {
-            final var regOpt = RegistryManager.ACTIVE.getRegistry((ResourceKey) registry);
+            final var regOpt = event.getPlayerList().getServer().overworld().registryAccess()
+                    .registry(registry);
             if (regOpt.isEmpty()) return;
 
             Stream<ServerPlayer> relevantPlayers = serverPlayer == null ? event.getPlayerList().getPlayers().stream() : Stream.of(serverPlayer);
@@ -119,7 +121,7 @@ public class NBForgeEvents {
                 }
                 final var playerMaps = player.connection.connection.channel().attr(DataMapsManager.ATTRIBUTE_KNOWN_DATA_MAPS).get();
                 if (playerMaps == null) return; // Skip gametest players for instance
-                handleSync(player, regOpt, playerMaps.getOrDefault(registry, List.of()));
+                handleSync(player, regOpt.get(), playerMaps.getOrDefault(registry, List.of()));
             });
         });
     }
@@ -131,16 +133,16 @@ public class NBForgeEvents {
         return (RegistrySynchronization.NetworkedRegistryData<T>) DataPackRegistriesHooksAccessor.getNetworkableRegistries().get(registry);
     }
 
-    private static <T> void handleSync(ServerPlayer player, IForgeRegistry<T> registry, Collection<ResourceLocation> attachments) {
+    private static <T> void handleSync(ServerPlayer player, Registry<T> registry, Collection<ResourceLocation> attachments) {
         if (attachments.isEmpty()) return;
         final Map<ResourceLocation, Map<ResourceKey<T>, ?>> att = new HashMap<>();
         attachments.forEach(key -> {
-            final var attach = DataMapsManager.getDataMap(registry.getRegistryKey(), key);
+            final var attach = DataMapsManager.getDataMap(registry.key(), key);
             if (attach == null || attach.networkCodec() == null) return;
             att.put(key, registry.getDataMap(attach));
         });
         if (!att.isEmpty()) {
-            NBNetworking.sendToPlayer(player, new RegistryDataMapSyncPayload<>(registry.getRegistryKey(), att));
+            NBNetworking.sendToPlayer(player, new RegistryDataMapSyncPayload<>(registry.key(), att));
         }
     }
 

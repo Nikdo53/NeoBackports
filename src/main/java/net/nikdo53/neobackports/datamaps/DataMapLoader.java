@@ -11,6 +11,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.core.Holder;
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.FileToIdConverter;
@@ -24,8 +25,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryManager;
 import net.nikdo53.neobackports.datagen.condition.ConditionalOps;
 import net.nikdo53.neobackports.event.DataMapsUpdatedEvent;
 import org.slf4j.Logger;
@@ -59,20 +58,20 @@ public class DataMapLoader implements PreparableReloadListener {
     }
 
     public void apply() {
-        results.forEach((key, result) -> this.apply(RegistryManager.ACTIVE.getRegistry(key.location()), result));
+        results.forEach((key, result) -> this.apply((MappedRegistry) this.registryAccess.registryOrThrow(key), result));
 
         // Clear the intermediary maps and objects
         results = null;
     }
 
-    private <T> void apply(IForgeRegistry<T> registry, LoadResult<T> result) {
+    private <T> void apply(Registry<T> registry, LoadResult<T> result) {
         registry.getDataMaps().clear();
         result.results().forEach((key, entries) -> registry.getDataMaps().put(
                 key, this.buildDataMap(registry, key, (List) entries)));
         MinecraftForge.EVENT_BUS.post(new DataMapsUpdatedEvent(registryAccess, registry, DataMapsUpdatedEvent.UpdateCause.SERVER_RELOAD));
     }
 
-    private <T, R> Map<ResourceKey<R>, T> buildDataMap(IForgeRegistry<R> registry, DataMapType<R, T> attachment, List<DataMapFile<T, R>> entries) {
+    private <T, R> Map<ResourceKey<R>, T> buildDataMap(Registry<R> registry, DataMapType<R, T> attachment, List<DataMapFile<T, R>> entries) {
         record WithSource<T, R>(T attachment, Either<TagKey<R>, ResourceKey<R>> source) {}
         final Map<ResourceKey<R>, WithSource<T, R>> result = new IdentityHashMap<>();
         final DataMapValueMerger<R, T> merger = attachment instanceof AdvancedDataMapType<R, T, ?> adv ? adv.merger() : DataMapValueMerger.defaultMerger();
@@ -122,7 +121,7 @@ public class DataMapLoader implements PreparableReloadListener {
         return newMap;
     }
 
-    private <R> void resolve(IForgeRegistry<R> registry, Either<TagKey<R>, ResourceKey<R>> value, boolean required, Consumer<Holder<R>> consumer) {
+    private <R> void resolve(Registry<R> registry, Either<TagKey<R>, ResourceKey<R>> value, boolean required, Consumer<Holder<R>> consumer) {
         if (value.left().isPresent()) {
             getTagOrEmpty(registry, value.left().orElseThrow()).forEach(consumer);
         } else {
@@ -130,13 +129,13 @@ public class DataMapLoader implements PreparableReloadListener {
             if (object.isPresent()) {
                 consumer.accept(object.get());
             } else if (required) {
-                LOGGER.error("Object with ID {} specified in data map for registry {} doesn't exist", value.right().orElseThrow().location(), registry.getRegistryKey().location());
+                LOGGER.error("Object with ID {} specified in data map for registry {} doesn't exist", value.right().orElseThrow().location(), registry.key().location());
             }
         }
     }
 
-    public static <T> Iterable<Holder<T>> getTagOrEmpty(IForgeRegistry<T> registry, TagKey<T> key) {
-        return registry.tags().getTag(key).stream().map(thing -> registry.getHolder(thing).get()).toList();
+    public static <T> Iterable<Holder<T>> getTagOrEmpty(Registry<T> registry, TagKey<T> key) {
+        return registry.getTagOrEmpty(key);
     }
 
     private CompletableFuture<Map<ResourceKey<? extends Registry<?>>, LoadResult<?>>> load(ResourceManager manager, Executor executor, ProfilerFiller profiler) {

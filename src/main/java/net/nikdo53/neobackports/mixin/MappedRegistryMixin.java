@@ -14,9 +14,13 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraftforge.registries.RegistryManager;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import net.nikdo53.neobackports.extensions.ILifecycleRegistryExtension;
+import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
 import net.nikdo53.neobackports.registry.RegistryLookupWrapper;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -28,7 +32,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Mixin(MappedRegistry.class)
-public abstract class MappedRegistryMixin<T> implements ILifecycleRegistryExtension<T>, Registry<T> {
+public abstract class MappedRegistryMixin<T> implements ILifecycleRegistryExtension<T>, Registry<T>, IRegistryDataMapExtension<T> {
+
+    @Unique
+    Map<DataMapType<T, ?>, Map<ResourceKey<T>, ?>> neoBackports$dataMaps = new HashMap<>();
+
+    public Map<DataMapType<T, ?>, Map<ResourceKey<T>, ?>> getDataMaps() {
+        return neoBackports$dataMaps;
+    }
+
+    @Override
+    public <A> Map<ResourceKey<T>, A> getDataMap(DataMapType<T, A> type) {
+        return (Map<ResourceKey<T>, A>) neoBackports$dataMaps.getOrDefault(type, Map.of());
+    }
+
+    @Override
+    public @Nullable <A> A getData(DataMapType<T, A> type, ResourceKey<T> key) {
+        final var innerMap = neoBackports$dataMaps.get(type);
+        return innerMap == null ? null : (A) innerMap.get(key);
+    }
+
+
     @Unique
     Map<ResourceKey<T>, Lifecycle> neoBackports$lifecycleKeyMap = new HashMap<>();
 
@@ -56,7 +80,7 @@ public abstract class MappedRegistryMixin<T> implements ILifecycleRegistryExtens
 
     @Override
     public @NotNull Codec<Holder<T>> holderByNameCodecNeo() {
-        Codec<Holder<T>> codec = ResourceLocation.CODEC.flatXmap((p_258174_) -> {
+        return ResourceLocation.CODEC.flatXmap((p_258174_) -> {
             return this.getHolder(ResourceKey.create(this.key(), p_258174_)).map(DataResult::success).orElseGet(() -> {
                 return DataResult.error(() -> {
                     return "Unknown registry key in " + this.key() + ": " + p_258174_;
@@ -69,11 +93,7 @@ public abstract class MappedRegistryMixin<T> implements ILifecycleRegistryExtens
                 });
             });
         });
-        return ExtraCodecs.overrideLifecycle(codec, (p_258178_) -> {
-            return getLifecycleKeyMap().get(p_258178_.getKey());
-        }, (p_258171_) -> {
-            return getLifecycleKeyMap().get(p_258171_.getKey());
-        });
+
     }
 
     @Override

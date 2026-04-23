@@ -23,17 +23,18 @@ public interface RegistryMixin<T> extends IRegistryDataMapExtension<T>, ILifecyc
 
     @Override
     default Map<DataMapType<T, ?>, Map<ResourceKey<T>, ?>> getDataMaps() {
-        return RegistryManager.ACTIVE.getRegistry(key()).getDataMaps();
+        return IRegistryDataMapExtension.super.getDataMaps();
     }
 
     @Override
     default <A> Map<ResourceKey<T>, A> getDataMap(DataMapType<T, A> type) {
-        return RegistryManager.ACTIVE.getRegistry(key()).getDataMap(type);
+        return IRegistryDataMapExtension.super.getDataMap(type);
     }
 
     @Override
-    default @Nullable <A> A getData(DataMapType<T, A> type, ResourceKey<T> key) {
-        return RegistryManager.ACTIVE.getRegistry(key()).getData(type, key);
+    @Nullable
+    default <A> A getData(DataMapType<T, A> type, ResourceKey<T> key) {
+        return IRegistryDataMapExtension.super.getData(type, key);
     }
 
     @Override
