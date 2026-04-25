@@ -20,7 +20,7 @@ public interface RecipeSerializerNeo<T extends Recipe<?>> extends RecipeSerializ
 
     @Override
     default T fromJson(ResourceLocation recipeId, JsonObject serializedRecipe){
-        if (enableWarning()){
+        if (itemCodecWarningEnabled()){
             JsonElement result = serializedRecipe.get("result");
             if (result != null && result.isJsonObject() ){
 
@@ -39,12 +39,16 @@ public interface RecipeSerializerNeo<T extends Recipe<?>> extends RecipeSerializ
             NeoBackports.LOGGER.error("Failed to parse recipe {}: {}", recipeId, e.getMessage());
             throw e;
         }
+        RecipeIdHolder.register(recipeId, result, false);
         return result;
     }
 
     @Override
     default @Nullable T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer){
-        return streamCodec().decode(buffer);
+        T result = streamCodec().decode(buffer);
+        RecipeIdHolder.register(recipeId, result, true);
+
+        return result;
     }
 
     @Override
@@ -52,7 +56,7 @@ public interface RecipeSerializerNeo<T extends Recipe<?>> extends RecipeSerializ
         streamCodec().encode(buffer, recipe);
     }
 
-    default boolean enableWarning(){
+    default boolean itemCodecWarningEnabled(){
         return true;
     }
 }
