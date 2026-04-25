@@ -22,11 +22,11 @@ public abstract class AbstractWidgetMixin implements IAbstractWidgetExtension {
 
     @Override
     public int getBottom() {
-        return this.getX() + this.getWidth();
+        return this.getY() + this.getHeight();
     }
 
     @Override
     public int getRight() {
-        return this.getY() + this.getHeight();
+        return this.getX() + this.getWidth();
     }
 }
