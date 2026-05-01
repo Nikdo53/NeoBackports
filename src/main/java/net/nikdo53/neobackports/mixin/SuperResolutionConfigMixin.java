@@ -13,7 +13,8 @@ public class SuperResolutionConfigMixin {
     @WrapMethod(method = "getInjectPostChainBlackList", expect = -1)
     private static List<String> getInjectPostChainBlackListInject(Operation<List<String>> original){
         List<String> call = original.call();
-        call.add(BlurShaderLoader.BLUR_LOCATION.toString());
+        String string = BlurShaderLoader.BLUR_LOCATION.toString();
+        if (!call.contains(string)) call.add(string);
         return call;
     }
 }
