@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.nikdo53.neobackports.extensions.IForgeRegistryExtension;
 import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
 import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 @Mixin(IForgeRegistry.class)
-public interface IForgeRegistryMixin<T> extends IRegistryDataMapExtension<T> {
+public interface IForgeRegistryMixin<T> extends IRegistryDataMapExtension<T>, IForgeRegistryExtension<T> {
     @Override
     default Map<DataMapType<T, ?>, Map<ResourceKey<T>, ?>> getDataMaps() {
         throw new IllegalStateException("not implemented");
@@ -37,6 +38,11 @@ public interface IForgeRegistryMixin<T> extends IRegistryDataMapExtension<T> {
     @Override
     @Nullable
     default <A> A getData(DataMapType<T, A> type, ResourceKey<T> key) {
+        throw new IllegalStateException("not implemented");
+    }
+
+    @Override
+    default HolderLookup.RegistryLookup<T> getRegistryLookup() {
         throw new IllegalStateException("not implemented");
     }
 }

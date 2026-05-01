@@ -36,7 +36,9 @@
   ],
 
   "net/minecraftforge/registries/IForgeRegistry": [
-    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>"
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>",
+    "net/nikdo53/neobackports/extensions/IForgeRegistryExtension<V>"
+
   ],
 
   "net/minecraftforge/registries/DeferredRegister": [

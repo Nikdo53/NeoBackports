@@ -6,6 +6,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -13,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistry;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.datamaps.DataMapType;
+import net.nikdo53.neobackports.extensions.IForgeRegistryExtension;
 import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
 import net.nikdo53.neobackports.registry.ForgeRegistryLookup;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Map;
 
 @Mixin(value = ForgeRegistry.class, remap = false)
-public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension<V> {
+public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension<V>, IForgeRegistryExtension<V> {
 
     @Shadow
     @Final
@@ -72,6 +75,14 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
 
     @Unique
     public boolean neoBackports$hasFakeLookup = false;
+
+    @Override
+    @SuppressWarnings("unchecked, rawtypes")
+    public HolderLookup.RegistryLookup<V> getRegistryLookup() {
+        if (hasWrapper)
+            return BuiltInRegistries.REGISTRY.get((ResourceKey) getRegistryKey()).asLookup();
+        return neoBackports$lookup;
+    }
 
     @Definition(id = "hasWrapper", field = "Lnet/minecraftforge/registries/ForgeRegistry;hasWrapper:Z")
     @Expression("this.hasWrapper")
