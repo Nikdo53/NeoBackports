@@ -31,6 +31,8 @@
     "RegistryBuilderAccessor",
     "RegistryLookupMixin",
     "RegistryMixin",
+    "GameDataMixin",
+    "ItemPropertiesMixin",
     "TooltipFlagMixin"
   ],
   "injectors": {
@@ -42,9 +44,7 @@
     "AccessibilityOptionsScreenMixin",
     "BlockEntityRendererMixin",
     "EditBoxMixin",
-    "GameDataMixin",
     "GameRendererMixin",
-    "ItemPropertiesMixin",
     "LevelRendererMixin",
     "ModelMixin",
     "ModelPartMixin",
