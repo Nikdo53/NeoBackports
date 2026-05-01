@@ -48,11 +48,7 @@ public class BlurShaderLoader {
     }
 
     protected void processBlurEffect(float partialTick) {
-
-        //TODO: add the setting
-
         float f = menuBackgroundBlurriness.get();
-        // float f = 5;
         if (this.blurEffect != null && f >= 1.0F) {
             setUniform(blurEffect ,"Radius", f);
             this.blurEffect.process(partialTick);

@@ -15,6 +15,7 @@
     "DeferredRegisterMixin",
     "ForgeHooksMixin",
     "ForgeRegistryMixin",
+    "GameDataMixin",
     "HolderMixin",
     "HolderReferenceMixin",
     "ICapabilityProviderMixin",
@@ -22,6 +23,7 @@
     "IForgeRegistryMixin",
     "IngredientMixin",
     "ItemMixin",
+    "ItemPropertiesMixin",
     "ItemStackMixin",
     "LevelMixin",
     "MappedRegistryMixin",
@@ -31,14 +33,13 @@
     "RegistryBuilderAccessor",
     "RegistryLookupMixin",
     "RegistryMixin",
-    "GameDataMixin",
-    "ItemPropertiesMixin",
     "TooltipFlagMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
+    "SuperResolutionConfigMixin",
     "AbstractSelectionListMixin",
     "AbstractWidgetMixin",
     "AccessibilityOptionsScreenMixin",
