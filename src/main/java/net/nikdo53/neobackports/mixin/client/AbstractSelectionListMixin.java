@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
-import static net.nikdo53.neobackports.screen.OptionsScreenBackports.*;
+import static net.nikdo53.neobackports.screen.BlurScreenBackports.*;
 
 @Mixin(AbstractSelectionList.class)
 public abstract class AbstractSelectionListMixin {

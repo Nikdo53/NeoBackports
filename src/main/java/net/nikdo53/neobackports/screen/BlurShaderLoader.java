@@ -15,7 +15,6 @@ import net.nikdo53.neobackports.NeoBackports;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class BlurShaderLoader {
     public static final ResourceLocation BLUR_LOCATION = NeoBackports.loc("shaders/post/new_blur.json");
@@ -71,10 +70,17 @@ public class BlurShaderLoader {
     }
 
     public static boolean shouldCancelBackground() {
-        return isEnabled()
-                && (Minecraft.getInstance().level != null || OptionsScreenBackports.PANORAMA != null)
+        return shouldCancelBackground(false);
+    }
+
+    public static boolean shouldCancelBackground(boolean isInGame) {
+        boolean resourcePack = BlurScreenBackports.hasResourcePack();
+        return (isEnabled() || (BlurScreenBackports.PANORAMA != null && resourcePack)) // Makes sure you can use the RP without the blur
+                && (Minecraft.getInstance().level != null || BlurScreenBackports.PANORAMA != null) // Cancels the in-between-loading screen
+                && resourcePack || isInGame // Main menu only works with the RP
         ;
     }
+
 
     public void setUniform(PostChain postChain, String name, float backgroundBlurriness) {
         for (PostPass postpass : postChain.passes) {

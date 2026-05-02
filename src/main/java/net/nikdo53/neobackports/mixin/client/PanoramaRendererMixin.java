@@ -2,7 +2,7 @@ package net.nikdo53.neobackports.mixin.client;
 
 import net.minecraft.client.renderer.CubeMap;
 import net.minecraft.client.renderer.PanoramaRenderer;
-import net.nikdo53.neobackports.screen.OptionsScreenBackports;
+import net.nikdo53.neobackports.screen.BlurScreenBackports;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,6 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PanoramaRendererMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     void grabPanorama(CubeMap cubeMap, CallbackInfo ci){
-        OptionsScreenBackports.PANORAMA = ((PanoramaRenderer) (Object) this);
+        BlurScreenBackports.PANORAMA = ((PanoramaRenderer) (Object) this);
     }
 }

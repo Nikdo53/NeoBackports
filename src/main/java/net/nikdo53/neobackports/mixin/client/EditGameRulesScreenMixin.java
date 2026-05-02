@@ -19,7 +19,7 @@ public class EditGameRulesScreenMixin extends Screen {
 
     @Inject(method = "render", at = @At("HEAD"))
     private void onRender(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick, CallbackInfo ci){
-       if (BlurShaderLoader.isEnabled())
+       if (BlurShaderLoader.shouldCancelBackground())
            renderBackground(guiGraphics);
     }
 }

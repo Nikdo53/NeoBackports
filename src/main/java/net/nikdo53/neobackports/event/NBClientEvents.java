@@ -5,13 +5,13 @@ import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.nikdo53.neobackports.NeoBackports;
-import net.nikdo53.neobackports.screen.OptionsScreenBackports;
+import net.nikdo53.neobackports.screen.BlurScreenBackports;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = NeoBackports.MOD_ID, value = Dist.CLIENT)
 public class NBClientEvents {
 
     @SubscribeEvent
     public static void onLevelLoad(LevelEvent.Unload event){
-        OptionsScreenBackports.PANORAMA = null;
+        BlurScreenBackports.PANORAMA = null;
     }
 }
