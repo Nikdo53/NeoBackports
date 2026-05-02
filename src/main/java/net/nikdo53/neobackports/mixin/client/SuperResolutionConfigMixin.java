@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mixin(value = SuperResolutionConfig.class, remap = false)
 public class SuperResolutionConfigMixin {
-    @WrapMethod(method = "getInjectPostChainBlackList", expect = -1)
+    @WrapMethod(method = "getInjectPostChainBlackList", require = 0)
     private static List<String> getInjectPostChainBlackListInject(Operation<List<String>> original){
         List<String> call = original.call();
         String string = BlurShaderLoader.BLUR_LOCATION.toString();

@@ -29,7 +29,7 @@ public class BlurScreenBackports {
         renderBlurOrPanorama(instance, 0, 0, width, height);
     }
 
-    public static void renderBlurOrPanorama(GuiGraphics instance, int x1, int y1, int width, int height) {
+    public static void renderBlurOrPanorama(GuiGraphics guiGraphics, int x1, int y1, int width, int height) {
         Minecraft minecraft = Minecraft.getInstance();
 
         PanoramaRenderer panoramaRenderer = BlurScreenBackports.PANORAMA;
@@ -40,7 +40,7 @@ public class BlurScreenBackports {
         BlurShaderLoader.INSTANCE.renderBlurredBackground(minecraft.getDeltaFrameTime());
 
         RenderSystem.enableBlend();
-        instance.blit(minecraft.level == null ? BlurScreenBackports.MENU_BACKGROUND : BlurScreenBackports.INWORLD_MENU_BACKGROUND, x1, y1, 0, 0f, 0f, width, height, 32, 32);
+        guiGraphics.blit(minecraft.level == null ? BlurScreenBackports.MENU_BACKGROUND : BlurScreenBackports.INWORLD_MENU_BACKGROUND, x1, y1, 0, 0f, 0f, width, height, 32, 32);
         RenderSystem.disableBlend();
     }
 

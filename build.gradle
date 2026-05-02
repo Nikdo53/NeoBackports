@@ -126,6 +126,8 @@ dependencies {
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.3"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.5.3"))
     modCompileOnly("maven.modrinth:superresolution:1.20.1-0.8.2-alpha.1-forge")
+    modImplementation("curse.maven:map-atlases-forge-519759:7660146")
+    modImplementation("curse.maven:selene-499980:7945711")
 
     // modImplementation ("curse.maven:embeddium-908741:5681725")
   // modImplementation("curse.maven:aether-255308:6134920")

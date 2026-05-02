@@ -19,6 +19,7 @@ import java.io.IOException;
 public class BlurShaderLoader {
     public static final ResourceLocation BLUR_LOCATION = NeoBackports.loc("shaders/post/new_blur.json");
     public static final BlurShaderLoader INSTANCE = new BlurShaderLoader();
+    public static boolean GL_DEPTH_STATE = true;
 
     @Nullable
     public PostChain blurEffect;
@@ -58,7 +59,7 @@ public class BlurShaderLoader {
         // Neo: fix blur effect rendered at high z with depth test breaking subsequent rendering of screen elements (https://github.com/neoforged/NeoForge/issues/1504)
         RenderSystem.disableDepthTest();
         processBlurEffect(partialTick);
-        this.minecraft.getMainRenderTarget().bindWrite(false);
+        this.minecraft.getMainRenderTarget().bindWrite(true);
     }
 
     public static boolean isEnabled() {
@@ -75,9 +76,10 @@ public class BlurShaderLoader {
 
     public static boolean shouldCancelBackground(boolean isInGame) {
         boolean resourcePack = BlurScreenBackports.hasResourcePack();
-        return (isEnabled() || (BlurScreenBackports.PANORAMA != null && resourcePack)) // Makes sure you can use the RP without the blur
+        boolean enabled = isEnabled();
+        return (enabled || (BlurScreenBackports.PANORAMA != null && resourcePack)) // Makes sure you can use the RP without the blur
                 && (Minecraft.getInstance().level != null || BlurScreenBackports.PANORAMA != null) // Cancels the in-between-loading screen
-                && resourcePack || isInGame // Main menu only works with the RP
+                && ((resourcePack || isInGame) && enabled)// Main menu only works with the RP
         ;
     }
 

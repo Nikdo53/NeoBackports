@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.expression.Definition;
 import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -42,7 +43,7 @@ public abstract class ScreenMixin  {
     @WrapOperation(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fillGradient(IIIIII)V"))
     void cancelTheBlackThingy(GuiGraphics instance, int x1, int y1, int x2, int y2, int colorFrom, int colorTo, Operation<Void> original){
         if (!(((Screen) (Object) this) instanceof AbstractContainerScreen))
-            if(BlurShaderLoader.shouldCancelBackground(true)) {
+            if(BlurShaderLoader.shouldCancelBackground(true) && !BlurShaderLoader.GL_DEPTH_STATE) {
                 BlurScreenBackports.renderBlurOrPanorama(instance, x1, y1, x2, y2);
                 return;
             }

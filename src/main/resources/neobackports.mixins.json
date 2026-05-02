@@ -46,6 +46,7 @@
     "client.EditBoxMixin",
     "client.EditGameRulesScreenMixin",
     "client.GameRendererMixin",
+    "client.GlStateManagerMixin",
     "client.LevelRendererMixin",
     "client.ModelMixin",
     "client.ModelPartMixin",
