@@ -1,4 +1,4 @@
-package net.nikdo53.neobackports.mixin;
+package net.nikdo53.neobackports.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

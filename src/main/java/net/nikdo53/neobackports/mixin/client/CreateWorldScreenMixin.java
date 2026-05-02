@@ -1,6 +1,5 @@
-package net.nikdo53.neobackports.mixin;
+package net.nikdo53.neobackports.mixin.client;
 
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.systems.RenderSystem;

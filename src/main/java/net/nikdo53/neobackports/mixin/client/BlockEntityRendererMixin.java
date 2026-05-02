@@ -1,4 +1,4 @@
-package net.nikdo53.neobackports.mixin;
+package net.nikdo53.neobackports.mixin.client;
 
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.world.level.block.entity.BlockEntity;

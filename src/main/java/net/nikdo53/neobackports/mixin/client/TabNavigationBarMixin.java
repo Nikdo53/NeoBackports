@@ -1,4 +1,4 @@
-package net.nikdo53.neobackports.mixin;
+package net.nikdo53.neobackports.mixin.client;
 
 import com.google.common.collect.ImmutableList;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.TabButton;
 import net.minecraft.client.gui.components.tabs.TabNavigationBar;
 import net.minecraft.client.gui.layouts.GridLayout;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.resources.ResourceLocation;
 import net.nikdo53.neobackports.screen.BlurShaderLoader;
 import net.nikdo53.neobackports.screen.OptionsScreenBackports;

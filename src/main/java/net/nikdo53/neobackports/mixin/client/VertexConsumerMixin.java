@@ -1,4 +1,4 @@
-package net.nikdo53.neobackports.mixin;
+package net.nikdo53.neobackports.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(VertexConsumer.class)
-public interface VertexConsumeMixin extends IVertexConsumerExtension {
+public interface VertexConsumerMixin extends IVertexConsumerExtension {
     @Shadow
     VertexConsumer vertex(double x, double y, double z);
 

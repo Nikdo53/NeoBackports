@@ -1,7 +1,6 @@
-package net.nikdo53.neobackports.mixin;
+package net.nikdo53.neobackports.mixin.client;
 
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.screens.VideoSettingsScreen;
 import net.nikdo53.neobackports.screen.BlurShaderLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
