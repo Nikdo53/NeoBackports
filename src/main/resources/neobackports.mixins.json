@@ -39,12 +39,13 @@
     "defaultRequire": 1
   },
   "client": [
-    "SuperResolutionConfigMixin",
     "AbstractSelectionListMixin",
     "AbstractWidgetMixin",
     "AccessibilityOptionsScreenMixin",
     "BlockEntityRendererMixin",
+    "CreateWorldScreenMixin",
     "EditBoxMixin",
+    "EditGameRulesScreenMixin",
     "GameRendererMixin",
     "LevelRendererMixin",
     "ModelMixin",
@@ -53,6 +54,9 @@
     "PanoramaRendererMixin",
     "ScreenMixin",
     "SelectWorldScreenMixin",
+    "SuperResolutionConfigMixin",
+    "TabNavigationBarMixin",
+    "TabNavigationBarMixin$TabButtonMixin",
     "VertexConsumeMixin",
     "VideoSettingsMixin"
   ],

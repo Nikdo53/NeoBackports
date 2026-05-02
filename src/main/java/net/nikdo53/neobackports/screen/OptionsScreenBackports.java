@@ -3,11 +3,9 @@ package net.nikdo53.neobackports.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.renderer.PanoramaRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Unique;
 
 
 public class OptionsScreenBackports {
@@ -19,6 +17,9 @@ public class OptionsScreenBackports {
 
     public static final ResourceLocation MENU_BACKGROUND = new ResourceLocation("textures/gui/menu_background.png");
     public static final ResourceLocation INWORLD_MENU_BACKGROUND = new ResourceLocation("textures/gui/inworld_menu_background.png");
+
+    public static final ResourceLocation TAB_BUTTON_NEO = new ResourceLocation("textures/gui/tab_button_neo.png");
+
 
     @Nullable
     public static PanoramaRenderer PANORAMA = null;
