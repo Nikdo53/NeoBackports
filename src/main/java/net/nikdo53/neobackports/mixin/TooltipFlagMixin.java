@@ -6,37 +6,32 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.nikdo53.neobackports.extensions.ITooltipFlagExtension;
+import net.nikdo53.neobackports.utils.TooltipFlagUtils;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(TooltipFlag.class)
 public interface TooltipFlagMixin extends ITooltipFlagExtension {
     @Override
     default boolean hasControlDown() {
-        return FMLLoader.getDist().isClient() && ClientThingy.hasControlDown();
+        if (FMLLoader.getDist().isClient()) {
+            return TooltipFlagUtils.hasControlDown();
+        }
+        return false;
     }
 
     @Override
     default boolean hasShiftDown() {
-        return FMLLoader.getDist().isClient() && ClientThingy.hasShiftDown();
+        if (FMLLoader.getDist().isClient()) {
+            return TooltipFlagUtils.hasShiftDown();
+        }
+        return false;
     }
 
     @Override
     default boolean hasAltDown() {
-        return FMLLoader.getDist().isClient() && ClientThingy.hasAltDown();
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    interface ClientThingy{
-        static boolean hasControlDown() {
-            return Screen.hasControlDown();
+        if (FMLLoader.getDist().isClient()) {
+            return TooltipFlagUtils.hasAltDown();
         }
-
-        static boolean hasShiftDown() {
-            return Screen.hasShiftDown();
-        }
-
-        static boolean hasAltDown() {
-            return Screen.hasAltDown();
-        }
+        return false;
     }
 }

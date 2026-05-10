@@ -66,57 +66,12 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
         return neoBackports$getVanillaOrThrow().getData(type, key);
     }
 
-
-
-    //FUCK FORGE REGISTRIES
-
-    @Unique
-    public ForgeRegistryLookup<V> neoBackports$lookup = new ForgeRegistryLookup<>((ForgeRegistry<V>) ((Object) this));
-
-    @Unique
-    public boolean neoBackports$hasFakeLookup = false;
-
     @Override
     @SuppressWarnings("unchecked, rawtypes")
     public HolderLookup.RegistryLookup<V> getRegistryLookup() {
         if (hasWrapper)
             return BuiltInRegistries.REGISTRY.get((ResourceKey) getRegistryKey()).asLookup();
-        return neoBackports$lookup;
-    }
-
-    @Definition(id = "hasWrapper", field = "Lnet/minecraftforge/registries/ForgeRegistry;hasWrapper:Z")
-    @Expression("this.hasWrapper")
-    @ModifyExpressionValue(method = "add(ILnet/minecraft/resources/ResourceLocation;Ljava/lang/Object;Ljava/lang/String;)I", at = @At("MIXINEXTRAS:EXPRESSION"), remap = false)
-    boolean add(boolean original) {
-        return true;
-    }
-
-
-    @Definition(id = "hasWrapper", field = "Lnet/minecraftforge/registries/ForgeRegistry;hasWrapper:Z")
-    @Expression("this.hasWrapper")
-    @ModifyExpressionValue(method = "resetDelegates", at = @At("MIXINEXTRAS:EXPRESSION"), remap = false)
-    boolean resetDelegates(boolean original){
-        return false;
-    }
-
-    @WrapMethod(method = "lambda$bindDelegate$6", remap = false)
-    private Holder.Reference<V> createFakeLookup(ResourceKey<V> rkey, ResourceLocation k, Operation<Holder.Reference<V>> original){
-
-        Holder.Reference<V> call;
-
-        if (!neoBackports$hasFakeLookup) {
-            try {
-                call = original.call(rkey, k);
-            } catch (IllegalStateException e) {
-                NeoBackports.LOGGER.info("Created a fake HolderLookup for the forge registry: {} as it does not have a wrapper", getRegistryKey().location());
-                neoBackports$hasFakeLookup = true;
-                call = Holder.Reference.createStandAlone(neoBackports$lookup, rkey);
-            }
-        } else {
-            call = Holder.Reference.createStandAlone(neoBackports$lookup, rkey);
-        }
-
-        return call;
+        throw new IllegalStateException("forge registry " + getRegistryName() + " has no wrapper!");
     }
 
 
