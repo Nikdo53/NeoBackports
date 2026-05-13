@@ -20,6 +20,8 @@ import java.util.function.UnaryOperator;
 public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> eitherCodec, boolean deepScan){
 
     public void setOn(ItemStack stack, T data){
+        if (stack.isEmpty()) return;
+
         CompoundTag compoundTag = stack.getOrCreateTag();
         if (eitherCodec.left().isPresent()) {
             eitherCodec.left().get().encodeStart(NbtOps.INSTANCE, data).resultOrPartial(NeoBackports.LOGGER::warn).ifPresent(tag -> compoundTag.put(name, tag));
@@ -29,17 +31,20 @@ public record DataComponentType<T>(String name, Either<Codec<T>, TagCodec<T>> ei
     }
 
     public void removeFrom(ItemStack stack){
-        CompoundTag compoundTag = stack.getOrCreateTag();
+        if (!stack.hasTag()) return;
+        CompoundTag compoundTag = stack.getTag();
 
+        assert compoundTag != null;
         if (compoundTag.contains(name)){
             compoundTag.remove(name);
         }
     }
 
     public boolean isOn(ItemStack stack){
+        if (!stack.hasTag()) return false;
         CompoundTag tag = stack.getTag();
-        if (tag == null) return false;
 
+        assert tag != null;
         if (!tag.contains(name)) return false;
         if (!deepScan) return true;
 

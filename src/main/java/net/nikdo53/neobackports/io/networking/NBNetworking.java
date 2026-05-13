@@ -36,12 +36,6 @@ public class NBNetworking {
                 RegistryDataMapSyncPayload::handle
         );
 
-        register(
-                ClearClientRecipeIdsPayload.class,
-                ClearClientRecipeIdsPayload.STREAM_CODEC,
-                ClearClientRecipeIdsPayload::handle
-        );
-
 
         CHANNEL.messageBuilder(KnownRegistryDataMapsReplyPayload.class, id++, NetworkDirection.PLAY_TO_SERVER).
                // loginIndex(KnownRegistryDataMapsReplyPayload::getLoginIndex, KnownRegistryDataMapsReplyPayload::setLoginIndex).

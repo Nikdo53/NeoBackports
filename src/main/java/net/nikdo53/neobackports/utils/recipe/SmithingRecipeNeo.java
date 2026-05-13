@@ -13,10 +13,10 @@ import net.nikdo53.neobackports.utils.recipe.input.SmithingRecipeInput;
 
 import java.util.Objects;
 
-public interface SmithingRecipeNeo extends SmithingRecipe {
+public interface SmithingRecipeNeo extends SmithingRecipe, NeoRecipe {
     @Override
     default ResourceLocation getId(){
-        return RecipeIdHolder.getId(this);
+        return NeoRecipe.onInvalidId(this);
     }
 
     @Override

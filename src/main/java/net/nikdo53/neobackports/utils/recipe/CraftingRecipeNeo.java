@@ -13,11 +13,11 @@ import net.nikdo53.neobackports.utils.recipe.input.CraftingInput;
 
 import java.util.Objects;
 
-public interface CraftingRecipeNeo extends CraftingRecipe {
+public interface CraftingRecipeNeo extends CraftingRecipe, NeoRecipe {
 
     @Override
     default ResourceLocation getId(){
-        return RecipeIdHolder.getId(this);
+        return NeoRecipe.onInvalidId(this);
     }
 
     @Override
