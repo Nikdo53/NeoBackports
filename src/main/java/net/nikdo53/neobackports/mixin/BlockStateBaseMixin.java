@@ -49,7 +49,7 @@ public abstract class BlockStateBaseMixin implements IBlockStateExtension {
             }
         }
 
-        return InteractionResult.PASS;
+        return original.call(level, player, hand, result);
     }
 
     @Override
