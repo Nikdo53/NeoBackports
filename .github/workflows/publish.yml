@@ -1,4 +1,4 @@
-name: Build
+name: Publish
 
 on: [push, pull_request]
 
@@ -20,12 +20,16 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
-        with:
-          cache-read-only: false
 
       - name: Setup with Gradle
         run: ./gradlew :neoforge:setup -PvalidateAccessTransformers
 
-      - name: Build with Gradle
-        run: ./gradlew assemble checkFormatting
+      - name: Run Gradle Publish
+        run: ./gradlew publish
 
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/maven
+          keep_files: true
