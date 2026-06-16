@@ -1,0 +1,115 @@
+{
+  "net/minecraft/world/item/ItemStack": [
+    "net/nikdo53/neobackports/extensions/ItemStackBackportExtension"
+  ],
+
+  "net/minecraft/world/item/Item$Properties": [
+    "net/nikdo53/neobackports/extensions/ItemPropertiesComponentExtension"
+  ],
+
+  "net/minecraftforge/common/capabilities/ICapabilityProvider": [
+    "net/nikdo53/neobackports/extensions/ICapabilityProviderExtension"
+  ],
+
+  "net/minecraft/data/registries/RegistriesDatapackGenerator": [
+    "net/nikdo53/neobackports/extensions/IDatagenConditionsExtension"
+  ],
+
+  "net/minecraft/core/Holder": [
+    "net/nikdo53/neobackports/extensions/IDataMapHolderExtension<T>"
+  ],
+
+  "net/minecraft/core/Holder$Reference": [
+    "net/nikdo53/neobackports/extensions/IDataMapHolderExtension<T>"
+  ],
+  "net/minecraft/core/HolderLookup$RegistryLookup": [
+    "net/nikdo53/neobackports/extensions/IDataMapLookupExtension<T>"
+  ],
+
+  "net/minecraft/core/Registry": [
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<T>",
+    "net/nikdo53/neobackports/extensions/ILifecycleRegistryExtension<T>"
+  ],
+
+  "net/minecraftforge/registries/ForgeRegistry": [
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>"
+  ],
+
+  "net/minecraftforge/registries/IForgeRegistry": [
+    "net/nikdo53/neobackports/extensions/IRegistryDataMapExtension<V>",
+    "net/nikdo53/neobackports/extensions/IForgeRegistryExtension<V>"
+
+  ],
+
+  "net/minecraftforge/registries/DeferredRegister": [
+    "net/nikdo53/neobackports/extensions/IDeferredRegisterExtension<T>"
+  ],
+
+  "net/minecraft/world/level/block/state/BlockBehaviour": [
+    "net/nikdo53/neobackports/extensions/IBlockBehaviourExtension"
+  ],
+
+  "net/minecraft/world/level/block/state/BlockBehaviour$BlockStateBase": [
+    "net/nikdo53/neobackports/extensions/IBlockStateExtension"
+  ],
+
+  "net/minecraft/network/chat/MutableComponent": [
+    "net/nikdo53/neobackports/extensions/IMutableComponentExtension"
+  ],
+
+  "net/minecraft/world/entity/player/Player": [
+    "net/nikdo53/neobackports/extensions/IPlayerExtension"
+  ],
+
+  "net/minecraftforge/event/AddPackFindersEvent": [
+    "net/nikdo53/neobackports/extensions/IAddPackFindersEventExtension"
+  ],
+
+  "net/minecraft/world/item/Item": [
+    "net/nikdo53/neobackports/extensions/ItemBackportExtension"
+  ],
+
+  "net/minecraft/world/item/TooltipFlag": [
+    "net/nikdo53/neobackports/extensions/ITooltipFlagExtension"
+  ],
+
+  "net/minecraftforge/client/model/generators/ItemModelProvider": [
+    "net/nikdo53/neobackports/extensions/ItemModelProviderExtension"
+  ],
+
+  "net/minecraft/client/gui/components/EditBox": [
+    "net/nikdo53/neobackports/extensions/IEditBoxExtension"
+  ],
+
+  "net/minecraft/world/level/block/entity/BlockEntity": [
+    "net/nikdo53/neobackports/extensions/IBlockEntityExtension"
+  ],
+
+  "com/mojang/blaze3d/vertex/VertexConsumer": [
+    "net/nikdo53/neobackports/extensions/IVertexConsumerExtension"
+  ],
+
+  "net/minecraft/world/item/crafting/Ingredient": [
+    "net/nikdo53/neobackports/extensions/IngredientExtension"
+  ],
+
+  "net/minecraft/client/renderer/blockentity/BlockEntityRenderer": [
+    "net/nikdo53/neobackports/extensions/IBlockEntityRendererExtension<T>"
+  ],
+
+  "net/minecraft/client/model/Model": [
+    "net/nikdo53/neobackports/extensions/IModelExtension"
+  ],
+
+  "net/minecraft/client/gui/components/AbstractWidget": [
+    "net/nikdo53/neobackports/extensions/IAbstractWidgetExtension"
+  ],
+
+  "net/minecraft/client/model/geom/ModelPart": [
+    "net/nikdo53/neobackports/extensions/IModelPartExtension"
+  ],
+
+  "net/minecraft/world/level/Level": [
+    "net/nikdo53/neobackports/extensions/ILevelExtension"
+  ]
+}
