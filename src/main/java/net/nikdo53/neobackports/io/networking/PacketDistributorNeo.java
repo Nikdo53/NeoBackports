@@ -60,7 +60,7 @@ public class PacketDistributorNeo {
 
         for (CustomPacketPayload otherPayload : payloads) {
             if (otherPayload.type().id().getNamespace().equals(namespace)) {
-                channel.send(PacketDistributor.PLAYER.with(() -> player), payload);
+                channel.send(PacketDistributor.PLAYER.with(() -> player), otherPayload);
             } else {
                 throw new IllegalArgumentException("All payloads must be of the same namespace");
             }
@@ -78,7 +78,7 @@ public class PacketDistributorNeo {
 
         for (CustomPacketPayload otherPayload : payloads) {
             if (otherPayload.type().id().getNamespace().equals(namespace)) {
-                channel.send(PacketDistributor.DIMENSION.with(level::dimension), payload);
+                channel.send(PacketDistributor.DIMENSION.with(level::dimension), otherPayload);
             } else {
                 throw new IllegalArgumentException("All payloads must be of the same namespace");
             }
@@ -106,7 +106,7 @@ public class PacketDistributorNeo {
 
         for (CustomPacketPayload otherPayload : payloads) {
             if (otherPayload.type().id().getNamespace().equals(namespace)) {
-                channel.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(excluded, x, y, z, radius, level.dimension())), payload);
+                channel.send(PacketDistributor.NEAR.with(() -> new PacketDistributor.TargetPoint(excluded, x, y, z, radius, level.dimension())), otherPayload);
             } else {
                 throw new IllegalArgumentException("All payloads must be of the same namespace");
             }
@@ -124,7 +124,7 @@ public class PacketDistributorNeo {
 
         for (CustomPacketPayload otherPayload : payloads) {
             if (otherPayload.type().id().getNamespace().equals(namespace)) {
-                channel.send(PacketDistributor.ALL.noArg(), payload);
+                channel.send(PacketDistributor.ALL.noArg(), otherPayload);
             } else {
                 throw new IllegalArgumentException("All payloads must be of the same namespace");
             }
@@ -146,7 +146,7 @@ public class PacketDistributorNeo {
 
             for (CustomPacketPayload otherPayload : payloads) {
                 if (otherPayload.type().id().getNamespace().equals(namespace)) {
-                    channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), payload);
+                    channel.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), otherPayload);
                 } else {
                     throw new IllegalArgumentException("All payloads must be of the same namespace");
                 }
@@ -169,7 +169,7 @@ public class PacketDistributorNeo {
 
             for (CustomPacketPayload otherPayload : payloads) {
                 if (otherPayload.type().id().getNamespace().equals(namespace)) {
-                    channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), payload);
+                    channel.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), otherPayload);
                 } else {
                     throw new IllegalArgumentException("All payloads must be of the same namespace");
                 }
@@ -191,7 +191,7 @@ public class PacketDistributorNeo {
 
         for (CustomPacketPayload otherPayload : payloads) {
             if (otherPayload.type().id().getNamespace().equals(namespace)) {
-                channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), payload);
+                channel.send(PacketDistributor.TRACKING_CHUNK.with(() -> chunk), otherPayload);
             } else {
                 throw new IllegalArgumentException("All payloads must be of the same namespace");
             }
