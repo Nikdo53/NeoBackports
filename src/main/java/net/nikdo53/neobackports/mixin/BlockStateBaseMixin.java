@@ -31,17 +31,29 @@ public abstract class BlockStateBaseMixin implements IBlockStateExtension {
     public abstract boolean is(Block block);
 
     @WrapMethod(method = "use")
-    public InteractionResult use(Level level, Player player, InteractionHand hand, BlockHitResult result, Operation<InteractionResult> original) {
+    public InteractionResult useWrap(Level level, Player player, InteractionHand hand, BlockHitResult result, Operation<InteractionResult> original) {
         IBlockBehaviourExtension extension = (IBlockBehaviourExtension) getBlock();
 
-        ItemInteractionResult itemInteractionResult = extension.useItemOn(player.getItemInHand(hand), asState(), level, result.getBlockPos(), player, hand, result);
+        ItemInteractionResult itemInteractionResult;
+        try {
+            itemInteractionResult = extension.useItemOn(player.getItemInHand(hand), asState(), level, result.getBlockPos(), player, hand, result);
+        } catch (IllegalAccessError e){
+            return original.call(level, player, hand, result);
+        }
 
         if (itemInteractionResult.consumesAction()) {
             return itemInteractionResult.result();
         }
 
         if (itemInteractionResult == ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION && hand == InteractionHand.MAIN_HAND) {
-            InteractionResult interactionresult = extension.useWithoutItem(asState(), level, result.getBlockPos(), player, result);
+            InteractionResult interactionresult;
+
+            try {
+                interactionresult = extension.useWithoutItem(asState(), level, result.getBlockPos(), player, result);
+            } catch (IllegalAccessError e){
+                return original.call(level, player, hand, result);
+            }
+
             if (interactionresult == InteractionResult.PASS) {
                 return original.call(level, player, hand, result);
             } else {
