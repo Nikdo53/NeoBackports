@@ -120,10 +120,6 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
 
     @WrapMethod(method = "is(Lnet/minecraft/core/Holder;)Z")
     public boolean isFix(Holder<Item> item, Operation<Boolean> original){
-        if (item instanceof DeferredHolder<Item,?> deferredHolder) {
-            return is(deferredHolder.value());
-        }
-
-        return original.call(item);
+        return is(item.value());
     }
 }
