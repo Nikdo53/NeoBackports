@@ -1,13 +1,18 @@
 package net.nikdo53.neobackports.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.nikdo53.neobackports.extensions.ItemStackBackportExtension;
 import net.nikdo53.neobackports.io.components.DataComponentType;
 import net.nikdo53.neobackports.io.components.DataComponentRegistry;
+import net.nikdo53.neobackports.registry.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -31,6 +36,9 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
     @Shadow
     @javax.annotation.Nullable
     public abstract CompoundTag getTag();
+
+    @Shadow
+    public abstract boolean is(Item item);
 
     @Override
     public @Nullable <T> T get(DataComponentType<? extends T> component) {
@@ -108,5 +116,14 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
             stack.setTag(getTag().copy());
         }
         return stack;
+    }
+
+    @WrapMethod(method = "is(Lnet/minecraft/core/Holder;)Z")
+    public boolean isFix(Holder<Item> item, Operation<Boolean> original){
+        if (item instanceof DeferredHolder<Item,?> deferredHolder) {
+            return is(deferredHolder.value());
+        }
+
+        return original.call(item);
     }
 }
