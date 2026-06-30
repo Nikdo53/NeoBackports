@@ -1,5 +1,7 @@
 package net.nikdo53.neobackports.extensions;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -93,6 +95,15 @@ public interface ItemStackBackportExtension {
             return 0;
         }
     }
+
+    default Tag save(HolderLookup.Provider levelRegistryAccess, Tag outputTag) {
+        throw new IllegalStateException("Not implemented");
+    }
+
+    default Tag save(HolderLookup.Provider levelRegistryAccess) {
+        throw new IllegalStateException("Not implemented");
+    }
+
 
     static int hashStackList(List<ItemStack> list) {
         int i = 0;

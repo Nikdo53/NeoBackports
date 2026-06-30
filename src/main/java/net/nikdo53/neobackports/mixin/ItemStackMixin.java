@@ -3,7 +3,9 @@ package net.nikdo53.neobackports.mixin;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -39,6 +41,16 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
 
     @Shadow
     public abstract boolean is(Item item);
+
+    @Shadow
+    @javax.annotation.Nullable
+    private CompoundTag tag;
+
+    @Shadow
+    public abstract CompoundTag save(CompoundTag compoundTag);
+
+    @Shadow
+    public abstract boolean isEmpty();
 
     @Override
     public @Nullable <T> T get(DataComponentType<? extends T> component) {
@@ -121,5 +133,21 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
     @WrapMethod(method = "is(Lnet/minecraft/core/Holder;)Z")
     public boolean isFix(Holder<Item> item, Operation<Boolean> original){
         return is(item.value());
+    }
+
+    @Override
+    public Tag save(HolderLookup.Provider levelRegistryAccess, Tag outputTag) {
+        if (this.isEmpty())
+            throw new IllegalStateException("Cannot encode empty ItemStack");
+
+        return save(tag);
+    }
+
+    @Override
+    public Tag save(HolderLookup.Provider levelRegistryAccess) {
+        if (this.isEmpty())
+            throw new IllegalStateException("Cannot encode empty ItemStack");
+
+        return save(new CompoundTag());
     }
 }
