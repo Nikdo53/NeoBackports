@@ -1,0 +1,134 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "net.nikdo53",
+    "module": "NeoBackports",
+    "version": "1.2.5",
+    "attributes": {
+      "org.gradle.status": "release"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "9.2.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "accessTransformersElements",
+      "attributes": {
+        "org.gradle.category": "accesstransformer"
+      },
+      "files": [
+        {
+          "name": "NeoBackports-1.2.5-accesstransformer.cfg",
+          "url": "NeoBackports-1.2.5-accesstransformer.cfg",
+          "size": 1020,
+          "sha512": "d61eb72f2f99d6fce657e7343538bc7fc482b57b07e444987548e6e4af6669187549dd996d485e81a9383ff618ccad7807cfd16218ef1ea09ded842e9a59a96f",
+          "sha256": "f9930b0e78eb5a14280d5ba77afe4c64d6835a854e04a8a2b86d021e7be14c53",
+          "sha1": "19f3577e68f2714716aa8facd44d357ee0dca6f1",
+          "md5": "70979a0931e3759b46f3caece1849bd1"
+        }
+      ]
+    },
+    {
+      "name": "interfaceInjectionDataElements",
+      "attributes": {
+        "org.gradle.category": "interfaceinjection"
+      },
+      "files": [
+        {
+          "name": "NeoBackports-1.2.5-interfaceinjection.json",
+          "url": "NeoBackports-1.2.5-interfaceinjection.json",
+          "size": 3636,
+          "sha512": "ed59bdbb4b68d1c6a0f00a2b83858bf78d801d4187606138069dc4ff46bf1b5518c012d427ddfeca405cc706a0c5a71c4e2024379637166024a148d473592615",
+          "sha256": "69916b3e8f1ac41aa134f0c14933a2cbf6b255d07be32288d4c1baf45e12d2ef",
+          "sha1": "cedeb34d568c4641d05c275947950fd9f9798ca2",
+          "md5": "06382433bc4a316ab7c3494dc3624512"
+        }
+      ]
+    },
+    {
+      "name": "reobfRuntimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "NeoBackports-1.2.5.jar",
+          "url": "NeoBackports-1.2.5.jar",
+          "size": 1064592,
+          "sha512": "916a6e7f78d541cb4e3abe289d0f3b16789da21dfa8cfcd4f063f96433e25c6c74f5ba9ec26f45af73c3652b596c03a92b60ba89e2a2758b6c667d5fb924f926",
+          "sha256": "10b9211bf23cef50b994b4dcb225e7b20f8fbdd0f8fe82a17e4c369c8bd46309",
+          "sha1": "4f5341448fa6091b1899fb37af724c0af6a88ef5",
+          "md5": "63d1f82b9ea38f68e53bc62ffd1d1f5a"
+        }
+      ]
+    },
+    {
+      "name": "reobfApiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 17,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "NeoBackports-1.2.5.jar",
+          "url": "NeoBackports-1.2.5.jar",
+          "size": 1064592,
+          "sha512": "916a6e7f78d541cb4e3abe289d0f3b16789da21dfa8cfcd4f063f96433e25c6c74f5ba9ec26f45af73c3652b596c03a92b60ba89e2a2758b6c667d5fb924f926",
+          "sha256": "10b9211bf23cef50b994b4dcb225e7b20f8fbdd0f8fe82a17e4c369c8bd46309",
+          "sha1": "4f5341448fa6091b1899fb37af724c0af6a88ef5",
+          "md5": "63d1f82b9ea38f68e53bc62ffd1d1f5a"
+        }
+      ]
+    },
+    {
+      "name": "javadocElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "javadoc",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "NeoBackports-1.2.5-javadoc.jar",
+          "url": "NeoBackports-1.2.5-javadoc.jar",
+          "size": 878816,
+          "sha512": "582e4d6dd844c4d22b81935fe2e25207dc1b7d05208683249bc5b59dd79c6a33be20194d1e1302553f288def10284f3f620f45a9b878231b8cda59eb2407bcd8",
+          "sha256": "f0b66eeae4431aaf337311f22df8567b97dfffbfd66b588f079e55cd4b8a830b",
+          "sha1": "7198e94bcf6fc5a9cbb5bbc23888ba1fa117cae7",
+          "md5": "37b95ea82a378bb3e81bb0df994c3d32"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "NeoBackports-1.2.5-sources.jar",
+          "url": "NeoBackports-1.2.5-sources.jar",
+          "size": 181617,
+          "sha512": "8bed0c721e35c529234d906246456bf1c7a08e13491bc16060e2a44fa0834618808c6e915d2b0482dac544f20ada2a0835e054ac0d32abdbecb486872835868f",
+          "sha256": "686314a127c59b62c4d0165cec5b42d9885a5c6d1c064b780937977b3ee80c29",
+          "sha1": "43d641ac7985a4bef4add80d8d9aa4bead9ab795",
+          "md5": "d39333abfd7c47752e5df3b61ec598fb"
+        }
+      ]
+    }
+  ]
+}
