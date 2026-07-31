@@ -1,6 +1,7 @@
 package net.nikdo53.neobackports.mixin;
 
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.capabilities.ICapabilityProviderImpl;
 import net.nikdo53.neobackports.extensions.ICapabilityProviderExtension;
 import net.nikdo53.neobackports.io.attachment.DataAttachmentRegistry;
 import net.nikdo53.neobackports.io.attachment.AttachmentType;
@@ -12,7 +13,7 @@ import org.spongepowered.asm.mixin.Unique;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-@Mixin(value = ICapabilityProvider.class, remap = false)
+@Mixin(value = ICapabilityProviderImpl.class, remap = false)
 public interface ICapabilityProviderMixin extends ICapabilityProviderExtension {
 
     @Override

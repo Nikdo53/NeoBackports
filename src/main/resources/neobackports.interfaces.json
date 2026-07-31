@@ -7,7 +7,7 @@
     "net/nikdo53/neobackports/extensions/ItemPropertiesComponentExtension"
   ],
 
-  "net/minecraftforge/common/capabilities/ICapabilityProvider": [
+  "net/minecraftforge/common/capabilities/ICapabilityProviderImpl": [
     "net/nikdo53/neobackports/extensions/ICapabilityProviderExtension"
   ],
 
