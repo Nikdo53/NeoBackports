@@ -2,6 +2,7 @@ package net.nikdo53.neobackports.io.attachment;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -65,7 +66,7 @@ public class AttachmentType<T>{
 
     public static StreamCodec<DataAttachment<?>> STREAM_CODEC_CODEC =
             StreamCodec.RESOURCE_LOCATION.map(
-                    loc -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getValue(loc).getAttachment(),
+                    loc -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL.get(loc).getAttachment(),
                     DataAttachment::getId);
 
 
@@ -87,7 +88,8 @@ public class AttachmentType<T>{
     @SuppressWarnings("unchecked, rawtypes")
     public Holder.Reference<AttachmentType<T>> builtInRegistryHolder(){
         if (this.builtInRegistryHolder == null) {
-            Holder.Reference object = (NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getDelegateOrThrow(this));
+            Optional<ResourceKey<AttachmentType<?>>> key = NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getResourceKey(this);
+            Holder.Reference object = NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getHolderOrThrow(key.orElseThrow());
             Holder.Reference<AttachmentType<T>> builtInRegistryHolder = (Holder.Reference<AttachmentType<T>>) object;
 
             this.builtInRegistryHolder = builtInRegistryHolder;

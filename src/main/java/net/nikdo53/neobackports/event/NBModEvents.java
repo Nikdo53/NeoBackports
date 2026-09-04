@@ -10,11 +10,13 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryBuilder;
 import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.datagen.condition.neoforge.*;
 import net.nikdo53.neobackports.datamaps.NeoForgeDataMaps;
 import net.nikdo53.neobackports.registry.ForgeRegistryHelper;
 import net.nikdo53.neobackports.registry.NeoForgeRegistries;
+import net.nikdo53.neobackports.registry.RegistryBuilderNeo;
 import net.nikdo53.neobackports.screen.BlurShaderLoader;
 import net.nikdo53.neobackports.datamaps.DataMapsManager;
 import net.nikdo53.neobackports.test.NBDataMaps;
@@ -50,11 +52,7 @@ public class NBModEvents {
     }
     @SubscribeEvent
     public static void addRegistry(NewRegistryEvent event) {
-        ForgeRegistryHelper.getInstance(NeoForgeRegistries.Keys.ATTACHMENT_TYPES)
-                .create(event, reg -> NeoForgeRegistries.ATTACHMENT_TYPES_REAL = reg);
-
-        ForgeRegistryHelper.getInstance(NeoForgeRegistries.Keys.DATA_COMPONENT_TYPE)
-                .create(event, reg -> NeoForgeRegistries.DATA_COMPONENT_TYPE = reg);
+        RegistryBuilderNeo.REGISTRY_BUILDERS.forEach(builder -> builder.register(event));
 
     }
 

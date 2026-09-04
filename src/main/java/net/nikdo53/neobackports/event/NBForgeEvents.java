@@ -145,7 +145,7 @@ public class NBForgeEvents {
 
         oldPlayer.reviveCaps();
 
-        NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getEntries().forEach((entry) -> {
+        NeoForgeRegistries.ATTACHMENT_TYPES_REAL.entrySet().forEach((entry) -> {
             AttachmentType<?> type = entry.getValue();
             if (!type.getAttachment().isCopyOnDeath()) return;
 
@@ -284,7 +284,7 @@ public class NBForgeEvents {
 
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-        NeoForgeRegistries.ATTACHMENT_TYPES_REAL.getEntries().forEach((entry) -> event.register(entry.getValue().getAttachment().getClass()));
+        NeoForgeRegistries.ATTACHMENT_TYPES_REAL.entrySet().forEach((entry) -> event.register(entry.getValue().getAttachment().getClass()));
     }
 
 }

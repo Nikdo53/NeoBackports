@@ -1,13 +1,13 @@
 name: Publish
 
-on: [push, pull_request]
+on: workflow_dispatch
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
           fetch-tags: true
@@ -16,13 +16,13 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Setup JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
           distribution: 'temurin'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+        uses: gradle/actions/setup-gradle@v6
 
       - name: Run Gradle Publish
         run: ./gradlew publish
@@ -30,6 +30,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          personal_token: ${{ secrets.MAVEN_TOKEN }}
+          external_repository: nikdo53/nikdo53.github.io
           publish_dir: ./build/maven
           keep_files: true

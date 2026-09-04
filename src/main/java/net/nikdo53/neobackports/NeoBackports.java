@@ -20,6 +20,7 @@ import net.nikdo53.neobackports.io.components.DataComponents;
 import net.nikdo53.neobackports.io.networking.NBNetworking;
 import net.nikdo53.neobackports.datamaps.DataMapType;
 import net.nikdo53.neobackports.registry.DeferredRegisterTyped;
+import net.nikdo53.neobackports.registry.NeoForgeRegistries;
 import net.nikdo53.neobackports.test.NBDataMaps;
 import net.nikdo53.neobackports.test.NBItems;
 import org.slf4j.Logger;
@@ -37,6 +38,7 @@ public class NeoBackports {
 
     public NeoBackports() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        NeoForgeRegistries.init();
         NBItems.REGISTER.register(modEventBus);
         NBNetworking.init();
         DataAttachmentRegistry.ATTACHMENT_TYPES.register(modEventBus);

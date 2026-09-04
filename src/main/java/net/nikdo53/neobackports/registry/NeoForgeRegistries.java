@@ -9,12 +9,15 @@ import net.nikdo53.neobackports.io.attachment.AttachmentType;
 import net.nikdo53.neobackports.io.components.DataComponentType;
 
 public class NeoForgeRegistries {
-    public static IForgeRegistry<AttachmentType<?>> ATTACHMENT_TYPES_REAL;
-    public static IForgeRegistry<DataComponentType<?>> DATA_COMPONENT_TYPE;
+    public static Registry<AttachmentType<?>> ATTACHMENT_TYPES_REAL = new RegistryBuilderNeo<>(Keys.ATTACHMENT_TYPES).sync(true).create();
+    public static Registry<DataComponentType<?>> DATA_COMPONENT_TYPE = new RegistryBuilderNeo<>(Keys.DATA_COMPONENT_TYPE).sync(true).create();
+
+    public static void init() {
+
+    }
 
     // This tricks other mods to register their own attachments using the key, which does not crash
     public static final ResourceKey<Registry<AttachmentType<?>>> ATTACHMENT_TYPES = Keys.ATTACHMENT_TYPES;
-
     public static final class Keys {
         public static final ResourceKey<Registry<AttachmentType<?>>> ATTACHMENT_TYPES = key("attachment_types");
         public static final ResourceKey<Registry<DataComponentType<?>>> DATA_COMPONENT_TYPE = key("data_component_type");

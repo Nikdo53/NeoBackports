@@ -1,35 +1,27 @@
 package net.nikdo53.neobackports.mixin;
 
-import com.llamalad7.mixinextras.expression.Definition;
-import com.llamalad7.mixinextras.expression.Expression;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistry;
-import net.nikdo53.neobackports.NeoBackports;
 import net.nikdo53.neobackports.datamaps.DataMapType;
 import net.nikdo53.neobackports.extensions.IForgeRegistryExtension;
 import net.nikdo53.neobackports.extensions.IRegistryDataMapExtension;
-import net.nikdo53.neobackports.registry.ForgeRegistryLookup;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Map;
 
 @Mixin(value = ForgeRegistry.class, remap = false)
 public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension<V>, IForgeRegistryExtension<V> {
+    @Unique
+    private static final ResourceLocation WRAPPER_ID = new ResourceLocation("forge", "registry_defaulted_wrapper");
 
     @Shadow
     @Final
@@ -41,6 +33,13 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
 
     @Shadow
     public abstract ResourceLocation getRegistryName();
+
+    @Shadow
+    public abstract <T> T getSlaveMap(ResourceLocation name, Class<T> type);
+
+    @Shadow
+    @Final
+    private Map<ResourceLocation, ?> slaves;
 
     @Override
     public Map<DataMapType<V, ?>, Map<ResourceKey<V>, ?>> getDataMaps() {
@@ -74,5 +73,8 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
         throw new IllegalStateException("forge registry " + getRegistryName() + " has no wrapper!");
     }
 
-
+    @Override
+    public Registry<V> getVanillaRegistry() {
+        return (Registry<V>) slaves.get(WRAPPER_ID);
+    }
 }
