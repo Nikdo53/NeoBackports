@@ -11,6 +11,7 @@ public interface CustomPacketPayload {
     default void handle(Supplier<NetworkEvent.Context> ctx){
         NetworkEvent.Context context = ctx.get();
         context.enqueueWork(() -> handle(new IPayloadContext(context)));
+        context.setPacketHandled(true);
     }
 
     void handle(IPayloadContext context);
