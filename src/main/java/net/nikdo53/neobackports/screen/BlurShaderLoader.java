@@ -19,7 +19,6 @@ import java.io.IOException;
 public class BlurShaderLoader {
     public static final ResourceLocation BLUR_LOCATION = NeoBackports.loc("shaders/post/new_blur.json");
     public static final BlurShaderLoader INSTANCE = new BlurShaderLoader();
-    public static boolean GL_DEPTH_STATE = true;
 
     @Nullable
     public PostChain blurEffect;

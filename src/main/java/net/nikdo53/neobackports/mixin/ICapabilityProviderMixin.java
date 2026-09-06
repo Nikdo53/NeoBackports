@@ -14,21 +14,21 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 @Mixin(value = ICapabilityProviderImpl.class, remap = false)
-public interface ICapabilityProviderMixin extends ICapabilityProviderExtension {
+public interface ICapabilityProviderMixin extends ICapabilityProviderExtension, ICapabilityProvider {
 
     @Override
     default <T> void setData(AttachmentType<T> attachmentType, T data) {
-        DataAttachmentRegistry.set(((ICapabilityProvider) (Object) this), attachmentType, data);
+        DataAttachmentRegistry.set(this, attachmentType, data);
     }
 
     @Override
     default <T> T getData(AttachmentType<T> attachmentType) {
-        return DataAttachmentRegistry.getOrDefault(((ICapabilityProvider) this), attachmentType);
+        return DataAttachmentRegistry.getOrDefault(this, attachmentType);
     }
 
     @Override
     default <T> void removeData(AttachmentType<T> attachmentType) {
-        DataAttachmentRegistry.remove((ICapabilityProvider) this, attachmentType);
+        DataAttachmentRegistry.remove(this, attachmentType);
     }
 
     @Override
@@ -48,17 +48,17 @@ public interface ICapabilityProviderMixin extends ICapabilityProviderExtension {
 
     @Override
     default <T> void syncData(AttachmentType<T> attachmentType) {
-        DataAttachmentRegistry.sync((ICapabilityProvider) this, attachmentType);
+        DataAttachmentRegistry.sync(this, attachmentType);
     }
 
     @Override
     default <T> boolean hasData(AttachmentType<T> type) {
-        return DataAttachmentRegistry.has((ICapabilityProvider) this, type);
+        return DataAttachmentRegistry.has(this, type);
     }
 
     @Override
     default <T> Optional<T> getExistingData(AttachmentType<T> type) {
-        return Optional.ofNullable(DataAttachmentRegistry.get((ICapabilityProvider) this, type));
+        return Optional.ofNullable(DataAttachmentRegistry.get(this, type));
     }
 
     @Override
@@ -69,7 +69,7 @@ public interface ICapabilityProviderMixin extends ICapabilityProviderExtension {
     @Override
     @Nullable
     default <T> T getExistingDataOrNull(AttachmentType<T> type) {
-        return DataAttachmentRegistry.get((ICapabilityProvider) this, type);
+        return DataAttachmentRegistry.get(this, type);
     }
 
     @Override

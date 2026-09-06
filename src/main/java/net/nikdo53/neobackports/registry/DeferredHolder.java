@@ -11,6 +11,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.tags.ITag;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -112,5 +114,39 @@ public class DeferredHolder<R, T extends R> implements Holder<T> {
     @Override
     public String toString() {
         return registryObject.toString();
+    }
+
+    @Override
+    public @Nullable <T1> T1 getData(DataMapType<T, T1> type) {
+        return getHolder().getData(type);
+    }
+
+    private @NotNull Holder<T> getHolder() {
+        return registryObject.getHolder().orElseThrow(() -> new IllegalStateException("Holder not bound for " + registryObject.getId()));
+    }
+
+    @Override
+    public boolean containsTag(TagKey<T> key) {
+        return getHolder().containsTag(key);
+    }
+
+    @Override
+    public Stream<TagKey<T>> getTagKeys() {
+        return getHolder().getTagKeys();
+    }
+
+    @Override
+    public boolean containsTag(ITag<T> tag) {
+        return getHolder().containsTag(tag);
+    }
+
+    @Override
+    public String getRegisteredName() {
+        return getHolder().getRegisteredName();
+    }
+
+    @Override
+    public boolean is(Holder<T> holder) {
+        return getHolder().is(holder);
     }
 }

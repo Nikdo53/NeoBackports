@@ -43,7 +43,7 @@ public abstract class ScreenMixin  {
     @WrapOperation(method = "renderBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;fillGradient(IIIIII)V"))
     void cancelTheBlackThingy(GuiGraphics instance, int x1, int y1, int x2, int y2, int colorFrom, int colorTo, Operation<Void> original){
         if (!(((Screen) (Object) this) instanceof AbstractContainerScreen))
-            if(BlurShaderLoader.shouldCancelBackground(true) && !BlurShaderLoader.GL_DEPTH_STATE) {
+            if(BlurShaderLoader.shouldCancelBackground(true) && !GlStateManager.DEPTH.mode.enabled) {
                 BlurScreenBackports.renderBlurOrPanorama(instance, x1, y1, x2, y2);
                 return;
             }

@@ -2,6 +2,7 @@ package net.nikdo53.neobackports.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.minecraft.core.Holder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -10,9 +11,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.nikdo53.neobackports.datamaps.DataMapType;
 import net.nikdo53.neobackports.extensions.IBlockBehaviourExtension;
 import net.nikdo53.neobackports.extensions.IBlockStateExtension;
+import net.nikdo53.neobackports.extensions.IDataMapHolderExtension;
+import net.nikdo53.neobackports.extensions.IWithData;
 import net.nikdo53.neobackports.utils.ItemInteractionResult;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
@@ -30,9 +35,12 @@ public abstract class BlockStateBaseMixin implements IBlockStateExtension {
     @Shadow
     public abstract boolean is(Block block);
 
+    @Shadow
+    public abstract Holder<Block> getBlockHolder();
+
     @WrapMethod(method = "use")
     public InteractionResult useWrap(Level level, Player player, InteractionHand hand, BlockHitResult result, Operation<InteractionResult> original) {
-        IBlockBehaviourExtension extension = (IBlockBehaviourExtension) getBlock();
+        IBlockBehaviourExtension extension = getBlock();
 
         ItemInteractionResult itemInteractionResult;
         try {
@@ -69,5 +77,9 @@ public abstract class BlockStateBaseMixin implements IBlockStateExtension {
         return is(supplier.get());
     }
 
+    @Override
+    public @Nullable <T> T getData(DataMapType<Block, T> type) {
+        return getBlockHolder().getData(type);
+    }
 }
 

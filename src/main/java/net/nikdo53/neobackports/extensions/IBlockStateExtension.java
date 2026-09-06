@@ -4,7 +4,7 @@ import net.minecraft.world.level.block.Block;
 
 import java.util.function.Supplier;
 
-public interface IBlockStateExtension {
+public interface IBlockStateExtension extends IWithData<Block> {
     default boolean is(Supplier<Block> supplier) {
         throw new IllegalStateException("not implemented");
     }

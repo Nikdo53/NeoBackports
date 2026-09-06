@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 
 public interface BackportCodecs {
     interface IngredientCodecs {
@@ -109,6 +110,10 @@ public interface BackportCodecs {
         public String toString() {
             return "StrictUnboundedMapCodec[" + this.keyCodec + " -> " + this.elementCodec + "]";
         }
+    }
+
+    static <T> Codec<T> withAlternative(final Codec<T> primary, final Codec<? extends T> alternative) {
+        return Codec.either(primary, alternative).xmap(either -> either.map(Function.identity(), Function.identity()), Either::left);
     }
 
     Codec<ItemStack> ITEM_STACK_RECIPE = RecordCodecBuilder.create((p_258963_) -> {

@@ -6,8 +6,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.nikdo53.neobackports.datamaps.builtin.Compostable;
 import net.nikdo53.neobackports.datamaps.builtin.FurnaceFuel;
+import net.nikdo53.neobackports.datamaps.builtin.Strippable;
 import org.jetbrains.annotations.Nullable;
 
 public class NeoForgeDataMaps {
@@ -19,6 +21,8 @@ public class NeoForgeDataMaps {
     public static final DataMapType<Item, FurnaceFuel> FURNACE_FUELS = DataMapType.builder(
             id("furnace_fuels"), Registries.ITEM, FurnaceFuel.CODEC).synced(FurnaceFuel.BURN_TIME_CODEC, false).build();
 
+    public static final DataMapType<Block, Strippable> STRIPPABLES = DataMapType.builder(
+            id("strippables"), Registries.BLOCK, Strippable.CODEC).synced(Strippable.STRIPPED_BLOCK_CODEC, false).build();
 
     private static ResourceLocation id(final String name) {
         return new ResourceLocation("neoforge", name);

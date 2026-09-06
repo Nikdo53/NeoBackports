@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -56,6 +57,7 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
     public void setAndSync(ICapabilityProvider holder , C dataNew){
         set(dataNew);
         sync(holder);
+        setUnsaved(holder);
     }
 
     /**
@@ -65,6 +67,13 @@ public class DataAttachment<C> implements ICapabilityProvider, INBTSerializable<
     public void set(C dataNew){
         data = dataNew;
     };
+
+    public void setUnsaved(ICapabilityProvider holder){
+        if (holder instanceof BlockEntity blockEntity)
+            blockEntity.setChanged();
+        if (holder instanceof ChunkAccess chunkAccess)
+            chunkAccess.setUnsaved(true);
+    }
 
     /**
      * Returns an empty value for mimicking the remove method from neo.

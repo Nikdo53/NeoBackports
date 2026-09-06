@@ -20,11 +20,15 @@ public class DelayedRegistry<T> implements Registry<T> {
     public boolean hasBeenSet = false;
 
     public void setRegistry(Registry<T> registry){
+        if (hasBeenSet) {
+            throw new IllegalStateException("Registry has already been set");
+        }
         this.parent = registry;
+        this.hasBeenSet = true;
     }
 
     public void setRegistry(IForgeRegistry<T> registry){
-        this.parent = registry.getVanillaRegistry();
+        setRegistry(registry.getVanillaRegistry());
     }
 
     public Registry<T> getRegistry(){

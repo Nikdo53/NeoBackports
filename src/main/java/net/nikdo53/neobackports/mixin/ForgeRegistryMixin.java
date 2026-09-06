@@ -1,5 +1,6 @@
 package net.nikdo53.neobackports.mixin;
 
+import com.mojang.serialization.Codec;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,9 +21,6 @@ import java.util.Map;
 
 @Mixin(value = ForgeRegistry.class, remap = false)
 public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension<V>, IForgeRegistryExtension<V> {
-    @Unique
-    private static final ResourceLocation WRAPPER_ID = new ResourceLocation("forge", "registry_defaulted_wrapper");
-
     @Shadow
     @Final
     private boolean hasWrapper;
@@ -34,13 +32,6 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
     @Shadow
     public abstract ResourceLocation getRegistryName();
 
-    @Shadow
-    public abstract <T> T getSlaveMap(ResourceLocation name, Class<T> type);
-
-    @Shadow
-    @Final
-    private Map<ResourceLocation, ?> slaves;
-
     @Override
     public Map<DataMapType<V, ?>, Map<ResourceKey<V>, ?>> getDataMaps() {
         return neoBackports$getVanillaOrThrow().getDataMaps();
@@ -48,7 +39,7 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
 
     @Unique
     private @NotNull Registry<V> neoBackports$getVanillaOrThrow() {
-        Registry<V> registry = (Registry<V>) BuiltInRegistries.REGISTRY.get(getRegistryName());
+        Registry<V> registry = getVanillaRegistry();
         if (registry == null){
             throw new IllegalStateException("Cannot get data maps on forge registry " + getRegistryName() + " as it does not have a vanilla counterpart");
         }
@@ -74,7 +65,8 @@ public abstract class ForgeRegistryMixin<V> implements IRegistryDataMapExtension
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Registry<V> getVanillaRegistry() {
-        return (Registry<V>) slaves.get(WRAPPER_ID);
+        return (Registry<V>) BuiltInRegistries.REGISTRY.get(getRegistryName());
     }
 }

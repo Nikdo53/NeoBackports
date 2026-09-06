@@ -6,6 +6,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AddPackFindersEventMixin",
+    "AxeItemMixin",
     "BlockBehaviourMixin",
     "BlockEntityMixin",
     "BlockStateBaseMixin",
@@ -42,7 +43,6 @@
     "client.EditBoxMixin",
     "client.EditGameRulesScreenMixin",
     "client.GameRendererMixin",
-    "client.GlStateManagerMixin",
     "client.LevelRendererMixin",
     "client.ModelMixin",
     "client.ModelPartMixin",
@@ -54,8 +54,11 @@
     "client.TabNavigationBarMixin",
     "client.TabNavigationBarMixin$TabButtonMixin",
     "client.VertexConsumerMixin",
-    "client.VideoSettingsMixin"
+    "client.VideoSettingsMixin",
+    "client.facedata.BlockElementFaceMixin",
+    "client.facedata.BlockElementMixin"
   ],
   "mixinextras": {
-    "minVersion": "0.5.0"}
+    "minVersion": "0.5.0"
+  }
 }

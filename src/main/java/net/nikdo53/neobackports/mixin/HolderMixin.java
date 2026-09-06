@@ -15,9 +15,6 @@ import java.util.Optional;
 @Mixin(Holder.class)
 public interface HolderMixin<T> extends IDataMapHolderExtension<T> {
     @Shadow
-    Either<ResourceKey<T>, T> unwrap();
-
-    @Shadow
     Optional<ResourceKey<T>> unwrapKey();
 
     @Shadow
@@ -26,7 +23,7 @@ public interface HolderMixin<T> extends IDataMapHolderExtension<T> {
     @Override
     @Nullable
     default <A> A getData(DataMapType<T, A> type) {
-        return IDataMapHolderExtension.super.getData(type);
+        return null;
     }
 
     @Override
@@ -37,7 +34,7 @@ public interface HolderMixin<T> extends IDataMapHolderExtension<T> {
     @Override
     @Nullable
     default ResourceKey<T> getKey() {
-        return ((Holder<T>) this).unwrapKey().orElse(null);
+        return unwrapKey().orElse(null);
     }
 
     @Override
