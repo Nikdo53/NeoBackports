@@ -9,6 +9,7 @@ import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.BaseMapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Holder;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -65,6 +66,10 @@ public interface BackportCodecs {
 
     static <K, V> StrictUnboundedMapCodec<K, V> strictUnboundedMap(Codec<K> key, Codec<V> value) {
         return new StrictUnboundedMapCodec<>(key, value);
+    }
+
+    static <E> Codec<NonNullList<E>> nonNullListCodecOf(Codec<E> entryCodec) {
+        return entryCodec.listOf().xmap(list -> new NonNullList<>(List.copyOf(list), null), Function.identity());
     }
 
     record StrictUnboundedMapCodec<K, V>(Codec<K> keyCodec, Codec<V> elementCodec) implements Codec<Map<K, V>>, BaseMapCodec<K, V> {

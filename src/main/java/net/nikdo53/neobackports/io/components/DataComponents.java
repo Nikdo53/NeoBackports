@@ -3,6 +3,7 @@ package net.nikdo53.neobackports.io.components;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
@@ -38,7 +39,22 @@ public class DataComponents {
 
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Component>> CUSTOM_NAME = VANILLA_COMPONENTS.registerComponentType(
             "custom_name",
-            p_341853_ -> p_341853_.persistent(ItemStack::setHoverName, ItemStack::getHoverName)
+            p_341853_ -> p_341853_.persistent(ItemStack::setHoverName, stack -> {
+                CompoundTag compoundtag = stack.getTagElement("display");
+                if (compoundtag != null && compoundtag.contains("Name", 8)) {
+                    try {
+                        Component component = Component.Serializer.fromJson(compoundtag.getString("Name"));
+                        if (component != null) {
+                            return component;
+                        }
+
+                        compoundtag.remove("Name");
+                    } catch (Exception exception) {
+                        compoundtag.remove("Name");
+                    }
+                }
+                return null;
+            })
     );
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Component>> ITEM_NAME = CUSTOM_NAME;
     /*

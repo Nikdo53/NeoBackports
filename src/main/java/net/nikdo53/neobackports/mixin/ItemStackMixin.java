@@ -139,8 +139,11 @@ public abstract class ItemStackMixin implements ItemStackBackportExtension {
     public Tag save(HolderLookup.Provider levelRegistryAccess, Tag outputTag) {
         if (this.isEmpty())
             throw new IllegalStateException("Cannot encode empty ItemStack");
-
-        return save(tag);
+        if (outputTag instanceof CompoundTag betterTag){
+            return save(betterTag);
+        } else {
+            throw new IllegalArgumentException("ItemStack tag must be a CompoundTag, if anyone knows why 1.21 accepts tag pls tell me");
+        }
     }
 
     @Override
