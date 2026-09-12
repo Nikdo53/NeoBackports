@@ -35,17 +35,6 @@ public class NBNetworking {
                 RegistryDataMapSyncPayload.STREAM_CODEC,
                 RegistryDataMapSyncPayload::handle
         );
-
-
-        CHANNEL.messageBuilder(KnownRegistryDataMapsReplyPayload.class, id++, NetworkDirection.PLAY_TO_SERVER).
-               // loginIndex(KnownRegistryDataMapsReplyPayload::getLoginIndex, KnownRegistryDataMapsReplyPayload::setLoginIndex).
-                decoder(KnownRegistryDataMapsReplyPayload.STREAM_CODEC::decode).
-                encoder(KnownRegistryDataMapsReplyPayload.STREAM_CODEC::encode).
-                consumerNetworkThread(KnownRegistryDataMapsReplyPayload::handle).
-                add();
-
-
-
     }
 
     private static <T> void register(Class<T> msg, StreamCodec<T> streamCodec, BiConsumer<T, Supplier<NetworkEvent.Context>> consumer){

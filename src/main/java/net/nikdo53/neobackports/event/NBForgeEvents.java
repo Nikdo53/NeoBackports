@@ -110,9 +110,7 @@ public class NBForgeEvents {
                 if (player.connection.connection.isMemoryConnection() && getSyncedRegistry((ResourceKey) registry) == null) {
                     return;
                 }
-                final var playerMaps = player.connection.connection.channel().attr(DataMapsManager.ATTRIBUTE_KNOWN_DATA_MAPS).get();
-                if (playerMaps == null) return; // Skip gametest players for instance
-                handleSync(player, regOpt.get(), playerMaps.getOrDefault(registry, List.of()));
+                handleSync(player, regOpt.get(), DataMapsManager.getDataMaps().getOrDefault(registry, Map.of()).keySet());
             });
         });
     }
